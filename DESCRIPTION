@@ -1,0 +1,20 @@
+Package: rtweetXtras
+Title: Extra Analysis Functions for rtweet package 
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Andrew",
+           family = "Fraser",
+           role = c("aut", "cre"),
+           email = "arf9999+gh@gmail.com")
+Description: A collection of functions to assist analysis of twitter data obtained with rtweet (by @mkearney). 
+Imports: dplyr,
+         ggplot2,
+         quanteda,
+         RColorBrewer,
+         RcppParallel,
+         rtweet,
+         wordcloud
+License: CC0
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.0
