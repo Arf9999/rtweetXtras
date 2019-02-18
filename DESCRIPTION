@@ -1,6 +1,6 @@
 Package: rtweetXtras
 Title: Extra Analysis Functions for rtweet package 
-Version: 0.0.0.9000
+Version: 0.0.1.0000
 Authors@R: 
     person(given = "Andrew",
            family = "Fraser",
@@ -13,8 +13,10 @@ Imports: dplyr,
          RColorBrewer,
          RcppParallel,
          rtweet,
-         wordcloud
+         UpSetR,
+         wordcloud,
+         lubridate
 License: CC0
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
