@@ -3,6 +3,7 @@
 
 
 
+
 #'@title Hashtag wordcloud for rtweet package
 #'
 #'@description This function creates a wordcloud (defaults to 200 terms) from terms in the "hashtags" column of an rtweet tibble of tweets
@@ -25,7 +26,7 @@ hashtagcloud <- function (rtweet_timeline_df, num_words = 200) {
   require(wordcloud, quietly = TRUE)
 
   hashtagclean <-
-    dplyr::filter(rtweet_timeline_df,!is.na(rtweet_timeline_df$hashtags))
+    dplyr::filter(rtweet_timeline_df, !is.na(rtweet_timeline_df$hashtags))
   hashtagclean <- rtweet::flatten(hashtagclean)
   text <- paste(unlist(hashtagclean$hashtags), sep = "")
   myCorpus <- quanteda::corpus(text)
@@ -158,10 +159,9 @@ profilecloud <- function (rtweet_timeline_df, num_words = 200) {
 
 
   profileclean <-
-    dplyr::filter(rtweet_timeline_df,
-                  !is.na(rtweet_timeline_df$description)) ## remove empty descriptions
+    dplyr::filter(rtweet_timeline_df,!is.na(rtweet_timeline_df$description)) ## remove empty descriptions
   profileclean <-
-    profileclean[!duplicated(profileclean["screen_name"]), ] ##remove duplicate users by screen_name
+    profileclean[!duplicated(profileclean["screen_name"]),] ##remove duplicate users by screen_name
 
   profileclean <- rtweet::flatten(profileclean)
   text <- paste(unlist(profileclean$description), sep = "")
@@ -205,7 +205,7 @@ profilecloud <- function (rtweet_timeline_df, num_words = 200) {
 }
 
 #'@title Twitter visualization of common followers
-#'Code cribbed from boB Rudis' 21 Recipes for Mining Twitter with Rtweet
+#'Code cribbed from Bob Rudis' 21 Recipes for Mining Twitter with Rtweet
 #'https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html
 #'@description This function creates an UpSetR graph of common followers
 #'@param user_list A list of user_names
@@ -219,8 +219,9 @@ profilecloud <- function (rtweet_timeline_df, num_words = 200) {
 
 
 common_follower_analysis <-
-  function (user_list, follower_depth = 200, no_of_sets = 7) {
-
+  function (user_list,
+            follower_depth = 200,
+            no_of_sets = 7) {
     require(rtweet, quietly = TRUE)
     require(tidyverse, quietly = TRUE)
     require(UpSetR, quietly = TRUE)
@@ -242,7 +243,7 @@ common_follower_analysis <-
 
     # for each follower, get a binary indicator of whether they follow each tweeter or not and bind to one dataframe
     binaries <- user_list %>%
-      map_dfc( ~ ifelse(
+      map_dfc(~ ifelse(
         aRdent_followers %in% filter(followers, account == .x)$user_id,
         1,
         0
@@ -282,7 +283,6 @@ common_follower_analysis <-
 
 common_follower_matrix <-
   function (user_list, follower_depth = 200) {
-
     require(rtweet, quietly = TRUE)
     require(tidyverse, quietly = TRUE)
 
@@ -302,7 +302,7 @@ common_follower_matrix <-
 
     # for each follower, get a binary indicator of whether they follow each tweeter or not and bind to one dataframe
     binaries <- user_list %>%
-      map_dfc( ~ ifelse(
+      map_dfc(~ ifelse(
         aRdent_followers %in% filter(followers, account == .x)$user_id,
         1,
         0
@@ -312,17 +312,20 @@ common_follower_matrix <-
     # set column names
     names(binaries) <- user_list
 
-   #add screen_names as rows
+    #add screen_names as rows
     binaries$user_id <- aRdent_followers #add column of user_id
 
-    binaries2 <- lookup_users(binaries$user_id, token = token) # get user details
+    binaries2 <-
+      lookup_users(binaries$user_id, token = token) # get user details
     binaries <-
       full_join(binaries2[, c("screen_name", "user_id")], binaries, by = "user_id") #join matrix to user detail
 
     #rank by common followers - descending.
-      binaries2 <- binaries%>%
-      mutate(sum_intersections = rowSums(binaries[,c(3:ncol(binaries))]))%>%
-      mutate(ranking = (dense_rank(desc(sum_intersections)))) %>%
+    binaries2 <- binaries %>%
+      mutate(sum_intersections = rowSums(binaries[, c(3:ncol(binaries))])) %>%
+      mutate(ranking = (dense_rank(desc(
+        sum_intersections
+      )))) %>%
       arrange(ranking)
 
     return(binaries2)
@@ -331,49 +334,189 @@ common_follower_matrix <-
 #'@title Account activity plot for a twitter account using rtweet package (inspired by python script by twitter user "@Conspirat0r")
 #'@description This function creates a bubble plot of account activity by hour of a single twitter screen_name
 #'@param account_name A twitter screen_name, in quotes.
-#'@param depth The maximum depth of tweets to be visualised. Starts from most recent tweet. Twitter API maximum and default is 3200. Only those tweets occuring in the no_of_weeks param will be shown
-#'@param time_zone The timezone of the account. Requires timezone in format of TZ database (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in quotes. Default is "Africa/Johannesburg"
+#'@param depth The maximum depth of tweets to be visualised. Starts from most recent tweet.
+#'Twitter API maximum and default is 3200. Only those tweets occuring in the no_of_weeks param will be shown
+#'@param time_zone The timezone of the account.
+#' Requires timezone in format of TZ database (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in quotes. Default is "Africa/Johannesburg"
 #'@param no_of_weeks The number of weeks to display. Default is 4. Plot will automatically scale to exclude any period without activity.
-#'@param token A twitter oauth token. Default is NULL, and will utilise an existing token loaded into environment, but can be over-ridden to use a particular token.
-#'#'@keywords twitter, rtweet, visualization, activity, bubble plot.
+#'@param token A twitter oauth token. Default is NULL,
+#'and will utilise an existing token loaded into environment, but can be over-ridden to use a particular token.
+#'@keywords twitter, rtweet, visualization, activity, bubble plot.
 #'@export
-#'@examples account_activity("jack",depth = 3200, time_zone = "America/Los_Angeles", no_of_weeks = 4, token = readRDS("~/twitter_token.rds"))
+#'@examples account_activity("jack",
+#'depth = 3200,
+#'time_zone = "America/Los_Angeles",
+#' no_of_weeks = 4,
+#' token = readRDS("~/twitter_token.rds"))
 
 
 account_activity <- function(account_name,
                              depth = 3200,
                              time_zone = "Africa/Johannesburg",
-                             no_of_weeks = 4, token = NULL){
+                             no_of_weeks = 4,
+                             token = NULL) {
   require(rtweet, quietly = TRUE)
   require(tidyverse, quietly = TRUE)
   require(lubridate, quietly = TRUE)
 
-  rtweet::get_timeline(account_name, n=depth,retryonratelimit=TRUE, token = token)[,1:6]%>%
+  rtweet::get_timeline(
+    account_name,
+    n = depth,
+    retryonratelimit = TRUE,
+    token = token
+  )[, 1:6] %>%
     mutate(created_at2 = with_tz(created_at, tzone = time_zone)) %>%
-    mutate(tweet_date = lubridate::date(created_at2))%>%
-    mutate(tweet_hour = lubridate::hour(created_at2))%>%
-    group_by(screen_name)%>%
+    mutate(tweet_date = lubridate::date(created_at2)) %>%
+    mutate(tweet_hour = lubridate::hour(created_at2)) %>%
+    group_by(screen_name) %>%
     group_by(source, add = TRUE) %>%
-    group_by(tweet_date, add = TRUE )%>%
-    group_by(tweet_hour, add = TRUE)%>%
-    mutate(hourly_tweet_count = n())%>%
+    group_by(tweet_date, add = TRUE) %>%
+    group_by(tweet_hour, add = TRUE) %>%
+    mutate(hourly_tweet_count = n()) %>%
     ungroup %>%
-    mutate(tweet_period = (as.duration(interval(max(created_at2), created_at2)))) %>%
+    mutate(tweet_period = (as.duration(interval(
+      max(created_at2), created_at2
+    )))) %>%
     filter(tweet_period > as.duration(-604800 * no_of_weeks)) %>%
     group_by(source, tweet_date, tweet_hour) %>%
     slice(1) %>%
-    ungroup()%>%
-    mutate(bubble_scale = max(hourly_tweet_count)/5) %>%
-    ggplot(aes(x= tweet_hour, y= tweet_date, size = hourly_tweet_count, colour = source, alpha =0.3))+
-    geom_point()+
-    scale_size_continuous(name="Hourly tweet volume")+
-    scale_x_discrete(limits = c(0:23),
-                     breaks = c(0:23),
-                     labels = c(0:23))+
-    expand_limits(x=c(0:23))+
-    theme_minimal()+
-    labs(title = paste("Account activity: ",account_name, " (as at ", as_datetime(Sys.Date()),")\n", " Time zone of tweets: ", time_zone,sep=""),
-         x= "Hour of day",
-         y="Date")+
+    ungroup() %>%
+    mutate(bubble_scale = max(hourly_tweet_count) / 5) %>%
+    ggplot(
+      aes(
+        x = tweet_hour,
+        y = tweet_date,
+        size = hourly_tweet_count,
+        colour = source,
+        alpha = 0.3
+      )
+    ) +
+    geom_point() +
+    scale_size_continuous(name = "Hourly tweet volume") +
+    scale_x_discrete(
+      limits = c(0:23),
+      breaks = c(0:23),
+      labels = c(0:23)
+    ) +
+    expand_limits(x = c(0:23)) +
+    theme_minimal() +
+    labs(
+      title = paste(
+        "Account activity: ",
+        account_name,
+        " (as at ",
+        as_datetime(Sys.Date()),
+        ")\n",
+        " Time zone of tweets: ",
+        time_zone,
+        sep = ""
+      ),
+      x = "Hour of day",
+      y = "Date"
+    ) +
     guides(alpha = FALSE)
+}
+
+#'@title Create an igraph network of tweets
+#'@description This function creates an igraph network graph from a tibble of tweets details created by rtweet functions
+#'(e.g. search_tweets, get_timeline, parse_stream, lookup_statuses, lookup_tweets etc.)
+#'@param tweetdf An rtweet tibble of tweets. (88 columns).
+#'@param all_mentions Whether to include all the mentions (TRUE/FALSE). Defaults to TRUE,
+#'if set to FALSE will include only Replies, Retweets and Quotes (any additional tagged screen_names will be ignored)
+#'@param from_threshold A filter to simplify graphs, removes edges where the "from" node has less than a set level of connections. Default is 0.
+#'@param directed_graph Directed graph? (TRUE/FALSE), default is FALSE (i.e. undirected graph output)
+#'@keywords twitter, rtweet, visualization, network, igraph
+#'@export
+#'@examples
+#'tweets <- search_tweets("#rstats", n= 100)
+#'network <- rtweet_net(tweets, all_mentions = TRUE, from_threshold =2)
+#'plot(network)
+
+rtweet_net <- function(tweetdf,
+                       all_mentions = TRUE,
+                       from_threshold = 0,
+                       directed_graph = FALSE) {
+  #dependencies
+  require(igraph, quietly = TRUE)
+  require(tidyverse, quietly = TRUE)
+
+
+  ##get edges
+  if (all_mentions == FALSE) {
+    dplyr::filter(tweetdf,!is.na(reply_to_user_id)) %>%
+      dplyr::mutate(
+        from = screen_name,
+        to = reply_to_screen_name,
+        type = "reply",
+        ID = status_id
+      ) -> reply_edges
+
+    dplyr::filter(tweetdf, is_retweet == TRUE) %>%
+      dplyr::mutate(
+        from = screen_name,
+        to = retweet_screen_name,
+        type = "retweet",
+        ID = status_id
+      ) -> retweet_edges
+
+    filter(tweetdf, is_quote == TRUE)  %>%
+      dplyr::mutate(
+        from = screen_name,
+        to = quoted_screen_name,
+        type = "quote",
+        ID = status_id
+      ) -> quote_edges
+
+
+    edges <- (rbind (reply_edges, retweet_edges, quote_edges))[, 89:92]
+  } else{
+    tidyr::unnest(tweetdf[, c("screen_name", "mentions_screen_name", "status_id")], .drop =
+                    NA)[, c(1, 3, 2)] %>%
+      dplyr::mutate(type = "mention") %>%
+      dplyr::rename(from = screen_name, to = mentions_screen_name, ID = status_id) %>%
+      dplyr::filter(!is.na(to)) -> edges
+
+    edges <- edges[, c(1, 2, 4, 3)]
+  }
+  ##reduce no of edges and nodes by defined threshold
+
+  simplified_edges <- edges %>%
+    dplyr::group_by(from) %>%
+    dplyr::mutate(from_count = n()) %>%
+    dplyr::filter(from_count > from_threshold)
+
+  ##nodes
+
+  nodes <-
+    unique (rbind(
+      tibble::enframe(simplified_edges$from, name = "No", value = "node_id"),
+      tibble::enframe(simplified_edges$to, name = "No", value = "node_id")
+    )[, 2])
+
+  ##return igraph object
+
+  igraph::graph_from_data_frame(d = simplified_edges, v = nodes, directed = directed_graph)
+}
+
+#'@title Save an edgelist as a csv from an igraph object
+#'@description This function saves an igraph edgelist as a csv for export to network mapping software such as Gephi.
+#'@param igraphobject An igraph network object
+#'@param path Path and file name, in quotes (Filename should ideally have ".csv" extension)
+#'@keywords twitter, rtweet, visualization, network, igraph, export
+#'@export
+#'@examples
+#'tweets <- rtweet::search_tweets("#rstats", n= 100)
+#'network <- rtweetXtras::rtweet_net(tweets, all_mentions = TRUE, from_threshold =2)
+#'save_csv_edgelist(igraphobject = network, path = "~/edgelist_network.csv")
+
+
+save_csv_edgelist <- function(igraphobject, path){
+  ##dependencies
+  requires(readr, quietly= TRUE)
+  requires(igraph, quietly = TRUE)
+
+  ##write edgelist
+  edgelist <- igraph::get.edgelist(igraphobject)
+  readr::write_csv(as.data.frame(edgelist),path)
+  print(paste("Edgelist saved as ",path))
 }
