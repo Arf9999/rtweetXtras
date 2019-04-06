@@ -525,8 +525,8 @@ save_csv_edgelist <- function(igraphobject, path){
   require(readr, quietly= TRUE)
   require(igraph, quietly = TRUE)
 
-  ##write edgelist
+  ##write edgelist...
   edgelist <- igraph::get.edgelist(igraphobject)
   readr::write_csv(as.data.frame(edgelist),path)
-  print(paste("Edgelist saved as ",path))
+  print(paste("Edgelist saved as: ",path))
 }
