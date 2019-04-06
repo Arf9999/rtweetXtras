@@ -1,5 +1,13 @@
 
-
+backports::import(c("rtweet",
+       "tidyverse",
+       "quanteda",
+       "RcppParallel",
+       "RColorBrewer",
+       "wordcloud",
+       "UpsetR",
+       "lubridate",
+       "igraph"))
 
 
 
@@ -205,9 +213,10 @@ profilecloud <- function (rtweet_timeline_df, num_words = 200) {
 }
 
 #'@title Twitter visualization of common followers
-#'Code cribbed from Bob Rudis' 21 Recipes for Mining Twitter with Rtweet
-#'https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html
+
 #'@description This function creates an UpSetR graph of common followers
+#'      Code cribbed from Bob Rudis' 21 Recipes for Mining Twitter with Rtweet
+#'      https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html
 #'@param user_list A list of user_names
 #'@param follower_depth The number of most recent followers to graph. Defaults to 200
 #'@param no_of_sets <- The number of sets in the UpSetR graph. Defaults to 7.
@@ -331,23 +340,24 @@ common_follower_matrix <-
     return(binaries2)
   }
 
-#'@title Account activity plot for a twitter account using rtweet package (inspired by python script by twitter user "@Conspirat0r")
+#'@title Account Activity Plot for a Twitter Account
 #'@description This function creates a bubble plot of account activity by hour of a single twitter screen_name
+#'     (inspired by python script by twitter user "@Conspirat0r")
 #'@param account_name A twitter screen_name, in quotes.
 #'@param depth The maximum depth of tweets to be visualised. Starts from most recent tweet.
 #'Twitter API maximum and default is 3200. Only those tweets occuring in the no_of_weeks param will be shown
 #'@param time_zone The timezone of the account.
-#' Requires timezone in format of TZ database (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in quotes. Default is "Africa/Johannesburg"
+#'    Requires timezone in format of TZ database (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in quotes.
+#'    Default is "Africa/Johannesburg"
 #'@param no_of_weeks The number of weeks to display. Default is 4. Plot will automatically scale to exclude any period without activity.
 #'@param token A twitter oauth token. Default is NULL,
-#'and will utilise an existing token loaded into environment, but can be over-ridden to use a particular token.
+#'    and will utilise an existing token loaded into environment, but can be over-ridden to use a particular token.
 #'@keywords twitter, rtweet, visualization, activity, bubble plot.
 #'@export
 #'@examples account_activity("jack",
-#'depth = 3200,
-#'time_zone = "America/Los_Angeles",
-#' no_of_weeks = 4,
-#' token = readRDS("~/twitter_token.rds"))
+#'    depth = 3200,
+#'    time_zone = "America/Los_Angeles",
+#'    no_of_weeks = 4,token = NULL)
 
 
 account_activity <- function(account_name,
@@ -417,12 +427,12 @@ account_activity <- function(account_name,
     guides(alpha = FALSE)
 }
 
-#'@title Create an igraph network of tweets
+#'@title Create an Igraph Network of Tweets
 #'@description This function creates an igraph network graph from a tibble of tweets details created by rtweet functions
-#'(e.g. search_tweets, get_timeline, parse_stream, lookup_statuses, lookup_tweets etc.)
+#'    (e.g. search_tweets, get_timeline, parse_stream, lookup_statuses, lookup_tweets etc.)
 #'@param tweetdf An rtweet tibble of tweets. (88 columns).
 #'@param all_mentions Whether to include all the mentions (TRUE/FALSE). Defaults to TRUE,
-#'if set to FALSE will include only Replies, Retweets and Quotes (any additional tagged screen_names will be ignored)
+#'    if set to FALSE will include only Replies, Retweets and Quotes (any additional tagged screen_names will be ignored)
 #'@param from_threshold A filter to simplify graphs, removes edges where the "from" node has less than a set level of connections. Default is 0.
 #'@param directed_graph Directed graph? (TRUE/FALSE), default is FALSE (i.e. undirected graph output)
 #'@keywords twitter, rtweet, visualization, network, igraph
@@ -498,7 +508,7 @@ rtweet_net <- function(tweetdf,
   igraph::graph_from_data_frame(d = simplified_edges, v = nodes, directed = directed_graph)
 }
 
-#'@title Save an edgelist as a csv from an igraph object
+#'@title Save an Edgelist csv from an Igraph Object
 #'@description This function saves an igraph edgelist as a csv for export to network mapping software such as Gephi.
 #'@param igraphobject An igraph network object
 #'@param path Path and file name, in quotes (Filename should ideally have ".csv" extension)
@@ -512,8 +522,8 @@ rtweet_net <- function(tweetdf,
 
 save_csv_edgelist <- function(igraphobject, path){
   ##dependencies
-  requires(readr, quietly= TRUE)
-  requires(igraph, quietly = TRUE)
+  require(readr, quietly= TRUE)
+  require(igraph, quietly = TRUE)
 
   ##write edgelist
   edgelist <- igraph::get.edgelist(igraphobject)

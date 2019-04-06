@@ -2,9 +2,7 @@
 % Please edit documentation in R/rtweetxtras_functions.R
 \name{common_follower_analysis}
 \alias{common_follower_analysis}
-\title{Twitter visualization of common followers
-Code cribbed from boB Rudis' 21 Recipes for Mining Twitter with Rtweet
-https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html}
+\title{Twitter visualization of common followers}
 \usage{
 common_follower_analysis(user_list, follower_depth = 200,
   no_of_sets = 7)
@@ -18,6 +16,8 @@ common_follower_analysis(user_list, follower_depth = 200,
 }
 \description{
 This function creates an UpSetR graph of common followers
+     Code cribbed from Bob Rudis' 21 Recipes for Mining Twitter with Rtweet
+     https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html
 }
 \examples{
 users <- c("POTUS", "jack", "elonmusk")

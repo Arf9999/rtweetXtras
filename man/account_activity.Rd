@@ -2,7 +2,7 @@
 % Please edit documentation in R/rtweetxtras_functions.R
 \name{account_activity}
 \alias{account_activity}
-\title{Account activity plot for a twitter account using rtweet package (inspired by python script by twitter user "@Conspirat0r")}
+\title{Account Activity Plot for a Twitter Account}
 \usage{
 account_activity(account_name, depth = 3200,
   time_zone = "Africa/Johannesburg", no_of_weeks = 4, token = NULL)
@@ -10,18 +10,31 @@ account_activity(account_name, depth = 3200,
 \arguments{
 \item{account_name}{A twitter screen_name, in quotes.}
 
-\item{depth}{The maximum depth of tweets to be visualised. Starts from most recent tweet. Twitter API maximum and default is 3200. Only those tweets occuring in the no_of_weeks param will be shown}
+\item{depth}{The maximum depth of tweets to be visualised. Starts from most recent tweet.
+Twitter API maximum and default is 3200. Only those tweets occuring in the no_of_weeks param will be shown}
 
-\item{time_zone}{The timezone of the account. Requires timezone in format of TZ database (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in quotes. Default is "Africa/Johannesburg"}
+\item{time_zone}{The timezone of the account.
+Requires timezone in format of TZ database (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in quotes.
+Default is "Africa/Johannesburg"}
 
 \item{no_of_weeks}{The number of weeks to display. Default is 4. Plot will automatically scale to exclude any period without activity.}
 
-\item{token}{A twitter oauth token. Default is NULL, and will utilise an existing token loaded into environment, but can be over-ridden to use a particular token.
-#'@keywords twitter, rtweet, visualization, activity, bubble plot.}
+\item{token}{A twitter oauth token. Default is NULL,
+and will utilise an existing token loaded into environment, but can be over-ridden to use a particular token.}
 }
 \description{
 This function creates a bubble plot of account activity by hour of a single twitter screen_name
+    (inspired by python script by twitter user "@Conspirat0r")
 }
 \examples{
-account_activity("jack",depth = 3200, time_zone = "America/Los_Angeles", no_of_weeks = 4, token = readRDS("~/twitter_token.rds"))
+account_activity("jack",
+   depth = 3200,
+   time_zone = "America/Los_Angeles",
+   no_of_weeks = 4,token = NULL)
 }
+\keyword{activity,}
+\keyword{bubble}
+\keyword{plot.}
+\keyword{rtweet,}
+\keyword{twitter,}
+\keyword{visualization,}
