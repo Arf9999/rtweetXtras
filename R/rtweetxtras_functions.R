@@ -1,13 +1,14 @@
 
-backports::import(c("rtweet",
+
+install.packages(c("rtweet",
        "tidyverse",
        "quanteda",
        "RcppParallel",
        "RColorBrewer",
        "wordcloud",
-       "UpsetR",
+       "UpSetR",
        "lubridate",
-       "igraph"))
+       "igraph"), repos = "https://cloud.r-project.org/")
 
 
 
