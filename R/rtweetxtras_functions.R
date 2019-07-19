@@ -64,7 +64,7 @@ hashtagcloud <- function (rtweet_timeline_df, num_words = 200) {
 #'@description This function creates a barplot of mentioned screen_names (default top 20) in an rtweet tibble of tweets
 #'@param rtweet_df A dataframe/tibble of tweets created by rtweet package through twitter API call.
 #'@param no_of_bars The number of bars in the plot. Default is 20.
-#'@param title The title of the barplot in quotation marks. Default of NULL returns the name of the rtweet Tbble and the number of bars.
+#'@param title The title of the barplot in quotation marks. Default of NULL returns the name of the rtweet tibble and the number of bars.
 #'@keywords twitter, rtweet, visualization, mentions
 #'@export
 #'@examples
@@ -77,11 +77,11 @@ bar_plot_mentions <-
   function (rtweet_df,
             no_of_bars = 20,
             title = NULL) {
-    require("dplyr")
-    require("ggplot2")
-    require("quanteda")
-    require("RcppParallel")
-    require("rtweet")
+    require("dplyr", quietly = TRUE)
+    require("ggplot2",quietly = TRUE)
+    require("quanteda",quietly = TRUE)
+    require("RcppParallel",quietly = TRUE)
+    require("rtweet",quietly = TRUE)
 
 
     if (is.null(title)) {
@@ -101,7 +101,7 @@ bar_plot_mentions <-
       rtweet::flatten() ##unlist the mentions
 
     text <-
-      paste(unlist(mention_clean$mentions_screen_name), sep = "") ##create text file for mining
+      paste(unlist(mention_clean$mentions_screen_name), sep = "") ##create text vector for mining
 
     myCorpus <- quanteda::corpus(text) ## create corpus
     dfmatrix <- quanteda::dfm(

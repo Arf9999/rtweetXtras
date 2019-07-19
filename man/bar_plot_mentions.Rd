@@ -11,7 +11,7 @@ bar_plot_mentions(rtweet_df, no_of_bars = 20, title = NULL)
 
 \item{no_of_bars}{The number of bars in the plot. Default is 20.}
 
-\item{title}{The title of the barplot in quotation marks. Default of NULL returns the name of the rtweet Tbble and the number of bars.}
+\item{title}{The title of the barplot in quotation marks. Default of NULL returns the name of the rtweet tibble and the number of bars.}
 }
 \description{
 This function creates a barplot of mentioned screen_names (default top 20) in an rtweet tibble of tweets
