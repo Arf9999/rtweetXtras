@@ -531,3 +531,129 @@ save_csv_edgelist <- function(igraphobject, path){
   readr::write_csv(as.data.frame(edgelist),path)
   print(paste("Edgelist saved as: ",path))
 }
+
+
+#################################################################################
+#'@title Wrapper for rtweet::get_followers and rtweet::lookup_users
+#'@description This function consolidates the process of getting followers and looking up the user details.
+#'@param account_for_foll Required. The target twitter account user_id or screen_name - in quotes.
+#'NB:Only tested with a single account: iterating tokens mau not work effectively with multiple accounts
+#'@param token_list Optional. A list of valid tokens loaded into environment. Not specifying will use the default token.
+#'If multiple tokens are specified, function will iterate through them to reduce ratelimit pauses for followings larger than 75000
+#'NB: this may be contrary to Twitter's API terms and conditions - so use at own risk.
+#'@param file_path Optional. If specified, an rds file will be saved to the file path in the form <file_path><account_for_foll>_followers.rds
+#'#'@keywords twitter, rtweet
+#'@export
+#'@examples
+#'jacks_followers <- get_followers_fast("jack",token_list = c(token1,token2), file_path = "~/")
+
+get_followers_fast <- function(account_for_foll, token_list = c(NULL), file_path = NULL){
+  require(rtweet, quietly = TRUE)
+  require(dplyr, quietly = TRUE)
+
+  followers_count <-
+    as.numeric(lookup_users(account_for_foll)[1, "followers_count"]) # get the number of followers
+  tokencount <- 1 # initial token position in list
+  page <- "-1" #initial page for next_token
+
+  ## Get first 75000 followers
+  follower_df <- get_followers(
+    account_for_foll,
+    n = 75000,
+    page = page,
+    retryonratelimit = TRUE,
+    token = token_list[tokencount]
+  )
+  page <- next_cursor(follower_df) ## set cursor for paging
+  follower_df_users <- lookup_users(follower_df$user_id,token = token_list[tokencount])
+  if(!is.null(file_path)) {
+    saveRDS(follower_df_users,paste0(file_path,account_for_foll,"_followers.rds"))
+  }
+  print(paste("followers captured:", nrow(follower_df), "out of", followers_count))
+
+  ##get the balance of accounts by iterating through tokens
+  while (page != "0") {
+    tokencount <-
+      ifelse(tokencount < length(token_list), tokencount + 1, 1) #token number increment
+    follower_df_temp <- get_followers(
+      account_for_foll,
+      n = 75000,
+      page = page,
+      retryonratelimit = TRUE,
+      token = token_list[tokencount]
+    )
+    follower_df_temp_user <- lookup_users(follower_df_temp$user_id,token = token_list[tokencount])
+
+    follower_df <- bind_rows(follower_df, follower_df_temp)
+    follower_df_users <- bind_rows(follower_df_users, follower_df_temp_user)
+    if(!is.null(file_path)) {
+      saveRDS(follower_df_users,paste0(file_path,account_for_foll,"_followers.rds"))
+    }
+
+    page <- next_cursor(follower_df_temp)
+    message(paste("followers captured:", nrow(follower_df), "out of", followers_count,"\n"))
+  }
+  follower_df_users
+}
+####################################################################################
+#'@title Wrapper for rtweet::get_friends and rtweet::lookup_users
+#'@description This function consolidates the process of getting friends and looking up the user details.
+#'@param account_for_friend Required. The target twitter account user_id or screen_name - in quotes.
+#'NB:Only tested with a single account: iterating tokens may not work effectively with multiple accounts
+#'@param token_list Optional. A list of valid tokens loaded into environment. Not specifying will use the default token.
+#'If multiple tokens are specified, function will iterate through them to reduce ratelimit pauses for friends more than 75000
+#'NB: this may be contrary to Twitter's API terms and conditions - so use at own risk.
+#'@param file_path Optional. If specified, an rds file will be saved to the file path in the form <file_path><account_for_friend>_friends.rds
+#'#'@keywords twitter, rtweet
+#'@export
+#'@examples
+#'jacks_friends <- get_friends_fast("jack",token_list = c(token1,token2), file_path = "~/")
+
+get_friends_fast <- function(account_for_friend, token_list = c(NULL), file_path = "~/"){
+  require(rtweet, quietly = TRUE)
+  require(dplyr, quietly = TRUE)
+
+  friend_count <-
+    as.numeric(lookup_users(account_for_friend)[1, "friends_count"]) # get the number of friends
+  tokencount <- 1 # initial token position in list
+  page <- "-1" #initial page for next_token
+
+  ## Get first 75000 friends
+  friend_df <- get_friends(
+    account_for_friend,
+    n = 75000,
+    page = page,
+    retryonratelimit = TRUE,
+    token = token_list[tokencount]
+  )
+  page <- next_cursor(friend_df) ## set cursor for paging
+  friend_df_users <- lookup_users(friend_df$user_id,token = token_list[tokencount])
+  if(!is.null(file_path)) {
+    saveRDS(friend_df_users,paste0(file_path,account_for_friend,"_friends.rds"))
+  }
+  print(paste("friends captured:", nrow(friend_df), "out of", friend_count))
+
+  ##get the balance of accounts by iterating through tokens
+  while (page != "0") {
+    tokencount <-
+      ifelse(tokencount < length(token_list), tokencount + 1, 1) #token number increment
+    friend_df_temp <- get_friends(
+      account_for_friend,
+      n = 75000,
+      page = page,
+      retryonratelimit = TRUE,
+      token = token_list[tokencount]
+    )
+    friend_df_temp_user <- lookup_users(follower_df_temp$user_id,token = token_list[tokencount])
+
+    friend_df <- bind_rows(follower_df, friend_df_temp)
+    friend_df_users <- bind_rows(friend_df_users, friend_df_temp_user)
+    if(!is.null(file_path)) {
+      saveRDS(friend_df_users,paste0(file_path,account_for_friend,"_friends.rds"))
+    }
+    page <- next_cursor(friend_df_temp)
+    message(paste("friends captured:", nrow(friend_df), "out of", friend_count, "\n"))
+  }
+  friend_df_users
+}
+
