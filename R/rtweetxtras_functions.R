@@ -550,10 +550,22 @@ save_csv_edgelist <- function(igraphobject, path){
 get_followers_fast <- function(account_for_foll, token_list = c(NULL), file_path = NULL){
   require(rtweet, quietly = TRUE)
   require(dplyr, quietly = TRUE)
+  require(purrr, quietly = TRUE)
 
   followers_count <-
     as.numeric(lookup_users(account_for_foll)[1, "followers_count"]) # get the number of followers
-  tokencount <- 1 # initial token position in list
+
+  ##choose the optimum token from the list to start with
+  check_ratelimit <- purrr::map_df(token_list, rtweet::rate_limit, query = "get_followers")%>%
+    mutate(index = row_number())%>%
+    filter(remaining == max(remaining))
+  if (check_ratelimit[1,"remaining"] < 1) {
+    message(paste("Pausing to reset rate_limit for ",as.numeric(check_ratelimit[1,"reset"]), " minutes"))
+    Sys.sleep(as.numeric(check_ratelimit[1,"reset"]) * 60)
+  }
+  tokencount <- as.numeric(check_ratelimit[1,"index"]) # initial token position in list
+
+
   page <- "-1" #initial page for next_token
 
   ## Get first 75000 followers
