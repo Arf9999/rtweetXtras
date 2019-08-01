@@ -9,7 +9,8 @@ get_followers_fast(account_for_foll, token_list = c(NULL),
 }
 \arguments{
 \item{account_for_foll}{Required. The target twitter account user_id or screen_name - in quotes.
-NB:Only tested with a single account: iterating tokens mau not work effectively with multiple accounts}
+NB:Only tested with a single account: iterating tokens may not work effectively with multiple accounts,
+however, using lapply or purrr::map to iterate over user accounts is feasible.}
 
 \item{token_list}{Optional. A list of valid tokens loaded into environment. Not specifying will use the default token.
 If multiple tokens are specified, function will iterate through them to reduce ratelimit pauses for followings larger than 75000
