@@ -647,12 +647,19 @@ get_friends_fast <- function(account_for_friend, token_list = c(NULL), file_path
   require(purrr, quietly = TRUE)
 
   friend_count <-
-    as.numeric(lookup_users(account_for_friend)[1, "friends_count"]) # get the number of friends
+    as.numeric(tryCatch(lookup_users(account_for_friend)[1, "friends_count"]),
+               error = "NA") # get the number of friends
+  print(paste(account_for_friend, "friend count =", friend_count))
 
   ##choose the optimum token from the list to start with
-  check_ratelimit <- purrr::map_df(token_list, rtweet::rate_limit, query = "get_friends")%>%
+  if(!is.null(token_list)){check_ratelimit <- purrr::map_df(token_list, rtweet::rate_limit, query = "get_friends")%>%
     mutate(index = row_number())%>%
     filter(remaining == max(remaining))
+  }else{
+    check_ratelimit <- rtweet::rate_limit(query = "get_friends")%>%
+      mutate(index = row_number())
+  }
+
   if (check_ratelimit[1,"remaining"] < 1) {
     message(paste("Pausing to reset rate_limit for ",as.numeric(check_ratelimit[1,"reset"]), " minutes"))
     Sys.sleep(as.numeric(check_ratelimit[1,"reset"]) * 60)
@@ -661,15 +668,28 @@ get_friends_fast <- function(account_for_friend, token_list = c(NULL), file_path
   page <- "-1" #initial page for next_token
 
   ## Get first 75000 friends
-  friend_df <- get_friends(
-    account_for_friend,
-    n = 75000,
-    page = page,
-    retryonratelimit = TRUE,
-    token = token_list[tokencount]
+  friend_df <- tryCatch(
+    {get_friends(
+      account_for_friend,
+      n = 75000,
+      page = page,
+      retryonratelimit = TRUE,
+      token = token_list[tokencount]
+    )
+
+    },
+    error = function(cond){
+      return(c(cond))
+      page <- 0
+    }
   )
-  page <- next_cursor(friend_df) ## set cursor for paging
-  friend_df_users <- lookup_users(friend_df$user_id,token = token_list[tokencount])
+  page <- next_cursor(friend_df)
+  page <- ifelse(page != 0,next_cursor(friend_df), 0)  ## set cursor for paging
+  print(paste("page = ", page))
+  friend_df_users <- ifelse(!is.na(friend_df$user_id),
+                            lookup_users(friend_df$user_id,token = token_list[tokencount]),
+                            c(NA))
+
   if(!is.null(file_path)) {
     saveRDS(friend_df_users,paste0(file_path,account_for_friend,"_friends.rds"))
   }
