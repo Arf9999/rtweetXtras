@@ -1,17 +1,5 @@
 
 
-install.packages(c("rtweet",
-       "tidyverse",
-       "quanteda",
-       "RcppParallel",
-       "RColorBrewer",
-       "wordcloud",
-       "UpSetR",
-       "lubridate",
-       "igraph"), repos = "https://cloud.r-project.org/")
-
-
-
 
 #'@title Hashtag wordcloud for rtweet package
 #'
