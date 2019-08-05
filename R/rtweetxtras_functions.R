@@ -554,12 +554,18 @@ get_followers_fast <- function(account_for_foll, token_list = c(NULL), file_path
   require(purrr, quietly = TRUE)
 
   followers_count <-
-    as.numeric(lookup_users(account_for_foll)[1, "followers_count"]) # get the number of followers
+    as.numeric(tryCatch(lookup_users(account_for_foll)[1, "followers_count"]),
+               error = "NA") # get the number of followers
+  print(paste(account_for_foll, "follower count =", followers_count))
 
   ##choose the optimum token from the list to start with
-  check_ratelimit <- purrr::map_df(token_list, rtweet::rate_limit, query = "get_followers")%>%
+  if(!is.null(token_list)){check_ratelimit <- purrr::map_df(token_list, rtweet::rate_limit, query = "get_followers")%>%
     mutate(index = row_number())%>%
     filter(remaining == max(remaining))
+  }else{
+    check_ratelimit <- rtweet::rate_limit(query = "get_followers")%>%
+      mutate(index = row_number())
+  }
   if (check_ratelimit[1,"remaining"] < 1) {
     message(paste("Pausing to reset rate_limit for ",as.numeric(check_ratelimit[1,"reset"]), " minutes"))
     Sys.sleep(as.numeric(check_ratelimit[1,"reset"]) * 60)
@@ -570,17 +576,29 @@ get_followers_fast <- function(account_for_foll, token_list = c(NULL), file_path
   page <- "-1" #initial page for next_token
 
   ## Get first 75000 followers
-  follower_df <- get_followers(
-    account_for_foll,
-    n = 75000,
-    page = page,
-    retryonratelimit = TRUE,
-    token = token_list[tokencount]
+  follower_df <- tryCatch(
+    {get_followers(
+      account_for_foll,
+      n = 75000,
+      page = page,
+      retryonratelimit = TRUE,
+      token = token_list[tokencount]
+    )
+
+    },
+    error = function(cond){
+      return(c(cond))
+      page <- 0
+    }
   )
   page <- next_cursor(follower_df) ## set cursor for paging
-  follower_df_users <- lookup_users(follower_df$user_id,token = token_list[tokencount])
+  print(paste("page = ", page))
+  follower_df_users <- ifelse(!is.na(follower_df$user_id),
+                              lookup_users(follower_df$user_id,token = token_list[tokencount]),
+                              c(NA))
+
   if(!is.null(file_path)) {
-    saveRDS(follower_df_users,paste0(file_path,account_for_foll,"_followers.rds"))
+    saveRDS(follower_df_users,paste0(file_path,account_for_foll,"_followers.rds"))## save rds file of followers
   }
   print(paste("followers captured:", nrow(follower_df), "out of", followers_count))
 
