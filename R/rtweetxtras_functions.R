@@ -582,8 +582,9 @@ get_followers_fast <- function(account_for_foll, token_list = c(NULL), file_path
   page <- next_cursor(follower_df) ## set cursor for paging
   print(paste("page = ", page))
   follower_df_users <- ifelse(!is.na(follower_df$user_id),
-                              lookup_users(follower_df$user_id,token = token_list[tokencount]),
+                              bind_rows(lookup_users(follower_df$user_id, parse = TRUE, token = token_list[tokencount])),
                               c(NA))
+
 
   if(!is.null(file_path)) {
     saveRDS(follower_df_users,paste0(file_path,account_for_foll,"_followers.rds"))## save rds file of followers
@@ -601,10 +602,16 @@ get_followers_fast <- function(account_for_foll, token_list = c(NULL), file_path
       retryonratelimit = TRUE,
       token = token_list[tokencount]
     )
+
     follower_df_temp_user <- lookup_users(follower_df_temp$user_id,token = token_list[tokencount])
 
     follower_df <- bind_rows(follower_df, follower_df_temp)
-    follower_df_users <- bind_rows(follower_df_users, follower_df_temp_user)
+
+
+    follower_df_users <- follower_df_users %>%
+      bind_rows(follower_df_temp_user)
+
+
     if(!is.null(file_path)) {
       saveRDS(follower_df_users,paste0(file_path,account_for_foll,"_followers.rds"))
     }
@@ -675,7 +682,7 @@ get_friends_fast <- function(account_for_friend, token_list = c(NULL), file_path
   page <- ifelse(page != 0,next_cursor(friend_df), 0)  ## set cursor for paging
   print(paste("page = ", page))
   friend_df_users <- ifelse(!is.na(friend_df$user_id),
-                            lookup_users(friend_df$user_id,token = token_list[tokencount]),
+                            bind_rows(lookup_users(friend_df$user_id, parse = TRUE, token = token_list[tokencount])),
                             c(NA))
 
   if(!is.null(file_path)) {
