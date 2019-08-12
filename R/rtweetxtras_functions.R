@@ -609,7 +609,7 @@ get_followers_fast <- function(account_for_foll, token_list = c(NULL), file_path
 
 
     follower_df_users <- follower_df_users %>%
-      bind_rows(follower_df_temp_user)
+     rbind(follower_df_temp_user)
 
 
     if(!is.null(file_path)) {
@@ -703,7 +703,7 @@ get_friends_fast <- function(account_for_friend, token_list = c(NULL), file_path
     )
     friend_df_temp_user <- lookup_users(follower_df_temp$user_id,token = token_list[tokencount])
 
-    friend_df <- bind_rows(follower_df, friend_df_temp)
+    friend_df <- rbind(follower_df, friend_df_temp)
     friend_df_users <- bind_rows(friend_df_users, friend_df_temp_user)
     if(!is.null(file_path)) {
       saveRDS(friend_df_users,paste0(file_path,account_for_friend,"_friends.rds"))
