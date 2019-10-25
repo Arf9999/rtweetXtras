@@ -419,7 +419,7 @@ account_activity <- function(account_name,
 #'@title Create an Igraph Network of Tweets
 #'@description This function creates an igraph network graph from a tibble of tweets details created by rtweet functions
 #'    (e.g. search_tweets, get_timeline, parse_stream, lookup_statuses, lookup_tweets etc.)
-#'@param tweetdf An rtweet tibble of tweets. (88 columns).
+#'@param tweetdf An rtweet tibble of tweets. (90 columns? - depending on version).
 #'@param all_mentions Whether to include all the mentions (TRUE/FALSE). Defaults to TRUE,
 #'    if set to FALSE will include only Replies, Retweets and Quotes (any additional tagged screen_names will be ignored)
 #'@param from_threshold A filter to simplify graphs, removes edges where the "from" node has less than a set level of connections. Default is 0.
@@ -469,7 +469,7 @@ rtweet_net <- function(tweetdf,
 
     edges <- (rbind (reply_edges, retweet_edges, quote_edges))[, 89:92]
   } else{
-    tidyr::unnest(tweetdf[, c("screen_name", "mentions_screen_name", "status_id")], .drop =
+    tidyr::unnest_legacy(tweetdf[, c("screen_name", "mentions_screen_name", "status_id")], .drop =
                     NA)[, c(1, 3, 2)] %>%
       dplyr::mutate(type = "mention") %>%
       dplyr::rename(from = screen_name, to = mentions_screen_name, ID = status_id) %>%
@@ -509,15 +509,20 @@ rtweet_net <- function(tweetdf,
 #'save_csv_edgelist(igraphobject = network, path = "~/edgelist_network.csv")
 
 
-save_csv_edgelist <- function(igraphobject, path){
+save_csv_edgelist <- function(igraphobject, path) {
   ##dependencies
-  require(readr, quietly= TRUE)
+  require(readr, quietly = TRUE)
+  require(dplyr, quietly = TRUE)
+  require(magrittr, quietly = TRUE)
   require(igraph, quietly = TRUE)
 
   ##write edgelist...
-  edgelist <- igraph::get.edgelist(igraphobject)
-  readr::write_csv(as.data.frame(edgelist),path)
-  print(paste("Edgelist saved as: ",path))
+  edgelist <- as.data.frame(igraph::get.edgelist(igraphobject)) %>%
+    rename("Source" = "V1", "Target" = "V2")
+
+
+  readr::write_csv(as.data.frame(edgelist), path)
+  print(paste("Edgelist saved as: ", path))
 }
 
 

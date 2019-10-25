@@ -8,7 +8,7 @@ rtweet_net(tweetdf, all_mentions = TRUE, from_threshold = 0,
   directed_graph = FALSE)
 }
 \arguments{
-\item{tweetdf}{An rtweet tibble of tweets. (88 columns).}
+\item{tweetdf}{An rtweet tibble of tweets. (90 columns? - depending on version).}
 
 \item{all_mentions}{Whether to include all the mentions (TRUE/FALSE). Defaults to TRUE,
 if set to FALSE will include only Replies, Retweets and Quotes (any additional tagged screen_names will be ignored)}
