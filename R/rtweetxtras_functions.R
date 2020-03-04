@@ -781,11 +781,12 @@ create_gexf <-
                            .drop = NA)
     temp2 <- temp %>%
       dplyr::mutate(nodelabel = screen_name) %>%
-      dplyr::rename(id = screen_name, attribute = user_id) # two (identical) columns for nodes, both containing the screen names for tweet authors
+      dplyr::rename(id = screen_name, attribute = user_id)
 
     temp3 <- temp %>%
       dplyr::rename(nodelabel = mentions_screen_name, attribute = mentions_user_id) %>%
-      dplyr::mutate(id = nodelabel) #two identical columns for nodes, both containing screen names for mentioned accounts
+      dplyr::mutate(id = nodelabel) %>%
+      dplyr::filter(!is.na(id))
 
     nodes <-
       unique(dplyr::full_join(temp2[, c("id", "nodelabel", "attribute")], temp3[, c("id", "nodelabel", "attribute")])) #consolidate nodes and remove duplicates
