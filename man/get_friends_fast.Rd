@@ -4,8 +4,7 @@
 \alias{get_friends_fast}
 \title{Wrapper for rtweet::get_friends and rtweet::lookup_users}
 \usage{
-get_friends_fast(account_for_friend, token_list = c(NULL),
-  file_path = "~/")
+get_friends_fast(account_for_friend, token_list = c(NULL), file_path = "~/")
 }
 \arguments{
 \item{account_for_friend}{Required. The target twitter account user_id or screen_name - in quotes.

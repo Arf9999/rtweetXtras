@@ -4,8 +4,12 @@
 \alias{rtweet_net}
 \title{Create an Igraph Network of Tweets}
 \usage{
-rtweet_net(tweetdf, all_mentions = TRUE, from_threshold = 0,
-  directed_graph = FALSE)
+rtweet_net(
+  tweetdf,
+  all_mentions = TRUE,
+  from_threshold = 0,
+  directed_graph = FALSE
+)
 }
 \arguments{
 \item{tweetdf}{An rtweet tibble of tweets. (90 columns? - depending on version).}

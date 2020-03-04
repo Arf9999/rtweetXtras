@@ -4,8 +4,7 @@
 \alias{get_followers_fast}
 \title{Wrapper for rtweet::get_followers and rtweet::lookup_users}
 \usage{
-get_followers_fast(account_for_foll, token_list = c(NULL),
-  file_path = NULL)
+get_followers_fast(account_for_foll, token_list = c(NULL), file_path = NULL)
 }
 \arguments{
 \item{account_for_foll}{Required. The target twitter account user_id or screen_name - in quotes.

@@ -4,8 +4,13 @@
 \alias{account_activity}
 \title{Account Activity Plot for a Twitter Account}
 \usage{
-account_activity(account_name, depth = 3200,
-  time_zone = "Africa/Johannesburg", no_of_weeks = 4, token = NULL)
+account_activity(
+  account_name,
+  depth = 3200,
+  time_zone = "Africa/Johannesburg",
+  no_of_weeks = 4,
+  token = NULL
+)
 }
 \arguments{
 \item{account_name}{A twitter screen_name, in quotes.}
@@ -24,7 +29,7 @@ and will utilise an existing token loaded into environment, but can be over-ridd
 }
 \description{
 This function creates a bubble plot of account activity by hour of a single twitter screen_name
-    (inspired by python script by twitter user "@Conspirat0r")
+    (inspired by python script by twitter user "@Conspirator0")
 }
 \examples{
 account_activity("jack",

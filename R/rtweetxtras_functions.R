@@ -331,7 +331,7 @@ common_follower_matrix <-
 
 #'@title Account Activity Plot for a Twitter Account
 #'@description This function creates a bubble plot of account activity by hour of a single twitter screen_name
-#'     (inspired by python script by twitter user "@Conspirat0r")
+#'     (inspired by python script by twitter user "@Conspirator0")
 #'@param account_name A twitter screen_name, in quotes.
 #'@param depth The maximum depth of tweets to be visualised. Starts from most recent tweet.
 #'Twitter API maximum and default is 3200. Only those tweets occuring in the no_of_weeks param will be shown
@@ -746,3 +746,78 @@ number_followers <- function(follower_df){
   }
   return(follower_df)
 }
+
+
+####################################################################################
+#'@title Create gexf file of mentions network for export to Gephi from rtweet dataframe
+#'@description This function consolidates the process of numbering followers and indicating earliest following date.
+#'requires an rtweet dataframe as returned by get_timeline() or search_tweets()
+#'Requires {rgexf} which may not be available on CRAN.
+#'Use devtools::install_github("gvegayon/rgexf") to install
+#'@param tweet_df Required. An rtweet dataframe of tweets
+#'@param filepath Required. A full filepath with file name. Extension of file should be .gexf
+#'#'@keywords twitter, rtweet, Gephi, gexf, sna
+#'@export
+#'@examples
+#'rstats <- search_tweets("#rstats", n=100, token = NULL)
+#'create_gexf(rstats, "~/rstats.gexf")
+#######################################################################################
+
+
+create_gexf <-
+  function(tweet_df, filepath) {
+
+    require(rgexf, quietly = TRUE)
+    require(dplyr, quietly = TRUE)
+    require(tidyr, quietly = TRUE)
+
+
+    # get nodes
+    temp <-
+      tidyr::unnest_legacy(tweet_df[, c("screen_name",
+                                        "mentions_screen_name",
+                                        "user_id",
+                                        "mentions_user_id")],
+                           .drop = NA)
+    temp2 <- temp %>%
+      dplyr::mutate(nodelabel = screen_name) %>%
+      dplyr::rename(id = screen_name, attribute = user_id) # two (identical) columns for nodes, both containing the screen names for tweet authors
+
+    temp3 <- temp %>%
+      dplyr::rename(nodelabel = mentions_screen_name, attribute = mentions_user_id) %>%
+      dplyr::mutate(id = nodelabel) #two identical columns for nodes, both containing screen names for mentioned accounts
+
+    nodes <-
+      unique(dplyr::full_join(temp2[, c("id", "nodelabel", "attribute")], temp3[, c("id", "nodelabel", "attribute")])) #consolidate nodes and remove duplicates
+
+    nodeatt <- as.data.frame(nodes$attribute)
+    nodes <- nodes[, c("id", "nodelabel")]
+
+
+    #get edges
+    edges <-
+      tidyr::unnest_legacy(tweet_df[, c("screen_name",
+                                        "mentions_screen_name",
+                                        "status_id",
+                                        "created_at",
+                                        "text")],
+                           .drop = NA) %>%
+      dplyr::rename(source = screen_name, target = mentions_screen_name) %>%
+      dplyr::rename(timestamp = created_at, tweetid = status_id) %>%
+      dplyr::mutate(attribute = paste(tweetid, timestamp)) %>%
+      dplyr::filter(!is.na(target))
+
+    edgeatt <- as.data.frame(edges$attribute)
+    edges <- edges[, c("source", "target")]
+
+
+    #write gexf file
+    rgexf::write.gexf(
+      nodes = nodes,
+      edges = edges,
+      nodesAtt = nodeatt,
+      edgesAtt = edgeatt,
+      output = filepath
+    )
+  }
+#############################################################################
