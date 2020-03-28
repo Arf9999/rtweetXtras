@@ -1,7 +1,7 @@
 #' rtweetXtras: Additional Analysis Functions for rtweet
 #'
 #' The rtweetXtras package includes the following functions:
-#' hashtagcloud, profilecloud, barplotmentions, common_follower_analysis, account_activity, rtweet_net and save_csv_edgelist
+#' hashtagcloud, profilecloud, barplotmentions, common_follower_analysis, account_activity, rtweet_net, save_csv_edgelist, get_followers_fast,
 #'
 #' @section hashtagcloud function
 #'     This function creates a wordcloud (defaults to 200 terms) from terms in the "hashtags" column of an rtweet tibble of tweets
@@ -21,6 +21,14 @@
 #'      (e.g. search_tweets, get_timeline, parse_stream, lookup_statuses, lookup_tweets etc.)
 #' @section save_csv_edgelist function
 #'      This function saves an igraph edgelist as a csv for export to network mapping software such as Gephi.
+#' @section get_followers_fast function
+#'      This function consolidates the process of getting followers and looking up the user details.
+#' @section get_friends_fast function
+#'      This function consolidates the process of getting friends and looking up the user details.
+#' @section number_followers function
+#'      This function consolidates the process of numbering followers and indicating earliest possible following date.
+#' @section create_gexf function
+#'      This function creates a gexf network file of a mentions network for use with Gephi software
 #' @docType package
 #' @name rtweetXtras
 NULL
