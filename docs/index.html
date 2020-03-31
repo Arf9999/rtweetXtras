@@ -63,8 +63,12 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#rtweetxtras" class="anchor"></a>rtweetXtras</h1></div>
 <p>A collection of helper functions for twitter analysis using the {rtweet} package. NB: these functions have MANY dependencies… no warranty is offered, but please feel free to log issues.</p>
+<<<<<<< HEAD
 <p>###hashtagcloud <code><a href="reference/hashtagcloud.html">hashtagcloud(rtweet_timeline_df, num_words = 200)</a></code></p>
 <p>Delivers a wordcloud of hashtag terms in an rtweet tibble.</p>
+=======
+<p>#hashtagcloud <code><a href="reference/hashtagcloud.html">hashtagcloud(rtweet_timeline_df, num_words = 200)</a></code> Delivers a wordcloud of hashtag terms in an rtweet tibble.</p>
+>>>>>>> 3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5
 <div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">df &lt;-<span class="st"> </span>rtweet<span class="op">::</span><span class="kw">get_timeline</span>(<span class="st">"jack"</span>, <span class="dt">n=</span><span class="dv">1000</span>)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">rtweetXtras<span class="op">::</span><span class="kw">hashtagcloud</span>(df, <span class="dt">n=</span><span class="dv">200</span>)</a></code></pre></div>
 <p><img src="readme_files/figure-markdown_strict/hashtagcloud-1.png"></p>
@@ -102,9 +106,13 @@ This function creates a matrix of followers of a list of twitter users, sums the
 <a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">## $ thomasp85         &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, …</span></a>
 <a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## $ sum_intersections &lt;dbl&gt; 5, 5, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …</span></a>
 <a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">## $ ranking           &lt;int&gt; 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …</span></a></code></pre></div>
+<<<<<<< HEAD
 <p>###account_activity <code><a href="reference/account_activity.html">account_activity(account_name, depth = 3200, time_zone = "Africa/Johannesburg", no_of_weeks = 4,  token = NULL)</a></code><br>
 This function creates a bubble plot of account activity by hour of a single twitter screen_name<br>
 (inspired by python script by twitter user “@Conspirator0”)</p>
+=======
+<p><code><a href="reference/account_activity.html">account_activity(account_name, depth = 3200, time_zone = "Africa/Johannesburg", no_of_weeks = 4,  token = NULL)</a></code> This function creates a bubble plot of account activity by hour of a single twitter screen_name (inspired by python script by twitter user “@Conspirator0”)</p>
+>>>>>>> 3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"> rtweetXtras<span class="op">::</span><span class="kw">account_activity</span>(<span class="st">"arfness"</span>, <span class="dt">depth =</span> <span class="dv">1000</span>, <span class="dt">time_zone =</span> <span class="st">"Africa/Johannesburg"</span>, <span class="dt">no_of_weeks =</span> <span class="dv">5</span>, <span class="dt">token =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="readme_files/figure-markdown_strict/account_activity-1.png"></p>
 <p>###Other functions</p>
