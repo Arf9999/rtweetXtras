@@ -2,7 +2,7 @@
 title: "rtweetXtras"
 author: "Andrew fraser"
 date: "31/03/2020"
-output: html_document
+output: md_document
 ---
 
 
