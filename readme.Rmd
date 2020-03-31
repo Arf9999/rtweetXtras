@@ -79,7 +79,7 @@ The package includes some additional tools and wrappers for rtweet functions:
 
 `create_gexf` creates a gexf file for export to Gephi for visualisation.
 
-```{r}
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(pkgdown)
 build_site()
 ```

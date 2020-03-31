@@ -50,7 +50,7 @@ number of common followers, and then ranks them in descending order.
      fm <- rtweetXtras::common_follower_matrix(rstats_list, follower_depth = 200)
      dplyr::glimpse(fm)
 
-    ## Observations: 851
+    ## Observations: 852
     ## Variables: 9
     ## $ screen_name       <chr> "Joseph7ee", "bimbosanusi", "JonathanJayes", "Barzi…
     ## $ user_id           <chr> "1242579922075303936", "233985333", "349864194", "1…
@@ -90,30 +90,3 @@ visualisation software. This is not being maintained - replaced by
 `create_gexf`
 
 `create_gexf` creates a gexf file for export to Gephi for visualisation.
-
-    library(pkgdown)
-    build_site()
-
-    ## ── Installing package into temporary library ─────────────────────────────────────────────────────────────────────────────────
-    ## ══ Building pkgdown site ═════════════════════════════════════════════════════════════════════════════════════════════════════
-    ## Reading from: '/Users/arf/OneDrive/RProjects&files/rtweetXtras'
-    ## Writing to:   '/Users/arf/OneDrive/RProjects&files/rtweetXtras/docs'
-    ## ── Initialising site ─────────────────────────────────────────────────────────────────────────────────────────────────────────
-    ## ── Building home ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-    ## Reading 'LICENSE.md'
-    ## ── Building function reference ───────────────────────────────────────────────────────────────────────────────────────────────
-    ## Reading 'man/account_activity.Rd'
-    ## Reading 'man/bar_plot_mentions.Rd'
-    ## Reading 'man/common_follower_analysis.Rd'
-    ## Reading 'man/common_follower_matrix.Rd'
-    ## Reading 'man/create_gexf.Rd'
-    ## Reading 'man/get_followers_fast.Rd'
-    ## Writing 'reference/get_followers_fast.html'
-    ## Reading 'man/get_friends_fast.Rd'
-    ## Reading 'man/hashtagcloud.Rd'
-    ## Reading 'man/number_followers.Rd'
-    ## Reading 'man/profilecloud.Rd'
-    ## Writing 'reference/profilecloud.html'
-    ## Reading 'man/rtweet_net.Rd'
-    ## Reading 'man/save_csv_edgelist.Rd'
-    ## ══ DONE ══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
