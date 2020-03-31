@@ -13,7 +13,7 @@ create_gexf(tweet_df, filepath)
 #'@keywords twitter, rtweet, Gephi, gexf, sna}
 }
 \description{
-This function consolidates the process of numbering followers and indicating earliest following date.
+This function creates a gexf network file of a mentions network for use with Gephi software
 requires an rtweet dataframe as returned by get_timeline() or search_tweets()
 Requires {rgexf} which may not be available on CRAN.
 Use devtools::install_github("gvegayon/rgexf") to install
