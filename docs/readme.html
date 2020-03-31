@@ -109,7 +109,7 @@
 <h2 class="hasAnchor">
 <a href="#rtweetxtras" class="anchor"></a>rtweetXtras</h2>
 <p>A collection of helper functions for twitter analysis using the {rtweet} package. NB: these functions have MANY dependencies… no warranty is offered, but please feel free to log issues.</p>
-<p><code><a href="reference/hashtagcloud.html">hashtagcloud(rtweet_timeline_df, num_words = 200)</a></code> Deivers a wordcloud of hashtag terms in an rtweet tibble.</p>
+<p>#hashtagcloud <code><a href="reference/hashtagcloud.html">hashtagcloud(rtweet_timeline_df, num_words = 200)</a></code> Delivers a wordcloud of hashtag terms in an rtweet tibble.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">df &lt;-<span class="st"> </span>rtweet<span class="op">::</span><span class="kw">get_timeline</span>(<span class="st">"jack"</span>, <span class="dt">n=</span><span class="dv">1000</span>)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">rtweetXtras<span class="op">::</span><span class="kw">hashtagcloud</span>(df, <span class="dt">n=</span><span class="dv">200</span>)</a></code></pre></div>
 <p><img src="readme_files/figure-markdown_strict/hashtagcloud-1.png"></p>
@@ -132,17 +132,17 @@
 <a class="sourceLine" id="cb5-3" data-line-number="3"> fm &lt;-<span class="st"> </span>rtweetXtras<span class="op">::</span><span class="kw">common_follower_matrix</span>(rstats_list, <span class="dt">follower_depth =</span> <span class="dv">200</span>)</a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"> dplyr<span class="op">::</span><span class="kw">glimpse</span>(fm)</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">## Observations: 851</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">## Observations: 856</span></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">## Variables: 9</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">## $ screen_name       &lt;chr&gt; "Joseph7ee", "bimbosanusi", "JonathanJayes", "Barzi…</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">## $ screen_name       &lt;chr&gt; "Joseph7ee", "bimbosanusi", "JonathanJayes", "endor…</span></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">## $ user_id           &lt;chr&gt; "1242579922075303936", "233985333", "349864194", "1…</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">## $ hadleywickham     &lt;dbl&gt; 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, …</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">## $ dataandme         &lt;dbl&gt; 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, …</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">## $ juliasilge        &lt;dbl&gt; 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, …</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">## $ statgarrett       &lt;dbl&gt; 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, …</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">## $ thomasp85         &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, …</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## $ sum_intersections &lt;dbl&gt; 5, 5, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">## $ ranking           &lt;int&gt; 1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">## $ hadleywickham     &lt;dbl&gt; 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, …</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">## $ dataandme         &lt;dbl&gt; 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, …</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">## $ juliasilge        &lt;dbl&gt; 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, …</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">## $ statgarrett       &lt;dbl&gt; 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, …</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">## $ thomasp85         &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, …</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## $ sum_intersections &lt;dbl&gt; 5, 5, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">## $ ranking           &lt;int&gt; 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …</span></a></code></pre></div>
 <p><code><a href="reference/account_activity.html">account_activity(account_name, depth = 3200, time_zone = "Africa/Johannesburg", no_of_weeks = 4,  token = NULL)</a></code> This function creates a bubble plot of account activity by hour of a single twitter screen_name (inspired by python script by twitter user “@Conspirator0”)</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"> rtweetXtras<span class="op">::</span><span class="kw">account_activity</span>(<span class="st">"arfness"</span>, <span class="dt">depth =</span> <span class="dv">1000</span>, <span class="dt">time_zone =</span> <span class="st">"Africa/Johannesburg"</span>, <span class="dt">no_of_weeks =</span> <span class="dv">5</span>, <span class="dt">token =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="readme_files/figure-markdown_strict/account_activity-1.png"></p>
@@ -151,32 +151,6 @@
 <p><code>number_followers</code> allocates a number to the following order in a tibble of followers, and adds a column that indicates the earliest possible following date.</p>
 <p><code>rtweet_net</code> and <code>save_csv_edgelist</code> are functions to create an igraph network and to save that as an edgelist for use in external visualisation software. This is not being maintained - replaced by <code>create_gexf</code></p>
 <p><code>create_gexf</code> creates a gexf file for export to Gephi for visualisation.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co">## ── Installing package into temporary library ─────────────────────────────────────────────────────────────────────────────────</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">## ══ Building pkgdown site ═════════════════════════════════════════════════════════════════════════════════════════════════════</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">## Reading from: '/Users/arf/OneDrive/RProjects&amp;files/rtweetXtras'</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">## Writing to:   '/Users/arf/OneDrive/RProjects&amp;files/rtweetXtras/docs'</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">## ── Initialising site ─────────────────────────────────────────────────────────────────────────────────────────────────────────</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">## ── Building home ─────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">## Reading 'readme.md'</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">## Writing 'readme.html'</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">## Reading 'readme1.md'</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">## Writing 'readme1.html'</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">## Reading 'LICENSE.md'</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">## ── Building function reference ───────────────────────────────────────────────────────────────────────────────────────────────</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">## Reading 'man/account_activity.Rd'</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">## Reading 'man/bar_plot_mentions.Rd'</span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">## Reading 'man/common_follower_analysis.Rd'</span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">## Reading 'man/common_follower_matrix.Rd'</span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">## Reading 'man/create_gexf.Rd'</span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">## Reading 'man/get_followers_fast.Rd'</span></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">## Writing 'reference/get_followers_fast.html'</span></a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">## Reading 'man/get_friends_fast.Rd'</span></a>
-<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">## Reading 'man/hashtagcloud.Rd'</span></a>
-<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">## Reading 'man/number_followers.Rd'</span></a>
-<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">## Reading 'man/profilecloud.Rd'</span></a>
-<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">## Reading 'man/rtweet_net.Rd'</span></a>
-<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">## Reading 'man/save_csv_edgelist.Rd'</span></a>
-<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">## ══ DONE ══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════</span></a></code></pre></div>
 </div>
 
   </div>
