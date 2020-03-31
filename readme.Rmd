@@ -5,6 +5,9 @@ date: "31/03/2020"
 output: html_document
 ---
 
+
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -76,3 +79,7 @@ The package includes some additional tools and wrappers for rtweet functions:
 
 `create_gexf` creates a gexf file for export to Gephi for visualisation.
 
+```{r}
+library(pkgdown)
+build_site()
+```
