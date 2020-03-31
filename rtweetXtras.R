@@ -1,7 +1,7 @@
 #' rtweetXtras: Additional Analysis Functions for rtweet
 #'
 #' The rtweetXtras package includes the following functions:
-#' hashtagcloud, profilecloud, barplotmentions, common_follower_analysis, account_activity, rtweet_net, save_csv_edgelist, get_followers_fast,
+#' hashtagcloud, profilecloud, bar_plot_mentions, common_follower_analysis, account_activity, rtweet_net, save_csv_edgelist, get_followers_fast, create_gexf
 #'
 #' @section hashtagcloud function
 #'     This function creates a wordcloud (defaults to 200 terms) from terms in the "hashtags" column of an rtweet tibble of tweets
