@@ -5,13 +5,9 @@ A collection of helper functions for twitter analysis using the {rtweet}
 package. NB: these functions have MANY dependencies… no warranty is
 offered, but please feel free to log issues.
 
-<<<<<<< HEAD
 ### hashtagcloud
 
 `hashtagcloud(rtweet_timeline_df, num_words = 200)`
-=======
-\#\#\#hashtagcloud `hashtagcloud(rtweet_timeline_df, num_words = 200)`
->>>>>>> 3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5
 
 Delivers a wordcloud of hashtag terms in an rtweet tibble.
 
@@ -20,13 +16,9 @@ Delivers a wordcloud of hashtag terms in an rtweet tibble.
 
 ![](readme_files/figure-markdown_strict/hashtagcloud-1.png)
 
-<<<<<<< HEAD
 ### profilecloud
 
 `profilecloud(rtweet_timeline_df, num_words = 200)`  
-=======
-\#\#\#profilecloud `profilecloud(rtweet_timeline_df, num_words = 200)`  
->>>>>>> 3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5
 Delivers a wordcloud of terms in unique twitter user profiles in an
 rtweet tibble.
 
@@ -35,12 +27,8 @@ rtweet tibble.
 
 ![](readme_files/figure-markdown_strict/profilecloud-1.png)
 
-<<<<<<< HEAD
 ### bar\_plot\_mentions
 
-=======
-\#\#\#bar\_plot\_mentions  
->>>>>>> 3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5
 `bar_plot_mentions(rtweet_df, no_of_bars = 20, title = NULL)`  
 Delivers a bar plot of the count of user mentions in an rtweet tibble.
 Defaults to top twenty mentioned accounts.
@@ -50,12 +38,8 @@ Defaults to top twenty mentioned accounts.
 
 ![](readme_files/figure-markdown_strict/bar_plot_mentions-1.png)
 
-<<<<<<< HEAD
 ### common\_follower\_analysis
 
-=======
-\#\#\#common\_follower\_analysis  
->>>>>>> 3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5
 `common_follower_analysis (user_list, follower_depth = 200, no_of_sets = 7)`  
 This function creates an UpSetR graph of common followers Code cribbed
 from Bob Rudis’ 21 Recipes for Mining Twitter with Rtweet
@@ -67,12 +51,8 @@ from Bob Rudis’ 21 Recipes for Mining Twitter with Rtweet
 
 ![](readme_files/figure-markdown_strict/common_follower_analysis-1.png)
 
-<<<<<<< HEAD
 ### common\_follower\_matrix
 
-=======
-\#\#\#common\_follower\_matrix  
->>>>>>> 3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5
 `common_follower_matrix (user_list, follower_depth = 200)`  
 This function creates a matrix of followers of a list of twitter users,
 sums the number of common followers, and then ranks them in descending
@@ -83,11 +63,7 @@ order.
      fm <- rtweetXtras::common_follower_matrix(rstats_list, follower_depth = 200)
      dplyr::glimpse(fm)
 
-<<<<<<< HEAD
     ## Observations: 855
-=======
-    ## Observations: 856
->>>>>>> 3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5
     ## Variables: 9
     ## $ screen_name       <chr> "Joseph7ee", "bimbosanusi", "JonathanJayes", "endor…
     ## $ user_id           <chr> "1242579922075303936", "233985333", "349864194", "1…
@@ -99,12 +75,8 @@ order.
     ## $ sum_intersections <dbl> 5, 5, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …
     ## $ ranking           <int> 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …
 
-<<<<<<< HEAD
 ### account\_activity
 
-=======
-\#\#\#account\_activity
->>>>>>> 3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5
 `account_activity(account_name, depth = 3200, time_zone = "Africa/Johannesburg", no_of_weeks = 4,  token = NULL)`  
 This function creates a bubble plot of account activity by hour of a
 single twitter screen\_name  
@@ -114,11 +86,7 @@ single twitter screen\_name
 
 ![](readme_files/figure-markdown_strict/account_activity-1.png)
 
-<<<<<<< HEAD
 ### Other functions
-=======
-\#\#\#Other functions
->>>>>>> 3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5
 
 The package includes some additional tools and wrappers for rtweet
 functions:

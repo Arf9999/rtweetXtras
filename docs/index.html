@@ -59,69 +59,235 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
 <div id="rtweetxtras" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#rtweetxtras" class="anchor"></a>rtweetXtras</h1></div>
 <p>A collection of helper functions for twitter analysis using the {rtweet} package. NB: these functions have MANY dependencies… no warranty is offered, but please feel free to log issues.</p>
-<<<<<<< HEAD
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<div id="hashtagcloud" class="section level3">
+<h3 class="hasAnchor">
+<a href="#hashtagcloud" class="anchor"></a>hashtagcloud</h3>
+</div>
+</div>
+<div id="hashtagcloudrtweet_timeline_df-num_words-200" class="section level1">
+<h1 class="hasAnchor">
+<a href="#hashtagcloudrtweet_timeline_df-num_words-200" class="anchor"></a><code>hashtagcloud(rtweet_timeline_df, num_words = 200)</code>
+</h1>
 <p>###hashtagcloud <code><a href="reference/hashtagcloud.html">hashtagcloud(rtweet_timeline_df, num_words = 200)</a></code></p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <p>Delivers a wordcloud of hashtag terms in an rtweet tibble.</p>
-=======
-<p>#hashtagcloud <code><a href="reference/hashtagcloud.html">hashtagcloud(rtweet_timeline_df, num_words = 200)</a></code> Delivers a wordcloud of hashtag terms in an rtweet tibble.</p>
->>>>>>> 3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5
 <div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">df &lt;-<span class="st"> </span>rtweet<span class="op">::</span><span class="kw">get_timeline</span>(<span class="st">"jack"</span>, <span class="dt">n=</span><span class="dv">1000</span>)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">rtweetXtras<span class="op">::</span><span class="kw">hashtagcloud</span>(df, <span class="dt">n=</span><span class="dv">200</span>)</a></code></pre></div>
 <p><img src="readme_files/figure-markdown_strict/hashtagcloud-1.png"></p>
-<p>###profilecloud <code><a href="reference/profilecloud.html">profilecloud(rtweet_timeline_df, num_words = 200)</a></code><br>
-Delivers a wordcloud of terms in unique twitter user profiles in an rtweet tibble.</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<div id="profilecloud" class="section level3">
+<h3 class="hasAnchor">
+<a href="#profilecloud" class="anchor"></a>profilecloud</h3>
+</div>
+</div>
+<div id="profilecloudrtweet_timeline_df-num_words-200" class="section level1">
+<h1 class="hasAnchor">
+<a href="#profilecloudrtweet_timeline_df-num_words-200" class="anchor"></a><code>profilecloud(rtweet_timeline_df, num_words = 200)</code>
+</h1>
+<p>###profilecloud <code><a href="reference/profilecloud.html">profilecloud(rtweet_timeline_df, num_words = 200)</a></code></p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5 Delivers a wordcloud of terms in unique twitter user profiles in an rtweet tibble.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">df1 &lt;-<span class="st"> </span>rtweet<span class="op">::</span><span class="kw">search_tweets</span>(<span class="st">"rstats"</span>,<span class="dt">lang =</span> <span class="st">"en"</span>, <span class="dt">n=</span> <span class="dv">2000</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">rtweetXtras<span class="op">::</span><span class="kw">profilecloud</span>(df1, <span class="dv">100</span>)</a></code></pre></div>
 <p><img src="readme_files/figure-markdown_strict/profilecloud-1.png"></p>
-<p>###bar_plot_mentions<br><code><a href="reference/bar_plot_mentions.html">bar_plot_mentions(rtweet_df, no_of_bars = 20, title = NULL)</a></code><br>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<div id="bar_plot_mentions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bar_plot_mentions" class="anchor"></a>bar_plot_mentions</h3>
+<p>======= ###bar_plot_mentions</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5 <code><a href="reference/bar_plot_mentions.html">bar_plot_mentions(rtweet_df, no_of_bars = 20, title = NULL)</a></code><br>
 Delivers a bar plot of the count of user mentions in an rtweet tibble. Defaults to top twenty mentioned accounts.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">df1 &lt;-<span class="st"> </span>rtweet<span class="op">::</span><span class="kw">search_tweets</span>(<span class="st">"#rstats"</span>, <span class="dt">lang =</span> <span class="st">"en"</span>, <span class="dt">n =</span> <span class="dv">2000</span>)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">rtweetXtras<span class="op">::</span><span class="kw">bar_plot_mentions</span>(df1, <span class="dv">20</span>, <span class="dt">title =</span> <span class="kw">paste</span>(<span class="st">"Barplot of user mentions in twitter search for </span><span class="ch">\"</span><span class="st">#rstats</span><span class="ch">\"</span><span class="st">"</span>, <span class="kw">Sys.Date</span>()))</a></code></pre></div>
 <p><img src="readme_files/figure-markdown_strict/bar_plot_mentions-1.png"></p>
-<p>###common_follower_analysis<br><code><a href="reference/common_follower_analysis.html">common_follower_analysis (user_list, follower_depth = 200, no_of_sets = 7)</a></code><br>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+</div>
+<div id="common_follower_analysis" class="section level3">
+<h3 class="hasAnchor">
+<a href="#common_follower_analysis" class="anchor"></a>common_follower_analysis</h3>
+<p>======= ###common_follower_analysis</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5 <code><a href="reference/common_follower_analysis.html">common_follower_analysis (user_list, follower_depth = 200, no_of_sets = 7)</a></code><br>
 This function creates an UpSetR graph of common followers Code cribbed from Bob Rudis’ 21 Recipes for Mining Twitter with Rtweet <a href="https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html" class="uri">https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html</a></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"> rstats_list &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"hadleywickham"</span>, <span class="st">"dataandme"</span>, <span class="st">"juliasilge"</span>, <span class="st">"statgarrett"</span>,<span class="st">"thomasp85"</span>)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"> token &lt;-<span class="st"> </span><span class="ot">NULL</span> <span class="co">#function requires that the twitter token is specifically assigned as "token", using NULL will use the rtweet default.</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">rtweetXtras<span class="op">::</span><span class="kw">common_follower_analysis</span>(rstats_list, <span class="dt">follower_depth =</span> <span class="dv">1000</span>, <span class="dt">no_of_sets =</span> <span class="dv">5</span>)</a></code></pre></div>
 <p><img src="readme_files/figure-markdown_strict/common_follower_analysis-1.png"></p>
-<p>###common_follower_matrix<br><code><a href="reference/common_follower_matrix.html">common_follower_matrix (user_list, follower_depth = 200)</a></code><br>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+</div>
+<div id="common_follower_matrix" class="section level3">
+<h3 class="hasAnchor">
+<a href="#common_follower_matrix" class="anchor"></a>common_follower_matrix</h3>
+<p>======= ###common_follower_matrix</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5 <code><a href="reference/common_follower_matrix.html">common_follower_matrix (user_list, follower_depth = 200)</a></code><br>
 This function creates a matrix of followers of a list of twitter users, sums the number of common followers, and then ranks them in descending order.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">  rstats_list &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"hadleywickham"</span>, <span class="st">"dataandme"</span>, <span class="st">"juliasilge"</span>, <span class="st">"statgarrett"</span>,<span class="st">"thomasp85"</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"> token &lt;-<span class="st"> </span><span class="ot">NULL</span> <span class="co">#function requires that the twitter token is specifically assigned as "token", using NULL will use the rtweet default.</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"> fm &lt;-<span class="st"> </span>rtweetXtras<span class="op">::</span><span class="kw">common_follower_matrix</span>(rstats_list, <span class="dt">follower_depth =</span> <span class="dv">200</span>)</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"> dplyr<span class="op">::</span><span class="kw">glimpse</span>(fm)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">## Observations: 856</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">## Variables: 9</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">## $ screen_name       &lt;chr&gt; "Joseph7ee", "bimbosanusi", "JonathanJayes", "endor…</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">## $ user_id           &lt;chr&gt; "1242579922075303936", "233985333", "349864194", "1…</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">## $ hadleywickham     &lt;dbl&gt; 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, …</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">## $ dataandme         &lt;dbl&gt; 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, …</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">## $ juliasilge        &lt;dbl&gt; 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, …</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">## $ statgarrett       &lt;dbl&gt; 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, …</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">## $ thomasp85         &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, …</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## $ sum_intersections &lt;dbl&gt; 5, 5, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">## $ ranking           &lt;int&gt; 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …</span></a></code></pre></div>
-<<<<<<< HEAD
-<p>###account_activity <code><a href="reference/account_activity.html">account_activity(account_name, depth = 3200, time_zone = "Africa/Johannesburg", no_of_weeks = 4,  token = NULL)</a></code><br>
+<a class="sourceLine" id="cb5-4" data-line-number="4"> dplyr<span class="op">::</span><span class="kw">glimpse</span>(fm)</a></code></pre></div>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD ## Observations: 855 ======= ## Observations: 856</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="variables-9">Variables: 9</h2>
+<h2 id="screen_name-joseph7ee-bimbosanusi-jonathanjayes-endor">$ screen_name <chr> “Joseph7ee”, “bimbosanusi”, “JonathanJayes”, "endor…</chr>
+</h2>
+<h2 id="user_id-1242579922075303936-233985333-349864194-1">$ user_id <chr> “1242579922075303936”, “233985333”, “349864194”, "1…</chr>
+</h2>
+<h2 id="hadleywickham-1-1-1-0-1-1-1-1-1-1-1-1-0-0-0-0-0">$ hadleywickham <dbl> 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, …</dbl>
+</h2>
+<h2 id="dataandme-1-1-1-1-0-1-1-1-1-1-0-0-1-1-1-1-1">$ dataandme <dbl> 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, …</dbl>
+</h2>
+<h2 id="juliasilge-1-1-0-1-1-0-1-1-1-0-1-1-0-1-1-0-1">$ juliasilge <dbl> 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, …</dbl>
+</h2>
+<h2 id="statgarrett-1-1-1-1-0-0-0-0-0-0-0-0-1-0-0-1-0">$ statgarrett <dbl> 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, …</dbl>
+</h2>
+<h2 id="thomasp85-1-1-1-1-1-1-0-0-0-1-1-1-1-1-1-1-1">$ thomasp85 <dbl> 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, …</dbl>
+</h2>
+<h2 id="sum_intersections-5-5-4-4-3-3-3-3-3-3-3-3-3-3-3-3-3">$ sum_intersections <dbl> 5, 5, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …</dbl>
+</h2>
+<h2 id="ranking-1-1-2-2-3-3-3-3-3-3-3-3-3-3-3-3-3">$ ranking <int> 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …</int>
+</h2>
+</blockquote>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+</div>
+<div id="account_activity" class="section level3">
+<h3 class="hasAnchor">
+<a href="#account_activity" class="anchor"></a>account_activity</h3>
+<p>======= ###account_activity</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5 <code><a href="reference/account_activity.html">account_activity(account_name, depth = 3200, time_zone = "Africa/Johannesburg", no_of_weeks = 4,  token = NULL)</a></code><br>
 This function creates a bubble plot of account activity by hour of a single twitter screen_name<br>
 (inspired by python script by twitter user “@Conspirator0”)</p>
-=======
-<p><code><a href="reference/account_activity.html">account_activity(account_name, depth = 3200, time_zone = "Africa/Johannesburg", no_of_weeks = 4,  token = NULL)</a></code> This function creates a bubble plot of account activity by hour of a single twitter screen_name (inspired by python script by twitter user “@Conspirator0”)</p>
->>>>>>> 3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"> rtweetXtras<span class="op">::</span><span class="kw">account_activity</span>(<span class="st">"arfness"</span>, <span class="dt">depth =</span> <span class="dv">1000</span>, <span class="dt">time_zone =</span> <span class="st">"Africa/Johannesburg"</span>, <span class="dt">no_of_weeks =</span> <span class="dv">5</span>, <span class="dt">token =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="readme_files/figure-markdown_strict/account_activity-1.png"></p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+</div>
+</div>
+<div id="other-functions" class="section level1">
+<h1 class="hasAnchor">
+<a href="#other-functions" class="anchor"></a>### Other functions</h1>
 <p>###Other functions</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>3856308c3d3ff4f3b4e6ab47f41de5bc3c8783f5</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <p>The package includes some additional tools and wrappers for rtweet functions:</p>
 <p><code>get_followers_fast</code> and <code>get_friends_fast</code> wrap rtweet functions to deliver a tibble of followers/friends that includes user details. In addition it is possible to pass a list of tokens to the function to manage ratelimiting when querying accounts with large following/friendship.</p>
 <p><code>number_followers</code> allocates a number to the following order in a tibble of followers, and adds a column that indicates the earliest possible following date.</p>
 <p><code>rtweet_net</code> and <code>save_csv_edgelist</code> are functions to create an igraph network and to save that as an edgelist for use in external visualisation software. This is not being maintained - replaced by <code>create_gexf</code></p>
 <p><code>create_gexf</code> creates a gexf file for export to Gephi for visualisation.</p>
 </div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
