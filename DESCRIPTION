@@ -1,6 +1,6 @@
 Package: rtweetXtras
 Title: Extra Analysis Functions for rtweet package 
-Version: 0.0.2.0000
+Version: 0.0.3.0000
 Authors@R: 
     person(given = "Andrew",
            family = "Fraser",
@@ -9,6 +9,7 @@ Authors@R:
 Description: A collection of functions to assist analysis of twitter data obtained with rtweet (by @mkearney). 
 Imports: dplyr,
          purrr,
+         tidyr,
          igraph,
          ggplot2,
          quanteda,
@@ -17,7 +18,8 @@ Imports: dplyr,
          rtweet,
          UpSetR,
          wordcloud,
-         lubridate
+         lubridate,
+         rgexf
 License: CC0
 Encoding: UTF-8
 LazyData: true
