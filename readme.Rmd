@@ -47,25 +47,25 @@ rtweetXtras::bar_plot_mentions(df1, 20, title = paste("Barplot of user mentions 
 ```
 
 ### common_follower_analysis  
- `common_follower_analysis (user_list, follower_depth = 200, no_of_sets = 7)`   
+ `common_follower_analysis (user_list, follower_depth = 200, no_of_sets = 7, token = NULL)`   
  This function creates an UpSetR graph of common followers
    Code cribbed from Bob Rudis' 21 Recipes for Mining Twitter with Rtweet
    https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html
  
 ```{r common_follower_analysis, message=FALSE, warning=FALSE, paged.print=FALSE}
  rstats_list <- c("hadleywickham", "dataandme", "juliasilge", "statgarrett","thomasp85")
- token <- NULL #function requires that the twitter token is specifically assigned as "token", using NULL will use the rtweet default.
-rtweetXtras::common_follower_analysis(rstats_list, follower_depth = 1000, no_of_sets = 5)
+ 
+rtweetXtras::common_follower_analysis(rstats_list, follower_depth = 1000, no_of_sets = 5, token = NULL)
 ```
 
 ### common_follower_matrix  
-`common_follower_matrix (user_list, follower_depth = 200)`   
+`common_follower_matrix (user_list, follower_depth = 200, token = NULL)`   
 This function creates a matrix of followers of a list of twitter users,
  sums the number of common followers, and then ranks them in descending order.   
 ```{r common_follower_matrix, message=FALSE, warning=FALSE, paged.print=FALSE}
   rstats_list <- c("hadleywickham", "dataandme", "juliasilge", "statgarrett","thomasp85")
- token <- NULL #function requires that the twitter token is specifically assigned as "token", using NULL will use the rtweet default.
- fm <- rtweetXtras::common_follower_matrix(rstats_list, follower_depth = 200)
+
+ fm <- rtweetXtras::common_follower_matrix(rstats_list, follower_depth = 200, token = NULL)
  dplyr::glimpse(fm)
 ```
 
@@ -94,7 +94,4 @@ The package includes some additional tools and wrappers for rtweet functions:
 `write_csv_compatible` saves a csv file of an rtweet tibble with a modified "text" column to include "RT @retweet_screen_name: " for all Retweets. Original text column is saved as additional column "text2"
 
 
-```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
-library(pkgdown)
-build_site()
-```
+

@@ -40,38 +40,38 @@ Defaults to top twenty mentioned accounts.
 
 ### common\_follower\_analysis
 
-`common_follower_analysis (user_list, follower_depth = 200, no_of_sets = 7)`  
+`common_follower_analysis (user_list, follower_depth = 200, no_of_sets = 7, token = NULL)`  
 This function creates an UpSetR graph of common followers Code cribbed
 from Bob Rudis’ 21 Recipes for Mining Twitter with Rtweet
 <a href="https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html" class="uri">https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html</a>
 
      rstats_list <- c("hadleywickham", "dataandme", "juliasilge", "statgarrett","thomasp85")
-     token <- NULL #function requires that the twitter token is specifically assigned as "token", using NULL will use the rtweet default.
-    rtweetXtras::common_follower_analysis(rstats_list, follower_depth = 1000, no_of_sets = 5)
+     
+    rtweetXtras::common_follower_analysis(rstats_list, follower_depth = 1000, no_of_sets = 5, token = NULL)
 
 ![](readme_files/figure-markdown_strict/common_follower_analysis-1.png)
 
 ### common\_follower\_matrix
 
-`common_follower_matrix (user_list, follower_depth = 200)`  
+`common_follower_matrix (user_list, follower_depth = 200, token = NULL)`  
 This function creates a matrix of followers of a list of twitter users,
 sums the number of common followers, and then ranks them in descending
 order.
 
       rstats_list <- c("hadleywickham", "dataandme", "juliasilge", "statgarrett","thomasp85")
-     token <- NULL #function requires that the twitter token is specifically assigned as "token", using NULL will use the rtweet default.
-     fm <- rtweetXtras::common_follower_matrix(rstats_list, follower_depth = 200)
+
+     fm <- rtweetXtras::common_follower_matrix(rstats_list, follower_depth = 200, token = NULL)
      dplyr::glimpse(fm)
 
-    ## Rows: 860
+    ## Rows: 855
     ## Columns: 9
     ## $ screen_name       <chr> "Linsmeier08", "IridianSulema", "somnathpc", "DataS…
     ## $ user_id           <chr> "59251937", "1248351714954141696", "122717995", "12…
-    ## $ hadleywickham     <dbl> 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, …
-    ## $ dataandme         <dbl> 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, …
-    ## $ juliasilge        <dbl> 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, …
-    ## $ statgarrett       <dbl> 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, …
-    ## $ thomasp85         <dbl> 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, …
+    ## $ hadleywickham     <dbl> 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+    ## $ dataandme         <dbl> 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, …
+    ## $ juliasilge        <dbl> 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, …
+    ## $ statgarrett       <dbl> 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, …
+    ## $ thomasp85         <dbl> 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, …
     ## $ sum_intersections <dbl> 5, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …
     ## $ ranking           <int> 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …
 
