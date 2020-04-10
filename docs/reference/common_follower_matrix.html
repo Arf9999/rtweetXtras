@@ -142,20 +142,20 @@ sums the number of common followers, and then ranks them in descending order.</p
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>users</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"POTUS"</span>, <span class='st'>"jack"</span>, <span class='st'>"elonmusk"</span>)
-<span class='fu'>common_follower_matrix</span>(<span class='kw'>user_list</span> <span class='kw'>=</span> <span class='no'>users</span>, <span class='kw'>follower_depth</span> <span class='kw'>=</span> <span class='fl'>300</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; <span class='message'>55000 followers!</span></div><div class='output co'>#&gt; <span class='message'>50000 followers!</span></div><div class='output co'>#&gt; <span class='message'>45000 followers!</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 892 x 7</span><span>
+<span class='fu'>common_follower_matrix</span>(<span class='kw'>user_list</span> <span class='kw'>=</span> <span class='no'>users</span>, <span class='kw'>follower_depth</span> <span class='kw'>=</span> <span class='fl'>300</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; <span class='message'>60000 followers!</span></div><div class='output co'>#&gt; <span class='message'>55000 followers!</span></div><div class='output co'>#&gt; <span class='message'>50000 followers!</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 882 x 7</span><span>
 #&gt;    screen_name    user_id          POTUS  jack elonmusk sum_intersectio… ranking
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> Naheebwaseemg… 124870565918227…     1     0        1                2       1
-#&gt; </span><span style='color: #555555;'> 2</span><span> Ethan77189424  124870368062021…     1     0        1                2       1
-#&gt; </span><span style='color: #555555;'> 3</span><span> JulioPontini   107168698268486…     1     0        1                2       1
-#&gt; </span><span style='color: #555555;'> 4</span><span> burreauxs      124869901369781…     1     0        1                2       1
-#&gt; </span><span style='color: #555555;'> 5</span><span> Tarikturker2   124870170867660…     1     0        1                2       1
-#&gt; </span><span style='color: #555555;'> 6</span><span> dutt_priyank   121457707633586…     0     1        1                2       1
-#&gt; </span><span style='color: #555555;'> 7</span><span> tevhidhanifdin 122142724608018…     0     1        1                2       1
-#&gt; </span><span style='color: #555555;'> 8</span><span> TheyCallHimOn… 124744610602108…     0     1        1                2       1
-#&gt; </span><span style='color: #555555;'> 9</span><span> johannesregio  124870592878389…     1     0        0                1       2
-#&gt; </span><span style='color: #555555;'>10</span><span> PawanKu728990… 964524182984888…     1     0        0                1       2
-#&gt; </span><span style='color: #555555;'># … with 882 more rows</span><span></div></span></pre>
+#&gt; </span><span style='color: #555555;'> 1</span><span> hoshida_yoko   949599884046303…     1     0        1                2       1
+#&gt; </span><span style='color: #555555;'> 2</span><span> SonkovaTina    109797494066450…     1     0        1                2       1
+#&gt; </span><span style='color: #555555;'> 3</span><span> ChuolChiman    118780758928073…     1     0        1                2       1
+#&gt; </span><span style='color: #555555;'> 4</span><span> cremjessica    906866093825908…     1     0        1                2       1
+#&gt; </span><span style='color: #555555;'> 5</span><span> BpBp48369105   124871604768055…     1     0        1                2       1
+#&gt; </span><span style='color: #555555;'> 6</span><span> dystopia_TY    375311953            1     0        1                2       1
+#&gt; </span><span style='color: #555555;'> 7</span><span> 634654089      2762001514           1     0        1                2       1
+#&gt; </span><span style='color: #555555;'> 8</span><span> Johnny82777057 114420422313716…     1     0        1                2       1
+#&gt; </span><span style='color: #555555;'> 9</span><span> Inpain93885543 124860465069106…     1     0        1                2       1
+#&gt; </span><span style='color: #555555;'>10</span><span> ogbe4u2000     177438004            1     0        1                2       1
+#&gt; </span><span style='color: #555555;'># … with 872 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

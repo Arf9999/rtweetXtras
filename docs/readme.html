@@ -138,32 +138,32 @@ Delivers a bar plot of the count of user mentions in an rtweet tibble. Defaults 
 <div id="common_follower_analysis" class="section level3">
 <h3 class="hasAnchor">
 <a href="#common_follower_analysis" class="anchor"></a>common_follower_analysis</h3>
-<p><code><a href="reference/common_follower_analysis.html">common_follower_analysis (user_list, follower_depth = 200, no_of_sets = 7)</a></code><br>
+<p><code><a href="reference/common_follower_analysis.html">common_follower_analysis (user_list, follower_depth = 200, no_of_sets = 7, token = NULL)</a></code><br>
 This function creates an UpSetR graph of common followers Code cribbed from Bob Rudisâ 21 Recipes for Mining Twitter with Rtweet <a href="https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html" class="uri">https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html</a></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"> rstats_list &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"hadleywickham"</span>, <span class="st">"dataandme"</span>, <span class="st">"juliasilge"</span>, <span class="st">"statgarrett"</span>,<span class="st">"thomasp85"</span>)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"> token &lt;-<span class="st"> </span><span class="ot">NULL</span> <span class="co">#function requires that the twitter token is specifically assigned as "token", using NULL will use the rtweet default.</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">rtweetXtras<span class="op">::</span><span class="kw">common_follower_analysis</span>(rstats_list, <span class="dt">follower_depth =</span> <span class="dv">1000</span>, <span class="dt">no_of_sets =</span> <span class="dv">5</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb4-2" data-line-number="2"> </a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">rtweetXtras<span class="op">::</span><span class="kw">common_follower_analysis</span>(rstats_list, <span class="dt">follower_depth =</span> <span class="dv">1000</span>, <span class="dt">no_of_sets =</span> <span class="dv">5</span>, <span class="dt">token =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="readme_files/figure-markdown_strict/common_follower_analysis-1.png"></p>
 </div>
 <div id="common_follower_matrix" class="section level3">
 <h3 class="hasAnchor">
 <a href="#common_follower_matrix" class="anchor"></a>common_follower_matrix</h3>
-<p><code><a href="reference/common_follower_matrix.html">common_follower_matrix (user_list, follower_depth = 200)</a></code><br>
+<p><code><a href="reference/common_follower_matrix.html">common_follower_matrix (user_list, follower_depth = 200, token = NULL)</a></code><br>
 This function creates a matrix of followers of a list of twitter users, sums the number of common followers, and then ranks them in descending order.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">  rstats_list &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"hadleywickham"</span>, <span class="st">"dataandme"</span>, <span class="st">"juliasilge"</span>, <span class="st">"statgarrett"</span>,<span class="st">"thomasp85"</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"> token &lt;-<span class="st"> </span><span class="ot">NULL</span> <span class="co">#function requires that the twitter token is specifically assigned as "token", using NULL will use the rtweet default.</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"> fm &lt;-<span class="st"> </span>rtweetXtras<span class="op">::</span><span class="kw">common_follower_matrix</span>(rstats_list, <span class="dt">follower_depth =</span> <span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"> fm &lt;-<span class="st"> </span>rtweetXtras<span class="op">::</span><span class="kw">common_follower_matrix</span>(rstats_list, <span class="dt">follower_depth =</span> <span class="dv">200</span>, <span class="dt">token =</span> <span class="ot">NULL</span>)</a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"> dplyr<span class="op">::</span><span class="kw">glimpse</span>(fm)</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">## Rows: 860</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">## Rows: 855</span></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">## Columns: 9</span></a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">## $ screen_name       &lt;chr&gt; "Linsmeier08", "IridianSulema", "somnathpc", "DataSâ¦</span></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">## $ user_id           &lt;chr&gt; "59251937", "1248351714954141696", "122717995", "12â¦</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">## $ hadleywickham     &lt;dbl&gt; 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, â¦</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">## $ dataandme         &lt;dbl&gt; 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, â¦</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">## $ juliasilge        &lt;dbl&gt; 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, â¦</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">## $ statgarrett       &lt;dbl&gt; 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, â¦</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">## $ thomasp85         &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, â¦</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">## $ hadleywickham     &lt;dbl&gt; 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, â¦</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">## $ dataandme         &lt;dbl&gt; 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, â¦</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">## $ juliasilge        &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, â¦</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">## $ statgarrett       &lt;dbl&gt; 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, â¦</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">## $ thomasp85         &lt;dbl&gt; 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, â¦</span></a>
 <a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## $ sum_intersections &lt;dbl&gt; 5, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, â¦</span></a>
 <a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">## $ ranking           &lt;int&gt; 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, â¦</span></a></code></pre></div>
 </div>
