@@ -4,7 +4,12 @@
 \alias{common_follower_analysis}
 \title{Twitter visualization of common followers}
 \usage{
-common_follower_analysis(user_list, follower_depth = 200, no_of_sets = 7)
+common_follower_analysis(
+  user_list,
+  follower_depth = 200,
+  no_of_sets = 7,
+  token = NULL
+)
 }
 \arguments{
 \item{user_list}{A list of user_names}
@@ -12,6 +17,8 @@ common_follower_analysis(user_list, follower_depth = 200, no_of_sets = 7)
 \item{follower_depth}{The number of most recent followers to graph. Defaults to 200}
 
 \item{no_of_sets}{<- The number of sets in the UpSetR graph. Defaults to 7.}
+
+\item{token}{A twitter oauth token. Default is NULL and will use token in Environment}
 }
 \description{
 This function creates an UpSetR graph of common followers

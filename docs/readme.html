@@ -155,17 +155,17 @@ This function creates a matrix of followers of a list of twitter users, sums the
 <a class="sourceLine" id="cb5-3" data-line-number="3"> fm &lt;-<span class="st"> </span>rtweetXtras<span class="op">::</span><span class="kw">common_follower_matrix</span>(rstats_list, <span class="dt">follower_depth =</span> <span class="dv">200</span>)</a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"> dplyr<span class="op">::</span><span class="kw">glimpse</span>(fm)</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">## Observations: 855</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">## Variables: 9</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">## $ screen_name       &lt;chr&gt; "Joseph7ee", "bimbosanusi", "JonathanJayes", "endorâ¦</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">## $ user_id           &lt;chr&gt; "1242579922075303936", "233985333", "349864194", "1â¦</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">## $ hadleywickham     &lt;dbl&gt; 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, â¦</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">## $ dataandme         &lt;dbl&gt; 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, â¦</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">## $ juliasilge        &lt;dbl&gt; 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, â¦</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">## $ statgarrett       &lt;dbl&gt; 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, â¦</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">## $ thomasp85         &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, â¦</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## $ sum_intersections &lt;dbl&gt; 5, 5, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, â¦</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">## $ ranking           &lt;int&gt; 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, â¦</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">## Rows: 860</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">## Columns: 9</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">## $ screen_name       &lt;chr&gt; "Linsmeier08", "IridianSulema", "somnathpc", "DataSâ¦</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">## $ user_id           &lt;chr&gt; "59251937", "1248351714954141696", "122717995", "12â¦</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">## $ hadleywickham     &lt;dbl&gt; 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, â¦</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">## $ dataandme         &lt;dbl&gt; 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, â¦</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">## $ juliasilge        &lt;dbl&gt; 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, â¦</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">## $ statgarrett       &lt;dbl&gt; 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, â¦</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">## $ thomasp85         &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, â¦</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## $ sum_intersections &lt;dbl&gt; 5, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, â¦</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">## $ ranking           &lt;int&gt; 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, â¦</span></a></code></pre></div>
 </div>
 <div id="account_activity" class="section level3">
 <h3 class="hasAnchor">
@@ -184,6 +184,7 @@ This function creates a bubble plot of account activity by hour of a single twit
 <p><code>number_followers</code> allocates a number to the following order in a tibble of followers, and adds a column that indicates the earliest possible following date.</p>
 <p><code>rtweet_net</code> and <code>save_csv_edgelist</code> are functions to create an igraph network and to save that as an edgelist for use in external visualisation software. This is not being maintained - replaced by <code>create_gexf</code></p>
 <p><code>create_gexf</code> creates a gexf file for export to Gephi for visualisation.</p>
+<p><code>write_csv_compatible</code> saves a csv file of an rtweet tibble with a modified âtextâ column to include âRT @retweet_screen_name:â for all Retweets. Original text column is saved as additional column âtext2â</p>
 </div>
 </div>
 

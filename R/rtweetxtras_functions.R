@@ -209,6 +209,7 @@ profilecloud <- function (rtweet_timeline_df, num_words = 200) {
 #'@param user_list A list of user_names
 #'@param follower_depth The number of most recent followers to graph. Defaults to 200
 #'@param no_of_sets <- The number of sets in the UpSetR graph. Defaults to 7.
+#'@param token A twitter oauth token. Default is NULL and will use token in Environment
 #'@keywords twitter, rtweet, visualization, follower analysis
 #'@export
 #'@examples
@@ -219,7 +220,8 @@ profilecloud <- function (rtweet_timeline_df, num_words = 200) {
 common_follower_analysis <-
   function (user_list,
             follower_depth = 200,
-            no_of_sets = 7) {
+            no_of_sets = 7,
+            token = NULL) {
     require(rtweet, quietly = TRUE)
     require(tidyverse, quietly = TRUE)
     require(UpSetR, quietly = TRUE)
@@ -271,16 +273,17 @@ common_follower_analysis <-
 #' sums the number of common followers, and then ranks them in descending order.
 #'@param user_list A list of user_names
 #'@param follower_depth The number of most recent followers to include. Defaults to 200
+#'@param token A twitter oauth token. Default is NULL and will use token in Environment
 #'@keywords twitter, rtweet, visualization, follower analysis
 #'@export
 #'@examples
 #'users <- c("POTUS", "jack", "elonmusk")
-#'common_follower_matrix(user_list = users, follower_depth = 300)
+#'common_follower_matrix(user_list = users, follower_depth = 300, token = NULL)
 
 
 
 common_follower_matrix <-
-  function (user_list, follower_depth = 200) {
+  function (user_list, follower_depth = 200, token = NULL) {
     require(rtweet, quietly = TRUE)
     require(tidyverse, quietly = TRUE)
 

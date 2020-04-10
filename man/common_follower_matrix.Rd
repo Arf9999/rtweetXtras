@@ -6,12 +6,14 @@
 Code modded from boB Rudis' 21 Recipes for Mining Twitter with Rtweet
 https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html}
 \usage{
-common_follower_matrix(user_list, follower_depth = 200)
+common_follower_matrix(user_list, follower_depth = 200, token = NULL)
 }
 \arguments{
 \item{user_list}{A list of user_names}
 
 \item{follower_depth}{The number of most recent followers to include. Defaults to 200}
+
+\item{token}{A twitter oauth token. Default is NULL and will use token in Environment}
 }
 \description{
 This function creates a matrix of followers of a list of twitter users,
@@ -19,7 +21,7 @@ sums the number of common followers, and then ranks them in descending order.
 }
 \examples{
 users <- c("POTUS", "jack", "elonmusk")
-common_follower_matrix(user_list = users, follower_depth = 300)
+common_follower_matrix(user_list = users, follower_depth = 300, token = NULL)
 }
 \keyword{analysis}
 \keyword{follower}
