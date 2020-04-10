@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Save an Edgelist csv from an Igraph Object — save_csv_edgelist • rtweetXtras</title>
+<title>Save rtweet tibble as compatible csv — write_csv_compatible • rtweetXtras</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Save an Edgelist csv from an Igraph Object — save_csv_edgelist" />
-<meta property="og:description" content="This function saves an igraph edgelist as a csv for export to network mapping software such as Gephi." />
+<meta property="og:title" content="Save rtweet tibble as compatible csv — write_csv_compatible" />
+<meta property="og:description" content="Saves csv file, appending &quot;RT&quot; and retweeted user name to text of retweets. Adds &quot;text2&quot; variable as backup." />
 
 
 
@@ -103,35 +103,34 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Save an Edgelist csv from an Igraph Object</h1>
+    <h1>Save rtweet tibble as compatible csv</h1>
     
-    <div class="hidden name"><code>save_csv_edgelist.Rd</code></div>
+    <div class="hidden name"><code>write_csv_compatible.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function saves an igraph edgelist as a csv for export to network mapping software such as Gephi.</p>
+    <p>Saves csv file, appending "RT" and retweeted user name to text of retweets. Adds "text2" variable as backup.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>save_csv_edgelist</span>(<span class='no'>igraphobject</span>, <span class='no'>path</span>)</pre>
+    <pre class="usage"><span class='fu'>write_csv_compatible</span>(<span class='no'>rtweet_df</span>, <span class='no'>path_for_csv_file</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>igraphobject</th>
-      <td><p>An igraph network object</p></td>
+      <th>rtweet_df</th>
+      <td><p>A dataframe/tibble of tweets created by rtweet package through twitter API call.</p></td>
     </tr>
     <tr>
-      <th>path</th>
-      <td><p>Path and file name, in quotes (Filename should ideally have ".csv" extension)</p></td>
+      <th>path_for_csv_file</th>
+      <td><p>a path and filename for output csv. Must include".csv"</p></td>
     </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>tweets</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rtweet</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rtweet/man/search_tweets.html'>search_tweets</a></span>(<span class='st'>"#rstats"</span>, <span class='kw'>n</span><span class='kw'>=</span> <span class='fl'>100</span>)
-<span class='no'>network</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rtweetXtras</span><span class='kw ns'>::</span><span class='fu'><a href='rtweet_net.html'>rtweet_net</a></span>(<span class='no'>tweets</span>, <span class='kw'>all_mentions</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>from_threshold</span> <span class='kw'>=</span><span class='fl'>2</span>)
-<span class='fu'>save_csv_edgelist</span>(<span class='kw'>igraphobject</span> <span class='kw'>=</span> <span class='no'>network</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"~/edgelist_network.csv"</span>)</div><div class='output co'>#&gt; [1] "Edgelist saved as:  ~/edgelist_network.csv"</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rtweet</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rtweet/man/get_timeline.html'>get_timelines</a></span>(<span class='st'>"jack"</span>, <span class='kw'>n</span><span class='kw'>=</span><span class='fl'>3200</span>)
+<span class='fu'>write_csv_compatible</span>(<span class='no'>df</span>, <span class='st'>"~/jack_tweets.csv"</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

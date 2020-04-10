@@ -89,7 +89,10 @@ The package includes some additional tools and wrappers for rtweet functions:
 
 `rtweet_net` and `save_csv_edgelist` are functions to create an igraph network and to save that as an edgelist for use in external visualisation software.  This is not being maintained - replaced by `create_gexf`  
 
-`create_gexf` creates a gexf file for export to Gephi for visualisation.  
+`create_gexf` creates a gexf file for export to Gephi for visualisation. 
+
+`write_csv_compatible` saves a csv file of an rtweet tibble with a modified "text" column to include "RT @retweet_screen_name: " for all Retweets. Original text column is saved as additional column "text2"
+
 
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(pkgdown)
