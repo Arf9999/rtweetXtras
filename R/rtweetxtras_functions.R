@@ -762,7 +762,7 @@ number_followers <- function(follower_df){
 #'#'@keywords twitter, rtweet, Gephi, gexf, sna
 #'@export
 #'@examples
-#'rstats <- search_tweets("#rstats", n=100, token = NULL)
+#'rstats <- rtweet::search_tweets("#rstats", n=100, token = NULL)
 #'create_gexf(rstats, "~/rstats.gexf")
 #######################################################################################
 

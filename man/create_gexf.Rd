@@ -19,6 +19,6 @@ Requires {rgexf} which may not be available on CRAN.
 Use devtools::install_github("gvegayon/rgexf") to install
 }
 \examples{
-rstats <- search_tweets("#rstats", n=100, token = NULL)
+rstats <- rtweet::search_tweets("#rstats", n=100, token = NULL)
 create_gexf(rstats, "~/rstats.gexf")
 }
