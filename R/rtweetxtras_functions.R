@@ -759,16 +759,17 @@ number_followers <- function(follower_df){
 #'Use devtools::install_github("gvegayon/rgexf") to install
 #'@param tweet_df Required. An rtweet dataframe of tweets
 #'@param filepath Required. A full filepath with file name. Extension of file should be .gexf
+#'@param include_edge_att Include edge att (status ID and Date_time). Default is FALSE to minimise Gephi processing of large networks.
 #'#'@keywords twitter, rtweet, Gephi, gexf, sna
 #'@export
 #'@examples
 #'rstats <- rtweet::search_tweets("#rstats", n=100, token = NULL)
-#'create_gexf(rstats, "~/rstats.gexf")
+#'create_gexf(rstats, "~/rstats.gexf", include_edge_att = FALSE)
 #######################################################################################
 
 
 create_gexf <-
-  function(tweet_df, filepath) {
+  function(tweet_df, filepath,include_edge_att = FALSE) {
 
     require(rgexf, quietly = TRUE)
     require(dplyr, quietly = TRUE)
@@ -820,7 +821,8 @@ create_gexf <-
       nodes = nodes,
       edges = edges,
       nodesAtt = nodeatt,
-      edgesAtt = edgeatt,
+      if(include_edge_att){
+        edgesAtt = edgeatt},
       output = filepath
     )
   }

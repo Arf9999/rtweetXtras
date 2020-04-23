@@ -4,12 +4,14 @@
 \alias{create_gexf}
 \title{Create gexf file of mentions network for export to Gephi from rtweet dataframe}
 \usage{
-create_gexf(tweet_df, filepath)
+create_gexf(tweet_df, filepath, include_edge_att = FALSE)
 }
 \arguments{
 \item{tweet_df}{Required. An rtweet dataframe of tweets}
 
-\item{filepath}{Required. A full filepath with file name. Extension of file should be .gexf
+\item{filepath}{Required. A full filepath with file name. Extension of file should be .gexf}
+
+\item{include_edge_att}{Include edge att (status ID and Date_time). Default is FALSE to minimise Gephi processing of large networks.
 #'@keywords twitter, rtweet, Gephi, gexf, sna}
 }
 \description{
@@ -20,5 +22,5 @@ Use devtools::install_github("gvegayon/rgexf") to install
 }
 \examples{
 rstats <- rtweet::search_tweets("#rstats", n=100, token = NULL)
-create_gexf(rstats, "~/rstats.gexf")
+create_gexf(rstats, "~/rstats.gexf", include_edge_att = FALSE)
 }
