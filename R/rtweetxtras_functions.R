@@ -760,16 +760,17 @@ number_followers <- function(follower_df){
 #'@param tweet_df Required. An rtweet dataframe of tweets
 #'@param filepath Required. A full filepath with file name. Extension of file should be .gexf
 #'@param include_edge_att Include edge att (status ID and Date_time). Default is FALSE to minimise Gephi processing of large networks.
+#'@param edge_type "directed", "undirected" or "mutual". default is "directed"
 #'#'@keywords twitter, rtweet, Gephi, gexf, sna
 #'@export
 #'@examples
 #'rstats <- rtweet::search_tweets("#rstats", n=100, token = NULL)
-#'create_gexf(rstats, "~/rstats.gexf", include_edge_att = FALSE)
+#'create_gexf(rstats, "~/rstats.gexf", include_edge_att = FALSE, edge_type = "undirected")
 #######################################################################################
 
 
 create_gexf <-
-  function(tweet_df, filepath,include_edge_att = FALSE) {
+  function(tweet_df, filepath,include_edge_att = FALSE, edge_type = "directed") {
 
     require(rgexf, quietly = TRUE)
     require(dplyr, quietly = TRUE)
@@ -823,6 +824,7 @@ create_gexf <-
       nodesAtt = nodeatt,
       if(include_edge_att){
         edgesAtt = edgeatt},
+      defaultedgetype = edge_type,
       output = filepath
     )
   }
