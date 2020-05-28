@@ -2,6 +2,8 @@
 
 export(account_activity)
 export(bar_plot_mentions)
+export(check_shadowban)
+export(check_shadowban_list)
 export(common_follower_analysis)
 export(common_follower_matrix)
 export(create_gexf)

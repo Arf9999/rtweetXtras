@@ -839,7 +839,7 @@ create_gexf <-
 #'@examples
 #'df <- rtweet::get_timelines("jack", n=3200)
 #'write_csv_compatible(df, "~/jack_tweets.csv")
-
+###############################################################################
 write_csv_compatible <-
   function(rtweet_df, path_for_csv_file){
 
@@ -855,3 +855,114 @@ write_csv_compatible <-
                          text2))
   readr::write_csv(rtweet::flatten(mod_file), path_for_csv_file)
 }
+
+#############################################################################
+#'@title Shadowban check
+#'
+#'@description Checks a particular twitter screen_name for temporary search or reply visibility reduction.
+#'@param screen_name A twitter screen_name (case insensitive)
+#'@param timezone Optional, a timezone for the timestamp of the ban check. Default is "UTC"
+#'@keywords twitter, shadowban, search ban, ghost ban
+#'@export
+#'@examples
+#'check <- check_shadowban("jack", "Africa/Cairo")
+##############################################################################
+
+check_shadowban <- function(screen_name, timezone = "UTC") {
+  require("httr",quietly = TRUE)
+  require("jsonlite",quietly = TRUE)
+  require("dplyr",quietly = TRUE)
+  require("tidyr",quietly = TRUE)
+  require("tibble",quietly = TRUE)
+  require("magrittr",quietly = TRUE)
+  ##get response
+  resp <-
+    httr::GET(url = paste0("https://shadowban.eu/.api/", screen_name))
+  ##convert to text
+  text <- httr::content(resp, as = "text")
+  ##convert from JSON to df
+  text_df <- jsonlite::fromJSON(text)
+  ##pivot wider and unlist various columns
+  text_profile_df <- tibble::enframe(text_df$profile) %>%
+    tidyr::pivot_wider()
+
+  profile_df <- tibble::enframe(text_profile_df[[2]][[1]]) %>%
+    tidyr::pivot_wider() %>%
+    dplyr::bind_cols(text_profile_df) %>%
+    dplyr::select(-sensitives) %>%
+    dplyr::rename(tweets_counted = counted) %>%
+    dplyr::select(screen_name, exists, has_tweets, protected, everything())
+
+  time_stamp <- tibble::enframe(text_df$timestamp) %>%
+    tidyr::pivot_wider() %>%
+    dplyr::rename(timestamp = 1)
+
+
+  test_df <- tibble::enframe(text_df$tests) %>%
+    tidyr::pivot_wider()
+
+  ghost <- tibble::enframe(test_df$ghost[[1]]) %>%
+    tidyr::pivot_wider() %>%
+    dplyr::rename(ghost_ban = ban)
+
+  more_replies <- tibble::enframe(test_df$more_replies[[1]]) %>%
+    tidyr::pivot_wider() %>%
+    dplyr::rename(
+      reply_test_tweet = tweet,
+      reply_test_in_reply_to = in_reply_to,
+      reply_ban = ban
+    )
+
+  ##output combined df of response
+  dplyr::bind_cols(profile_df, test_df[, c("typeahead", "search")], ghost, more_replies, time_stamp) %>%
+    dplyr::mutate(timestamp = as.POSIXct(timestamp, origin = "1970-01-01", tz = timezone)) %>%
+    dplyr::rename(search_suggestions = typeahead) %>%
+    dplyr::select(
+      c(
+        screen_name,
+        exists,
+        has_tweets,
+        protected,
+        search_suggestions,
+        ghost_ban,
+        reply_ban,
+        timestamp,
+        tweets_counted,
+        possibly_sensitive,
+        possibly_sensitive_editable
+      )
+    ) %>%
+    ##dplyr::mutate(screen_name = as.character(screen_name))
+    tidyr::unnest(
+      cols = c(
+        screen_name,
+        exists,
+        has_tweets,
+        protected,
+        search_suggestions,
+        ghost_ban,
+        reply_ban,
+        tweets_counted,
+        possibly_sensitive,
+        possibly_sensitive_editable
+      )
+    )
+
+}
+
+#############################################################################
+#'@title User list shadowban test - wrapper for rtweetXtras::check_shadowban()
+#'
+#'@description Checks a list of screen_names for temporary search or reply visibility reduction.
+#'@param user_list A list of twitter screen_names (case insensitive)
+#'@param timezone Optional, a timezone for the timestamp of the ban check. Default is "UTC"
+#'@keywords twitter, shadowban, search ban, ghost ban
+#'@export
+#'@examples
+#'listcheck <- check_shadowban_list(c("jack","jill","bob"), "Africa/Cairo")
+##############################################################################
+check_shadowban_list <- function(user_list, timezone = "UTC") {
+  require("purrr", quietly = TRUE)
+  purrr::map_df(user_list, check_shadowban, timezone)
+}
+
