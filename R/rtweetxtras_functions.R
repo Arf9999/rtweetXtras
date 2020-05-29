@@ -905,13 +905,22 @@ check_shadowban <- function(screen_name, timezone = "UTC") {
     tidyr::pivot_wider() %>%
     dplyr::rename(ghost_ban = ban)
 
-  more_replies <- tibble::enframe(test_df$more_replies[[1]]) %>%
-    tidyr::pivot_wider() %>%
-    dplyr::rename(
-      reply_test_tweet = tweet,
-      reply_test_in_reply_to = in_reply_to,
-      reply_ban = ban
-    )
+  more_replies <- tibble::enframe(text_df[["tests"]][["more_replies"]]) %>%
+    tidyr::pivot_wider()
+
+  more_replies <- if("error" %in% names(more_replies)){
+    more_replies %>%
+      rename(reply_test_tweet = error) %>%
+      mutate(reply_test_in_reply_to = reply_test_tweet,
+             reply_ban = reply_test_tweet)
+  }else{
+    more_replies %>%
+      dplyr::rename(
+        reply_test_tweet = tweet,
+        reply_test_in_reply_to = in_reply_to,
+        reply_ban = ban
+      )
+  }
 
   ##output combined df of response
   dplyr::bind_cols(profile_df, test_df[, c("typeahead", "search")], ghost, more_replies, time_stamp) %>%
