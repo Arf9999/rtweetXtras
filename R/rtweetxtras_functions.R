@@ -905,15 +905,20 @@ check_shadowban <- function(screen_name, timezone = "UTC") {
     tidyr::pivot_wider() %>%
     dplyr::rename(ghost_ban = ban)
 
-  more_replies <- tibble::enframe(text_df[["tests"]][["more_replies"]]) %>%
-    tidyr::pivot_wider()
-
-  more_replies <- if("error" %in% names(more_replies)){
+  more_replies <-
+    if (!is.null(text_df[["tests"]][["more_replies"]])) {
+      tibble::enframe(text_df[["tests"]][["more_replies"]]) %>%
+        tidyr::pivot_wider()
+    } else{
+      tibble::tribble(~ error,
+                      "NoResponse")
+    }
+  more_replies <- if ("error" %in% names(more_replies)) {
     more_replies %>%
       rename(reply_test_tweet = error) %>%
       mutate(reply_test_in_reply_to = reply_test_tweet,
              reply_ban = reply_test_tweet)
-  }else{
+  } else{
     more_replies %>%
       dplyr::rename(
         reply_test_tweet = tweet,
