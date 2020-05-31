@@ -869,12 +869,12 @@ write_csv_compatible <-
 ##############################################################################
 
 check_shadowban <- function(screen_name, timezone = "UTC") {
-  require("httr",quietly = TRUE)
-  require("jsonlite",quietly = TRUE)
-  require("dplyr",quietly = TRUE)
-  require("tidyr",quietly = TRUE)
-  require("tibble",quietly = TRUE)
-  require("magrittr",quietly = TRUE)
+  require("httr", quietly = TRUE)
+  require("jsonlite", quietly = TRUE)
+  require("dplyr", quietly = TRUE)
+  require("tidyr", quietly = TRUE)
+  require("tibble", quietly = TRUE)
+  require("magrittr", quietly = TRUE)
   ##get response
   resp <-
     httr::GET(url = paste0("https://shadowban.eu/.api/", screen_name))
@@ -886,50 +886,83 @@ check_shadowban <- function(screen_name, timezone = "UTC") {
   text_profile_df <- tibble::enframe(text_df$profile) %>%
     tidyr::pivot_wider()
 
-  profile_df <- tibble::enframe(text_profile_df[[2]][[1]]) %>%
-    tidyr::pivot_wider() %>%
-    dplyr::bind_cols(text_profile_df) %>%
-    dplyr::select(-sensitives) %>%
-    dplyr::rename(tweets_counted = counted) %>%
-    dplyr::select(screen_name, exists, has_tweets, protected, everything())
+  if (length(text_df) > 2) {
+    text_profile_df <- tibble::enframe(text_df$profile) %>%
+      tidyr::pivot_wider()
 
-  time_stamp <- tibble::enframe(text_df$timestamp) %>%
-    tidyr::pivot_wider() %>%
-    dplyr::rename(timestamp = 1)
+    profile_df <- tibble::enframe(text_profile_df[[2]][[1]]) %>%
+      tidyr::pivot_wider() %>%
+      dplyr::bind_cols(text_profile_df) %>%
+      dplyr::rename(tweets_counted = counted) %>%
+      dplyr::select(-sensitives) %>%
+      dplyr::select(screen_name, exists, has_tweets, protected, everything())
+
+    time_stamp <- tibble::enframe(text_df$timestamp) %>%
+      tidyr::pivot_wider() %>%
+      dplyr::rename(timestamp = 1)
 
 
-  test_df <- tibble::enframe(text_df$tests) %>%
-    tidyr::pivot_wider()
+    test_df <- tibble::enframe(text_df$tests) %>%
+      tidyr::pivot_wider()
 
-  ghost <- tibble::enframe(test_df$ghost[[1]]) %>%
-    tidyr::pivot_wider() %>%
-    dplyr::rename(ghost_ban = ban)
+    ghost <- tibble::enframe(test_df$ghost[[1]]) %>%
+      tidyr::pivot_wider() %>%
+      dplyr::rename(ghost_ban = ban)
 
-  more_replies <-
-    if (!is.null(text_df[["tests"]][["more_replies"]])) {
-      tibble::enframe(text_df[["tests"]][["more_replies"]]) %>%
-        tidyr::pivot_wider()
+    more_replies <-
+      if (!is.null(text_df[["tests"]][["more_replies"]])) {
+        tibble::enframe(text_df[["tests"]][["more_replies"]]) %>%
+          tidyr::pivot_wider()
+      } else{
+        tibble::tribble(~ error,
+                        "NoResponse")
+      }
+    more_replies <- if ("error" %in% names(more_replies)) {
+      more_replies %>%
+        rename(reply_test_tweet = error) %>%
+        mutate(reply_test_in_reply_to = reply_test_tweet,
+               reply_ban = reply_test_tweet)
     } else{
-      tibble::tribble(~ error,
-                      "NoResponse")
+      more_replies %>%
+        dplyr::rename(
+          reply_test_tweet = tweet,
+          reply_test_in_reply_to = in_reply_to,
+          reply_ban = ban
+        )
     }
-  more_replies <- if ("error" %in% names(more_replies)) {
-    more_replies %>%
-      rename(reply_test_tweet = error) %>%
-      mutate(reply_test_in_reply_to = reply_test_tweet,
-             reply_ban = reply_test_tweet)
   } else{
-    more_replies %>%
-      dplyr::rename(
-        reply_test_tweet = tweet,
-        reply_test_in_reply_to = in_reply_to,
-        reply_ban = ban
-      )
-  }
+    text_profile_df <- tibble::enframe(text_df$profile) %>%
+      tidyr::pivot_wider()
 
-  ##output combined df of response
-  dplyr::bind_cols(profile_df, test_df[, c("typeahead", "search")], ghost, more_replies, time_stamp) %>%
-    dplyr::mutate(timestamp = as.POSIXct(timestamp, origin = "1970-01-01", tz = timezone)) %>%
+    profile_df <- tibble::enframe(text_profile_df[[2]][[1]]) %>%
+      tidyr::pivot_wider() %>%
+      dplyr::bind_cols(text_profile_df) %>%
+      dplyr::select(screen_name, exists, has_tweets, protected) %>%
+      dplyr::mutate(
+        tweets_counted = NA,
+        possibly_sensitive = NA,
+        possibly_sensitive_editable = NA
+      )
+
+    time_stamp <- tibble::enframe(text_df$timestamp) %>%
+      tidyr::pivot_wider() %>%
+      dplyr::rename(timestamp = 1)
+
+    ghost <- tibble::tribble(~ ghost_ban,
+                             NA)
+    more_replies <- tibble::tribble(~ reply_test_tweet,
+                                    ~ reply_test_in_reply_to,
+                                    ~ reply_ban,
+                                    NA,
+                                    NA,
+                                    NA)
+
+  }
+  dplyr::bind_cols(profile_df, test_df[, c("typeahead", "search")],
+                   ghost, more_replies, time_stamp) %>%
+    dplyr::mutate(timestamp = as.POSIXct(timestamp,
+                                         origin = "1970-01-01",
+                                         tz = timezone)) %>%
     dplyr::rename(search_suggestions = typeahead) %>%
     dplyr::select(
       c(
@@ -946,7 +979,6 @@ check_shadowban <- function(screen_name, timezone = "UTC") {
         possibly_sensitive_editable
       )
     ) %>%
-    ##dplyr::mutate(screen_name = as.character(screen_name))
     tidyr::unnest(
       cols = c(
         screen_name,
@@ -961,7 +993,6 @@ check_shadowban <- function(screen_name, timezone = "UTC") {
         possibly_sensitive_editable
       )
     )
-
 }
 
 #############################################################################
