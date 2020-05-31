@@ -1,6 +1,7 @@
 
 
 
+
 #'@title Hashtag wordcloud for rtweet package
 #'
 #'@description This function creates a wordcloud (defaults to 200 terms) from terms in the "hashtags" column of an rtweet tibble of tweets
@@ -23,7 +24,7 @@ hashtagcloud <- function (rtweet_timeline_df, num_words = 200) {
   require(wordcloud, quietly = TRUE)
 
   hashtagclean <-
-    dplyr::filter(rtweet_timeline_df, !is.na(rtweet_timeline_df$hashtags))
+    dplyr::filter(rtweet_timeline_df,!is.na(rtweet_timeline_df$hashtags))
   hashtagclean <- rtweet::flatten(hashtagclean)
   text <- paste(unlist(hashtagclean$hashtags), sep = "")
   myCorpus <- quanteda::corpus(text)
@@ -66,10 +67,10 @@ bar_plot_mentions <-
             no_of_bars = 20,
             title = NULL) {
     require("dplyr", quietly = TRUE)
-    require("ggplot2",quietly = TRUE)
-    require("quanteda",quietly = TRUE)
-    require("RcppParallel",quietly = TRUE)
-    require("rtweet",quietly = TRUE)
+    require("ggplot2", quietly = TRUE)
+    require("quanteda", quietly = TRUE)
+    require("RcppParallel", quietly = TRUE)
+    require("rtweet", quietly = TRUE)
 
 
     if (is.null(title)) {
@@ -156,9 +157,10 @@ profilecloud <- function (rtweet_timeline_df, num_words = 200) {
 
 
   profileclean <-
-    dplyr::filter(rtweet_timeline_df,!is.na(rtweet_timeline_df$description)) ## remove empty descriptions
+    dplyr::filter(rtweet_timeline_df,
+                  !is.na(rtweet_timeline_df$description)) ## remove empty descriptions
   profileclean <-
-    profileclean[!duplicated(profileclean["screen_name"]),] ##remove duplicate users by screen_name
+    profileclean[!duplicated(profileclean["screen_name"]), ] ##remove duplicate users by screen_name
 
   profileclean <- rtweet::flatten(profileclean)
   text <- paste(unlist(profileclean$description), sep = "")
@@ -243,7 +245,7 @@ common_follower_analysis <-
 
     # for each follower, get a binary indicator of whether they follow each tweeter or not and bind to one dataframe
     binaries <- user_list %>%
-      map_dfc(~ ifelse(
+      map_dfc( ~ ifelse(
         aRdent_followers %in% filter(followers, account == .x)$user_id,
         1,
         0
@@ -283,7 +285,9 @@ common_follower_analysis <-
 
 
 common_follower_matrix <-
-  function (user_list, follower_depth = 200, token = NULL) {
+  function (user_list,
+            follower_depth = 200,
+            token = NULL) {
     require(rtweet, quietly = TRUE)
     require(tidyverse, quietly = TRUE)
 
@@ -303,7 +307,7 @@ common_follower_matrix <-
 
     # for each follower, get a binary indicator of whether they follow each tweeter or not and bind to one dataframe
     binaries <- user_list %>%
-      map_dfc(~ ifelse(
+      map_dfc( ~ ifelse(
         aRdent_followers %in% filter(followers, account == .x)$user_id,
         1,
         0
@@ -445,7 +449,7 @@ rtweet_net <- function(tweetdf,
 
   ##get edges
   if (all_mentions == FALSE) {
-    dplyr::filter(tweetdf,!is.na(reply_to_user_id)) %>%
+    dplyr::filter(tweetdf, !is.na(reply_to_user_id)) %>%
       dplyr::mutate(
         from = screen_name,
         to = reply_to_screen_name,
@@ -470,10 +474,11 @@ rtweet_net <- function(tweetdf,
       ) -> quote_edges
 
 
-    edges <- (rbind (reply_edges, retweet_edges, quote_edges))[, 89:92]
+    edges <-
+      (rbind (reply_edges, retweet_edges, quote_edges))[, 89:92]
   } else{
     tidyr::unnest_legacy(tweetdf[, c("screen_name", "mentions_screen_name", "status_id")], .drop =
-                    NA)[, c(1, 3, 2)] %>%
+                           NA)[, c(1, 3, 2)] %>%
       dplyr::mutate(type = "mention") %>%
       dplyr::rename(from = screen_name, to = mentions_screen_name, ID = status_id) %>%
       dplyr::filter(!is.na(to)) -> edges
@@ -544,91 +549,118 @@ save_csv_edgelist <- function(igraphobject, path) {
 #'@examples
 #'jacks_followers <- get_followers_fast("jack",token_list = c(token1,token2), file_path = "~/")
 
-get_followers_fast <- function(account_for_foll, token_list = c(NULL), file_path = NULL){
-  require(rtweet, quietly = TRUE)
-  require(dplyr, quietly = TRUE)
-  require(purrr, quietly = TRUE)
+get_followers_fast <-
+  function(account_for_foll,
+           token_list = c(NULL),
+           file_path = NULL) {
+    require(rtweet, quietly = TRUE)
+    require(dplyr, quietly = TRUE)
+    require(purrr, quietly = TRUE)
 
-  followers_count <-
-    as.numeric(tryCatch(lookup_users(account_for_foll)[1, "followers_count"]),
-               error = "NA") # get the number of followers
-  print(paste(account_for_foll, "follower count =", followers_count))
+    followers_count <-
+      as.numeric(tryCatch(
+        lookup_users(account_for_foll)[1, "followers_count"]
+      ),
+      error = "NA") # get the number of followers
+    print(paste(account_for_foll, "follower count =", followers_count))
 
-  ##choose the optimum token from the list to start with
-  if(!is.null(token_list)){check_ratelimit <- purrr::map_df(token_list, rtweet::rate_limit, query = "get_followers")%>%
-    mutate(index = row_number())%>%
-    filter(remaining == max(remaining))
-  }else{
-    check_ratelimit <- rtweet::rate_limit(query = "get_followers")%>%
-      mutate(index = row_number())
-  }
-  if (check_ratelimit[1,"remaining"] < 1) {
-    message(paste("Pausing to reset rate_limit for ",as.numeric(check_ratelimit[1,"reset"]), " minutes"))
-    Sys.sleep(as.numeric(check_ratelimit[1,"reset"]) * 60)
-  }
-  tokencount <- as.numeric(check_ratelimit[1,"index"]) # initial token position in list
+    ##choose the optimum token from the list to start with
+    if (!is.null(token_list)) {
+      check_ratelimit <-
+        purrr::map_df(token_list, rtweet::rate_limit, query = "get_followers") %>%
+        mutate(index = row_number()) %>%
+        filter(remaining == max(remaining))
+    } else{
+      check_ratelimit <- rtweet::rate_limit(query = "get_followers") %>%
+        mutate(index = row_number())
+    }
+    if (check_ratelimit[1, "remaining"] < 1) {
+      message(paste(
+        "Pausing to reset rate_limit for ",
+        as.numeric(check_ratelimit[1, "reset"]),
+        " minutes"
+      ))
+      Sys.sleep(as.numeric(check_ratelimit[1, "reset"]) * 60)
+    }
+    tokencount <-
+      as.numeric(check_ratelimit[1, "index"]) # initial token position in list
 
 
-  page <- "-1" #initial page for next_token
+    page <- "-1" #initial page for next_token
 
-  ## Get first 75000 followers
-  follower_df <- tryCatch(
-    {get_followers(
-      account_for_foll,
-      n = 75000,
-      page = page,
-      retryonratelimit = TRUE,
-      token = token_list[tokencount]
-    )
+    ## Get first 75000 followers
+    follower_df <- tryCatch({
+      get_followers(
+        account_for_foll,
+        n = 75000,
+        page = page,
+        retryonratelimit = TRUE,
+        token = token_list[tokencount]
+      )
 
     },
-    error = function(cond){
+    error = function(cond) {
       return(c(cond))
       page <- 0
+    })
+    page <- next_cursor(follower_df) ## set cursor for paging
+    print(paste("page = ", page))
+    follower_df_users <- ifelse(!is.na(follower_df$user_id),
+                                bind_rows(
+                                  lookup_users(follower_df$user_id, parse = TRUE, token = token_list[tokencount])
+                                ),
+                                c(NA))
+
+
+    if (!is.null(file_path)) {
+      saveRDS(follower_df_users,
+              paste0(file_path, account_for_foll, "_followers.rds"))## save rds file of followers
     }
-  )
-  page <- next_cursor(follower_df) ## set cursor for paging
-  print(paste("page = ", page))
-  follower_df_users <- ifelse(!is.na(follower_df$user_id),
-                              bind_rows(lookup_users(follower_df$user_id, parse = TRUE, token = token_list[tokencount])),
-                              c(NA))
+    print(paste(
+      "followers captured:",
+      nrow(follower_df),
+      "out of",
+      followers_count
+    ))
+
+    ##get the balance of accounts by iterating through tokens
+    while (page != "0") {
+      tokencount <-
+        ifelse(tokencount < length(token_list), tokencount + 1, 1) #token number increment
+      follower_df_temp <- get_followers(
+        account_for_foll,
+        n = 75000,
+        page = page,
+        retryonratelimit = TRUE,
+        token = token_list[tokencount]
+      )
+
+      follower_df_temp_user <-
+        lookup_users(follower_df_temp$user_id, token = token_list[tokencount])
+
+      follower_df <- bind_rows(follower_df, follower_df_temp)
 
 
-  if(!is.null(file_path)) {
-    saveRDS(follower_df_users,paste0(file_path,account_for_foll,"_followers.rds"))## save rds file of followers
-  }
-  print(paste("followers captured:", nrow(follower_df), "out of", followers_count))
-
-  ##get the balance of accounts by iterating through tokens
-  while (page != "0") {
-    tokencount <-
-      ifelse(tokencount < length(token_list), tokencount + 1, 1) #token number increment
-    follower_df_temp <- get_followers(
-      account_for_foll,
-      n = 75000,
-      page = page,
-      retryonratelimit = TRUE,
-      token = token_list[tokencount]
-    )
-
-    follower_df_temp_user <- lookup_users(follower_df_temp$user_id,token = token_list[tokencount])
-
-    follower_df <- bind_rows(follower_df, follower_df_temp)
+      follower_df_users <- follower_df_users %>%
+        rbind(follower_df_temp_user)
 
 
-    follower_df_users <- follower_df_users %>%
-     rbind(follower_df_temp_user)
+      if (!is.null(file_path)) {
+        saveRDS(follower_df_users,
+                paste0(file_path, account_for_foll, "_followers.rds"))
+      }
 
-
-    if(!is.null(file_path)) {
-      saveRDS(follower_df_users,paste0(file_path,account_for_foll,"_followers.rds"))
+      page <- next_cursor(follower_df_temp)
+      message(paste(
+        "followers captured:",
+        nrow(follower_df),
+        "out of",
+        followers_count,
+        "\n"
+      ))
     }
-
-    page <- next_cursor(follower_df_temp)
-    message(paste("followers captured:", nrow(follower_df), "out of", followers_count,"\n"))
+    follower_df_users
   }
-  follower_df_users
-}
 ####################################################################################
 #'@title Wrapper for rtweet::get_friends and rtweet::lookup_users
 #'@description This function consolidates the process of getting friends and looking up the user details.
@@ -644,83 +676,107 @@ get_followers_fast <- function(account_for_foll, token_list = c(NULL), file_path
 #'@examples
 #'jacks_friends <- get_friends_fast("jack",token_list = c(token1,token2), file_path = "~/")
 
-get_friends_fast <- function(account_for_friend, token_list = c(NULL), file_path = "~/"){
-  require(rtweet, quietly = TRUE)
-  require(dplyr, quietly = TRUE)
-  require(purrr, quietly = TRUE)
+get_friends_fast <-
+  function(account_for_friend,
+           token_list = c(NULL),
+           file_path = "~/") {
+    require(rtweet, quietly = TRUE)
+    require(dplyr, quietly = TRUE)
+    require(purrr, quietly = TRUE)
 
-  friend_count <-
-    as.numeric(tryCatch(lookup_users(account_for_friend)[1, "friends_count"]),
-               error = "NA") # get the number of friends
-  print(paste(account_for_friend, "friend count =", friend_count))
+    friend_count <-
+      as.numeric(tryCatch(
+        lookup_users(account_for_friend)[1, "friends_count"]
+      ),
+      error = "NA") # get the number of friends
+    print(paste(account_for_friend, "friend count =", friend_count))
 
-  ##choose the optimum token from the list to start with
-  if(!is.null(token_list)){check_ratelimit <- purrr::map_df(token_list, rtweet::rate_limit, query = "get_friends")%>%
-    mutate(index = row_number())%>%
-    filter(remaining == max(remaining))
-  }else{
-    check_ratelimit <- rtweet::rate_limit(query = "get_friends")%>%
-      mutate(index = row_number())
-  }
+    ##choose the optimum token from the list to start with
+    if (!is.null(token_list)) {
+      check_ratelimit <-
+        purrr::map_df(token_list, rtweet::rate_limit, query = "get_friends") %>%
+        mutate(index = row_number()) %>%
+        filter(remaining == max(remaining))
+    } else{
+      check_ratelimit <- rtweet::rate_limit(query = "get_friends") %>%
+        mutate(index = row_number())
+    }
 
-  if (check_ratelimit[1,"remaining"] < 1) {
-    message(paste("Pausing to reset rate_limit for ",as.numeric(check_ratelimit[1,"reset"]), " minutes"))
-    Sys.sleep(as.numeric(check_ratelimit[1,"reset"]) * 60)
-  }
-  tokencount <- as.numeric(check_ratelimit[1,"index"]) # initial token position in list
-  page <- "-1" #initial page for next_token
+    if (check_ratelimit[1, "remaining"] < 1) {
+      message(paste(
+        "Pausing to reset rate_limit for ",
+        as.numeric(check_ratelimit[1, "reset"]),
+        " minutes"
+      ))
+      Sys.sleep(as.numeric(check_ratelimit[1, "reset"]) * 60)
+    }
+    tokencount <-
+      as.numeric(check_ratelimit[1, "index"]) # initial token position in list
+    page <- "-1" #initial page for next_token
 
-  ## Get first 75000 friends
-  friend_df <- tryCatch(
-    {get_friends(
-      account_for_friend,
-      n = 75000,
-      page = page,
-      retryonratelimit = TRUE,
-      token = token_list[tokencount]
-    )
+    ## Get first 75000 friends
+    friend_df <- tryCatch({
+      get_friends(
+        account_for_friend,
+        n = 75000,
+        page = page,
+        retryonratelimit = TRUE,
+        token = token_list[tokencount]
+      )
 
     },
-    error = function(cond){
+    error = function(cond) {
       return(c(cond))
       page <- 0
+    })
+    page <- next_cursor(friend_df)
+    page <-
+      ifelse(page != 0, next_cursor(friend_df), 0)  ## set cursor for paging
+    print(paste("page = ", page))
+    friend_df_users <- ifelse(!is.na(friend_df$user_id),
+                              bind_rows(
+                                lookup_users(friend_df$user_id, parse = TRUE, token = token_list[tokencount])
+                              ),
+                              c(NA))
+
+    if (!is.null(file_path)) {
+      saveRDS(friend_df_users,
+              paste0(file_path, account_for_friend, "_friends.rds"))
     }
-  )
-  page <- next_cursor(friend_df)
-  page <- ifelse(page != 0,next_cursor(friend_df), 0)  ## set cursor for paging
-  print(paste("page = ", page))
-  friend_df_users <- ifelse(!is.na(friend_df$user_id),
-                            bind_rows(lookup_users(friend_df$user_id, parse = TRUE, token = token_list[tokencount])),
-                            c(NA))
+    print(paste("friends captured:", nrow(friend_df), "out of", friend_count))
 
-  if(!is.null(file_path)) {
-    saveRDS(friend_df_users,paste0(file_path,account_for_friend,"_friends.rds"))
-  }
-  print(paste("friends captured:", nrow(friend_df), "out of", friend_count))
+    ##get the balance of accounts by iterating through tokens
+    while (page != "0") {
+      tokencount <-
+        ifelse(tokencount < length(token_list), tokencount + 1, 1) #token number increment
+      friend_df_temp <- get_friends(
+        account_for_friend,
+        n = 75000,
+        page = page,
+        retryonratelimit = TRUE,
+        token = token_list[tokencount]
+      )
+      friend_df_temp_user <-
+        lookup_users(follower_df_temp$user_id, token = token_list[tokencount])
 
-  ##get the balance of accounts by iterating through tokens
-  while (page != "0") {
-    tokencount <-
-      ifelse(tokencount < length(token_list), tokencount + 1, 1) #token number increment
-    friend_df_temp <- get_friends(
-      account_for_friend,
-      n = 75000,
-      page = page,
-      retryonratelimit = TRUE,
-      token = token_list[tokencount]
-    )
-    friend_df_temp_user <- lookup_users(follower_df_temp$user_id,token = token_list[tokencount])
-
-    friend_df <- rbind(follower_df, friend_df_temp)
-    friend_df_users <- bind_rows(friend_df_users, friend_df_temp_user)
-    if(!is.null(file_path)) {
-      saveRDS(friend_df_users,paste0(file_path,account_for_friend,"_friends.rds"))
+      friend_df <- rbind(follower_df, friend_df_temp)
+      friend_df_users <-
+        bind_rows(friend_df_users, friend_df_temp_user)
+      if (!is.null(file_path)) {
+        saveRDS(friend_df_users,
+                paste0(file_path, account_for_friend, "_friends.rds"))
+      }
+      page <- next_cursor(friend_df_temp)
+      message(paste(
+        "friends captured:",
+        nrow(friend_df),
+        "out of",
+        friend_count,
+        "\n"
+      ))
     }
-    page <- next_cursor(friend_df_temp)
-    message(paste("friends captured:", nrow(friend_df), "out of", friend_count, "\n"))
+    friend_df_users
   }
-  friend_df_users
-}
 
 
 ####################################################################################
@@ -735,17 +791,19 @@ get_friends_fast <- function(account_for_friend, token_list = c(NULL), file_path
 #'jacks_followers_numbered <- number_followers(jacks_followers)
 #######################################################################################
 
-number_followers <- function(follower_df){
+number_followers <- function(follower_df) {
   require(dplyr, quietly = TRUE)
   require(magrittr, quietly = TRUE)
 
   follower_df <- follower_df %>%
-    mutate(follower_no = (dense_rank(desc(row_number()))))
+    mutate(follower_no = (dense_rank(desc(row_number(
+    )))))
 
   follower_df$earliest_follow <- NULL
   creation_dates <- follower_df$account_created_at
-  for (x in 1:nrow(follower_df)){
-    follower_df[x,"earliest_follow"] <- max(creation_dates[x:nrow(follower_df)])
+  for (x in 1:nrow(follower_df)) {
+    follower_df[x, "earliest_follow"] <-
+      max(creation_dates[x:nrow(follower_df)])
   }
   return(follower_df)
 }
@@ -770,8 +828,10 @@ number_followers <- function(follower_df){
 
 
 create_gexf <-
-  function(tweet_df, filepath,include_edge_att = FALSE, edge_type = "directed") {
-
+  function(tweet_df,
+           filepath,
+           include_edge_att = FALSE,
+           edge_type = "directed") {
     require(rgexf, quietly = TRUE)
     require(dplyr, quietly = TRUE)
     require(tidyr, quietly = TRUE)
@@ -822,8 +882,9 @@ create_gexf <-
       nodes = nodes,
       edges = edges,
       nodesAtt = nodeatt,
-      if(include_edge_att){
-        edgesAtt = edgeatt},
+      if (include_edge_att) {
+        edgesAtt = edgeatt
+      },
       defaultedgetype = edge_type,
       output = filepath
     )
@@ -841,20 +902,21 @@ create_gexf <-
 #'write_csv_compatible(df, "~/jack_tweets.csv")
 ###############################################################################
 write_csv_compatible <-
-  function(rtweet_df, path_for_csv_file){
+  function(rtweet_df, path_for_csv_file) {
+    require(rtweet, quietly = TRUE)
+    require(dplyr, quietly = TRUE)
+    require(magrittr, quietly = TRUE)
+    require(readr, quietly = TRUE)
 
-  require(rtweet, quietly = TRUE)
-  require(dplyr, quietly = TRUE)
-  require(magrittr, quietly = TRUE)
-  require(readr, quietly = TRUE)
-
-  mod_file <- rtweet_df%>%
-    dplyr::mutate(text2 = text) %>%
-    dplyr::mutate(text = ifelse(is_retweet == TRUE,
-                         paste0("RT @",retweet_screen_name, ": ", text2),
-                         text2))
-  readr::write_csv(rtweet::flatten(mod_file), path_for_csv_file)
-}
+    mod_file <- rtweet_df %>%
+      dplyr::mutate(text2 = text) %>%
+      dplyr::mutate(text = ifelse(
+        is_retweet == TRUE,
+        paste0("RT @", retweet_screen_name, ": ", text2),
+        text2
+      ))
+    readr::write_csv(rtweet::flatten(mod_file), path_for_csv_file)
+  }
 
 #############################################################################
 #'@title Shadowban check
@@ -915,13 +977,14 @@ check_shadowban <- function(screen_name, timezone = "UTC") {
           tidyr::pivot_wider()
       } else{
         tibble::tribble(~ error,
-                        "NoResponse")
+                        NA)
       }
     more_replies <- if ("error" %in% names(more_replies)) {
       more_replies %>%
-        rename(reply_test_tweet = error) %>%
-        mutate(reply_test_in_reply_to = reply_test_tweet,
-               reply_ban = reply_test_tweet)
+        dplyr::mutate(reply_test_tweet = NA) %>%
+        dplyr::mutate(reply_test_in_reply_to = reply_test_tweet,
+                      reply_ban = reply_test_tweet) %>%
+        dplyr::select (-error)
     } else{
       more_replies %>%
         dplyr::rename(
@@ -994,20 +1057,18 @@ check_shadowban <- function(screen_name, timezone = "UTC") {
       )
     )
 }
-
-#############################################################################
-#'@title User list shadowban test - wrapper for rtweetXtras::check_shadowban()
-#'
-#'@description Checks a list of screen_names for temporary search or reply visibility reduction.
-#'@param user_list A list of twitter screen_names (case insensitive)
-#'@param timezone Optional, a timezone for the timestamp of the ban check. Default is "UTC"
-#'@keywords twitter, shadowban, search ban, ghost ban
-#'@export
-#'@examples
-#'listcheck <- check_shadowban_list(c("jack","jill","bob"), "Africa/Cairo")
-##############################################################################
-check_shadowban_list <- function(user_list, timezone = "UTC") {
-  require("purrr", quietly = TRUE)
-  purrr::map_df(user_list, check_shadowban, timezone)
-}
-
+  #############################################################################
+  #'@title User list shadowban test - wrapper for rtweetXtras::check_shadowban()
+  #'
+  #'@description Checks a list of screen_names for temporary search or reply visibility reduction.
+  #'@param user_list A list of twitter screen_names (case insensitive)
+  #'@param timezone Optional, a timezone for the timestamp of the ban check. Default is "UTC"
+  #'@keywords twitter, shadowban, search ban, ghost ban
+  #'@export
+  #'@examples
+  #'listcheck <- check_shadowban_list(c("jack","jill","bob"), "Africa/Cairo")
+  ##############################################################################
+  check_shadowban_list <- function(user_list, timezone = "UTC") {
+    require("purrr", quietly = TRUE)
+    purrr::map_df(user_list, check_shadowban, timezone)
+  }
