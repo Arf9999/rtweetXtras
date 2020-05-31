@@ -2,6 +2,7 @@
 
 
 
+
 #'@title Hashtag wordcloud for rtweet package
 #'
 #'@description This function creates a wordcloud (defaults to 200 terms) from terms in the "hashtags" column of an rtweet tibble of tweets
@@ -24,7 +25,7 @@ hashtagcloud <- function (rtweet_timeline_df, num_words = 200) {
   require(wordcloud, quietly = TRUE)
 
   hashtagclean <-
-    dplyr::filter(rtweet_timeline_df,!is.na(rtweet_timeline_df$hashtags))
+    dplyr::filter(rtweet_timeline_df, !is.na(rtweet_timeline_df$hashtags))
   hashtagclean <- rtweet::flatten(hashtagclean)
   text <- paste(unlist(hashtagclean$hashtags), sep = "")
   myCorpus <- quanteda::corpus(text)
@@ -157,10 +158,9 @@ profilecloud <- function (rtweet_timeline_df, num_words = 200) {
 
 
   profileclean <-
-    dplyr::filter(rtweet_timeline_df,
-                  !is.na(rtweet_timeline_df$description)) ## remove empty descriptions
+    dplyr::filter(rtweet_timeline_df,!is.na(rtweet_timeline_df$description)) ## remove empty descriptions
   profileclean <-
-    profileclean[!duplicated(profileclean["screen_name"]), ] ##remove duplicate users by screen_name
+    profileclean[!duplicated(profileclean["screen_name"]),] ##remove duplicate users by screen_name
 
   profileclean <- rtweet::flatten(profileclean)
   text <- paste(unlist(profileclean$description), sep = "")
@@ -245,7 +245,7 @@ common_follower_analysis <-
 
     # for each follower, get a binary indicator of whether they follow each tweeter or not and bind to one dataframe
     binaries <- user_list %>%
-      map_dfc( ~ ifelse(
+      map_dfc(~ ifelse(
         aRdent_followers %in% filter(followers, account == .x)$user_id,
         1,
         0
@@ -307,7 +307,7 @@ common_follower_matrix <-
 
     # for each follower, get a binary indicator of whether they follow each tweeter or not and bind to one dataframe
     binaries <- user_list %>%
-      map_dfc( ~ ifelse(
+      map_dfc(~ ifelse(
         aRdent_followers %in% filter(followers, account == .x)$user_id,
         1,
         0
@@ -449,7 +449,7 @@ rtweet_net <- function(tweetdf,
 
   ##get edges
   if (all_mentions == FALSE) {
-    dplyr::filter(tweetdf, !is.na(reply_to_user_id)) %>%
+    dplyr::filter(tweetdf,!is.na(reply_to_user_id)) %>%
       dplyr::mutate(
         from = screen_name,
         to = reply_to_screen_name,
@@ -797,6 +797,7 @@ number_followers <- function(follower_df) {
 
   follower_df <- follower_df %>%
     mutate(follower_no = (dense_rank(desc(row_number(
+
     )))))
 
   follower_df$earliest_follow <- NULL
@@ -999,13 +1000,26 @@ check_shadowban <- function(screen_name, timezone = "UTC") {
 
     profile_df <- tibble::enframe(text_profile_df[[2]][[1]]) %>%
       tidyr::pivot_wider() %>%
-      dplyr::bind_cols(text_profile_df) %>%
-      dplyr::select(screen_name, exists, has_tweets, protected) %>%
-      dplyr::mutate(
-        tweets_counted = NA,
-        possibly_sensitive = NA,
-        possibly_sensitive_editable = NA
-      )
+      dplyr::bind_cols(text_profile_df)
+
+    if ("protected" %in% names(profile_df)) {
+      profile_df <- profile_df %>%
+        dplyr::select(screen_name, exists, has_tweets, protected) %>%
+        dplyr::mutate(
+          tweets_counted = NA,
+          possibly_sensitive = NA,
+          possibly_sensitive_editable = NA
+        )
+    } else{
+      profile_df <- profile_df %>%
+        dplyr::mutate(protected = NA) %>%
+        dplyr::select(screen_name, exists, has_tweets, protected) %>%
+        dplyr::mutate(
+          tweets_counted = NA,
+          possibly_sensitive = NA,
+          possibly_sensitive_editable = NA
+        )
+    }
 
     time_stamp <- tibble::enframe(text_df$timestamp) %>%
       tidyr::pivot_wider() %>%
@@ -1057,18 +1071,18 @@ check_shadowban <- function(screen_name, timezone = "UTC") {
       )
     )
 }
-  #############################################################################
-  #'@title User list shadowban test - wrapper for rtweetXtras::check_shadowban()
-  #'
-  #'@description Checks a list of screen_names for temporary search or reply visibility reduction.
-  #'@param user_list A list of twitter screen_names (case insensitive)
-  #'@param timezone Optional, a timezone for the timestamp of the ban check. Default is "UTC"
-  #'@keywords twitter, shadowban, search ban, ghost ban
-  #'@export
-  #'@examples
-  #'listcheck <- check_shadowban_list(c("jack","jill","bob"), "Africa/Cairo")
-  ##############################################################################
-  check_shadowban_list <- function(user_list, timezone = "UTC") {
-    require("purrr", quietly = TRUE)
-    purrr::map_df(user_list, check_shadowban, timezone)
-  }
+#############################################################################
+#'@title User list shadowban test - wrapper for rtweetXtras::check_shadowban()
+#'
+#'@description Checks a list of screen_names for temporary search or reply visibility reduction.
+#'@param user_list A list of twitter screen_names (case insensitive)
+#'@param timezone Optional, a timezone for the timestamp of the ban check. Default is "UTC"
+#'@keywords twitter, shadowban, search ban, ghost ban
+#'@export
+#'@examples
+#'listcheck <- check_shadowban_list(c("jack","jill","bob"), "Africa/Cairo")
+##############################################################################
+check_shadowban_list <- function(user_list, timezone = "UTC") {
+  require("purrr", quietly = TRUE)
+  purrr::map_df(user_list, check_shadowban, timezone)
+}
