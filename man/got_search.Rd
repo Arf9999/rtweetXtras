@@ -34,8 +34,6 @@ Uses status_id to request full {rtweet} tibble of tweet data
 }
 \examples{
 test <- got_search("Trump", since_date = "2016-09-06", until_date = "2016-11-06", n = 1000, output_file_name = "test_", token = my_token)
-
-##############################################################################
 }
 \keyword{getoldtweets3,}
 \keyword{rtweet}

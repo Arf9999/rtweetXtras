@@ -7,8 +7,7 @@
 number_followers(follower_df)
 }
 \arguments{
-\item{follower_df}{Required. An rtweet dataframe of followers.
-#'@keywords twitter, rtweet}
+\item{follower_df}{Required. An rtweet dataframe of followers.}
 }
 \description{
 This function consolidates the process of numbering followers and indicating earliest following date.
@@ -18,3 +17,5 @@ requires an rtweet dataframe as returned by a combination of get_followers() and
 jacks_followers <- rtweet::lookup_users(unlist(rtweet::get_followers("jack", n=5000)[,"user_id"]))
 jacks_followers_numbered <- number_followers(jacks_followers)
 }
+\keyword{rtweet}
+\keyword{twitter,}

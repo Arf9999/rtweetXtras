@@ -786,7 +786,7 @@ get_friends_fast <-
 #'@description This function consolidates the process of numbering followers and indicating earliest following date.
 #'requires an rtweet dataframe as returned by a combination of get_followers() and lookup_users().
 #'@param follower_df Required. An rtweet dataframe of followers.
-#'#'@keywords twitter, rtweet
+#'@keywords twitter, rtweet
 #'@export
 #'@examples
 #'jacks_followers <- rtweet::lookup_users(unlist(rtweet::get_followers("jack", n=5000)[,"user_id"]))
@@ -1097,7 +1097,7 @@ check_shadowban_list <- function(user_list, timezone = "UTC") {
 #'@export
 #'@examples
 #'prepare_got()
-##############################################################################
+###############################################################################
 prepare_got <- function() {
   require(reticulate)
   library(reticulate)
@@ -1114,7 +1114,7 @@ prepare_got <- function() {
 #'@keywords twitter, getoldtweets3, rtweet
 #'@export
 #'@examples
-#'##############################################################################
+###############################################################################
 rehydrate_got3_statuses <-
   function(got3_df,
            token = NULL,
@@ -1294,8 +1294,7 @@ rehydrate_got3_statuses <-
 #'@export
 #'@examples
 #'test <- got_search("Trump", since_date = "2016-09-06", until_date = "2016-11-06", n = 1000, output_file_name = "test_", token = my_token)
-#'
-#'##############################################################################
+###############################################################################
 
 got_search <-
   function(search_string,
