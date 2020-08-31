@@ -3,6 +3,7 @@
 
 
 
+
 #'@title Hashtag wordcloud for rtweet package
 #'
 #'@description This function creates a wordcloud (defaults to 200 terms) from terms in the "hashtags" column of an rtweet tibble of tweets
@@ -25,7 +26,7 @@ hashtagcloud <- function (rtweet_timeline_df, num_words = 200) {
   require(wordcloud, quietly = TRUE)
 
   hashtagclean <-
-    dplyr::filter(rtweet_timeline_df, !is.na(rtweet_timeline_df$hashtags))
+    dplyr::filter(rtweet_timeline_df,!is.na(rtweet_timeline_df$hashtags))
   hashtagclean <- rtweet::flatten(hashtagclean)
   text <- paste(unlist(hashtagclean$hashtags), sep = "")
   myCorpus <- quanteda::corpus(text)
@@ -158,9 +159,10 @@ profilecloud <- function (rtweet_timeline_df, num_words = 200) {
 
 
   profileclean <-
-    dplyr::filter(rtweet_timeline_df,!is.na(rtweet_timeline_df$description)) ## remove empty descriptions
+    dplyr::filter(rtweet_timeline_df,
+                  !is.na(rtweet_timeline_df$description)) ## remove empty descriptions
   profileclean <-
-    profileclean[!duplicated(profileclean["screen_name"]),] ##remove duplicate users by screen_name
+    profileclean[!duplicated(profileclean["screen_name"]), ] ##remove duplicate users by screen_name
 
   profileclean <- rtweet::flatten(profileclean)
   text <- paste(unlist(profileclean$description), sep = "")
@@ -245,7 +247,7 @@ common_follower_analysis <-
 
     # for each follower, get a binary indicator of whether they follow each tweeter or not and bind to one dataframe
     binaries <- user_list %>%
-      map_dfc(~ ifelse(
+      map_dfc( ~ ifelse(
         aRdent_followers %in% filter(followers, account == .x)$user_id,
         1,
         0
@@ -307,7 +309,7 @@ common_follower_matrix <-
 
     # for each follower, get a binary indicator of whether they follow each tweeter or not and bind to one dataframe
     binaries <- user_list %>%
-      map_dfc(~ ifelse(
+      map_dfc( ~ ifelse(
         aRdent_followers %in% filter(followers, account == .x)$user_id,
         1,
         0
@@ -449,7 +451,7 @@ rtweet_net <- function(tweetdf,
 
   ##get edges
   if (all_mentions == FALSE) {
-    dplyr::filter(tweetdf,!is.na(reply_to_user_id)) %>%
+    dplyr::filter(tweetdf, !is.na(reply_to_user_id)) %>%
       dplyr::mutate(
         from = screen_name,
         to = reply_to_screen_name,
@@ -977,8 +979,8 @@ check_shadowban <- function(screen_name, timezone = "UTC") {
         tibble::enframe(text_df[["tests"]][["more_replies"]]) %>%
           tidyr::pivot_wider()
       } else{
-        tibble::tribble(~ error,
-                        NA)
+        tibble::tribble( ~ error,
+                         NA)
       }
     more_replies <- if ("error" %in% names(more_replies)) {
       more_replies %>%
@@ -1025,14 +1027,14 @@ check_shadowban <- function(screen_name, timezone = "UTC") {
       tidyr::pivot_wider() %>%
       dplyr::rename(timestamp = 1)
 
-    ghost <- tibble::tribble(~ ghost_ban,
-                             NA)
-    more_replies <- tibble::tribble(~ reply_test_tweet,
-                                    ~ reply_test_in_reply_to,
-                                    ~ reply_ban,
-                                    NA,
-                                    NA,
-                                    NA)
+    ghost <- tibble::tribble( ~ ghost_ban,
+                              NA)
+    more_replies <- tibble::tribble( ~ reply_test_tweet,
+                                     ~ reply_test_in_reply_to,
+                                     ~ reply_ban,
+                                     NA,
+                                     NA,
+                                     NA)
 
   }
   dplyr::bind_cols(profile_df, test_df[, c("typeahead", "search")],
@@ -1086,3 +1088,256 @@ check_shadowban_list <- function(user_list, timezone = "UTC") {
   require("purrr", quietly = TRUE)
   purrr::map_df(user_list, check_shadowban, timezone)
 }
+
+#############################################################################
+#'@title Run once function to setup call to Python Library for GetOldTweets3
+#'
+#'@description Ensures that {reticulate} library in stalled and GOT3 library is installed
+#'@keywords twitter, getoldtweets3,
+#'@export
+#'@examples
+#'prepare_got()
+##############################################################################
+prepare_got <- function() {
+  require(reticulate)
+  library(reticulate)
+
+  reticulate::conda_install(packages = "GetOldTweets3", pip = TRUE)
+}
+
+#############################################################################
+#'@title Function to rehydrate tweets into rtweet tibbles from GOT3 data format
+#'@param got3_df A dataframe as returned by GetOldTweets3
+#'@param token An OAuth token loaded in the environment for twitter's Standard API (REQUIRED if a list of tokens is not supplied)
+#'@param token_list A list of OAuth tokens loaded in the environment (REQUIRED if token is not specified)
+#'@description Uses status_id to request full {rtweet} tibble of tweet data
+#'@keywords twitter, getoldtweets3, rtweet
+#'@export
+#'##############################################################################
+rehydrate_got3_statuses <-
+  function(got3_df,
+           token = NULL,
+           token_list = NULL) {
+    require(rtweet, quietly = TRUE)
+    require(dplyr, quietly = TRUE)
+    require(purrr, quietly = TRUE)
+    require(readr, quietly = TRUE)
+
+    ### Check tokens
+    if (is.null(token) & is.null(token_list)) {
+      message(
+        "Please designate either a token or a list of tokens that are loaded into the environment"
+      )
+      break()
+    }
+    if (is.null(token_list)) {
+      token_list = c(token)
+    }
+    ###
+
+    df_length <- nrow(got3_df)  ##check length of GOT list of statuses
+    last_capture <- 0L ##initial setting for statuses captured
+    #check ratelimits for all tokens
+    ratelimits <-
+      purrr::map_df(token_list, rtweet::rate_limit, query = "lookup_statuses")
+
+
+    if (as.numeric(max(ratelimits$remaining)) > df_length / 100) {
+      ##if no ratelimit reset or token rotation required.
+      message(paste0("lookup of ", df_length, " statuses"))
+
+      row_of_max_rl <- which.max(ratelimits$remaining)
+      rehydration <- rtweet::lookup_statuses(unlist(got3_df[, "id"]),
+                                             token = token_list[[row_of_max_rl]])
+
+
+    } else{
+      while (last_capture < nrow(got3_df)) {
+        # iterate through the rows using token rotation & rate reset pausing
+        row_of_max_rl <- which.max(ratelimits$remaining)
+
+        ##first iteration
+        if (last_capture == 0L) {
+          last_capture <-
+            as.numeric(ratelimits[row_of_max_rl, "remaining"] * 100)
+          message(paste0("rl requests remain : ", as.numeric(ratelimits[row_of_max_rl, "remaining"])))
+          message(paste0("base: ", 1L, " upper: ", last_capture))
+
+          rehydration <-
+            rtweet::lookup_statuses(unlist(got3_df[c(1:last_capture), "id"]),
+                                    token = token_list[[row_of_max_rl]])
+        } else{
+          #iterate through remainder of status_ids
+          base_capture <- last_capture + 1
+          last_capture <-
+            min(c(
+              base_capture + as.numeric(ratelimits[row_of_max_rl, "remaining"] * 100),
+              nrow(got3_df)
+            ))
+          message(paste0("rl requests remain : ", as.numeric(ratelimits[row_of_max_rl, "remaining"])))
+          message(paste0("base: ", base_capture, " upper: ", last_capture))
+
+          rehydration <- dplyr::bind_rows(rehydration,
+                                          rtweet::lookup_statuses(unlist(got3_df[c(base_capture:last_capture), "id"]),
+                                                                  token = token_list[[row_of_max_rl]]))
+
+        }
+        ratelimits <-
+          purrr::map_df(token_list, rtweet::rate_limit, query = "lookup_statuses")#check ratelimits
+
+
+
+        ###manage ratelimit resets as gracefully as possible - conservatively set to 100 queries as test
+        if (max(ratelimits$remaining) < 100 &
+            last_capture < nrow(got3_df)) {
+          message(paste0(
+            "Pausing for ratelimit reset: ",
+            min(ratelimits$reset),
+            " minutes"
+          ))
+          Sys.sleep(as.numeric(min(ratelimits$reset) * 60))
+          ratelimits <-
+            purrr::map_df(token_list, rtweet::rate_limit, query = "lookup_statuses")
+        }
+
+      }
+    }
+
+    ##check for missing tweets and re-lookup
+    orig <- dplyr::as_tibble(got3_df[, "id"]) %>%
+      rename(status_id = id)
+    message(paste0("original: ", nrow(orig)))
+
+    missing <-
+      anti_join(orig, as_tibble(rehydration[, "status_id"]), by = "status_id")
+
+    message(paste0("missing: ", nrow(missing)))
+
+    if (nrow(missing) > 0) {
+      ##try again to look up missing statuses
+      ratelimits <-
+        purrr::map_df(token_list, rtweet::rate_limit, query = "lookup_statuses")
+      row_of_max_rl <- which.max(ratelimits$remaining)
+      df_length <- nrow(missing)
+      message(paste0("Attempting to populate missing tweets: ", df_length))
+      rehydration <- bind_rows(rehydration,
+                               rtweet::lookup_statuses(unlist(missing[c(1:df_length), "status_id"]),
+                                                       token = token_list[[row_of_max_rl]]))
+
+      ##write log file of missing tweets.
+      missing <-
+        anti_join(orig, as_tibble(rehydration[, "status_id"]), by = "status_id") %>%
+        rename(id = status_id) %>%
+        left_join(got3_df, by = "id") %>%
+        mutate(error = "Status not downloaded")
+
+      message(
+        paste0(
+          nrow(missing),
+          " tweets not downloaded, see log file for details: ",
+          "got3_rehydration_missing_log_",
+          as.numeric(Sys.time()),
+          ".csv"
+        )
+      )
+
+      readr::write_csv(missing,
+                       paste0(
+                         "got3_rehydration_missing_log_",
+                         as.numeric(Sys.time()),
+                         ".csv"
+                       ))
+
+
+    }
+    ##Get maximum number of retweets
+    retweets <- filter(rehydration, retweet_count > 1) %>%
+      select(status_id)
+
+    message(paste ("tweets with retweets:", nrow(retweets)))
+
+    ratelimits <-
+      purrr::map_df(token_list, rtweet::rate_limit, query = "get_retweets")
+    row_of_max_rl <- which.max(ratelimits$remaining)
+
+    retweet_temp <-
+      purrr::map_df(retweets$status_id,
+                    rtweet::get_retweets,
+                    n = 100,
+                    token = token_list[[row_of_max_rl]])
+    message(paste0("temp rows:", nrow(retweet_temp)))
+
+    message("Captured ",
+            nrow(retweet_temp),
+            " retweets (a maximum of 100 per original tweet)")
+
+
+
+    rehydration <- bind_rows(rehydration, retweet_temp)
+
+    return(rehydration)
+
+  }
+
+#############################################################################
+#'@title Wrapper to undertake historical searches calling Python GetOldTweets3 library
+#'@param search_string A search string (in quotes)
+#'@param since_date Start date for the search
+#'@param until_date Latest date for the search (NB: search works backward)
+#'@param n Maximum number of results
+#'@param output_file_name temporary name of GOT3 csv file - date will be appended.
+#'@param token An OAuth token loaded in the environment for twitter's Standard API (REQUIRED if a list of tokens is not supplied)
+#'@param token_list A list of OAuth tokens loaded in the environment (REQUIRED if token is not specified)
+#'@description Uses status_id to request full {rtweet} tibble of tweet data
+#'@keywords twitter, getoldtweets3, rtweet
+#'@export
+#'@examples
+#'test <- got_search("Trump", since_date = "2016-09-06", until_date = "2016-11-06", n = 1000, output_file_name = "test_", token = my_token)
+#'
+#'##############################################################################
+
+got_search <-
+  function(search_string,
+           since_date,
+           until_date,
+           n = 100,
+           output_file_name,
+           token = NULL,
+           token_list = NULL) {
+    require(rtweet, quietly = TRUE)
+    require(readr, quietly = TRUE)
+    require(dplyr, quietly = TRUE)
+
+    output_path <- paste0(output_file_name, Sys.Date(), ".csv")
+    system(
+      paste0(
+        "GetOldTweets3 --querysearch \"",
+        search_string,
+        "\" --since ",
+        since_date,
+        " --until ",
+        until_date,
+        " --maxtweets ",
+        n,
+        " --output \"",
+        output_path,
+        "\""
+      )
+    )
+
+    ##convert to tibble
+    got_file <- readr::read_csv(output_path,
+                                col_types = cols(id = col_character())) %>%
+      dplyr::mutate(date = as.Date(date)) %>%
+      dplyr::filter((date <= until_date) & (date >= since_date)) %>%
+      dplyr::distinct(id, .keep_all = TRUE)
+
+    message(paste(nrow(got_file), "tweets after ads and duplications removed"))
+
+    output <-
+      rtweetXtras::rehydrate_got3_statuses(got_file, token = token, token_list = token_list)
+
+    return(output)
+
+
+  }
