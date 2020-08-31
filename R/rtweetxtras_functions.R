@@ -1113,6 +1113,7 @@ prepare_got <- function() {
 #'@description Uses status_id to request full {rtweet} tibble of tweet data
 #'@keywords twitter, getoldtweets3, rtweet
 #'@export
+#'@examples
 #'##############################################################################
 rehydrate_got3_statuses <-
   function(got3_df,
