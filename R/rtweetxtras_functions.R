@@ -1126,10 +1126,10 @@ rehydrate_got3_statuses <-
 
     ### Check tokens
     if (is.null(token) & is.null(token_list)) {
-      message(
+      stop(
         "Please designate either a token or a list of tokens that are loaded into the environment"
       )
-      break()
+
     }
     if (is.null(token_list)) {
       token_list = c(token)
