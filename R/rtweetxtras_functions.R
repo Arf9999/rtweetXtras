@@ -840,6 +840,7 @@ create_gexf <-
     require(tidyr, quietly = TRUE)
 
 
+
     # get nodes
     temp <-
       tidyr::unnest_legacy(tweet_df[, c("screen_name",
@@ -849,19 +850,25 @@ create_gexf <-
                            .drop = NA)
     temp2 <- temp %>%
       dplyr::mutate(nodelabel = screen_name) %>%
-      dplyr::rename(id = screen_name, attribute = user_id)
+      dplyr::rename(id = screen_name, attribute = user_id) %>%
+      select(id,nodelabel,attribute)
 
     temp3 <- temp %>%
       dplyr::rename(nodelabel = mentions_screen_name, attribute = mentions_user_id) %>%
       dplyr::mutate(id = nodelabel) %>%
-      dplyr::filter(!is.na(id))
+      dplyr::filter(!is.na(id)) %>%
+      select(id,nodelabel,attribute)
+
+
+
 
     nodes <-
-      unique(dplyr::full_join(temp2[, c("id", "nodelabel", "attribute")], temp3[, c("id", "nodelabel", "attribute")])) #consolidate nodes and remove duplicates
+      dplyr::bind_rows(temp2, temp3) %>%
+      unique() #consolidate nodes and remove duplicates
 
     nodeatt <- as.data.frame(nodes$attribute)
     nodes <- nodes[, c("id", "nodelabel")]
-
+    message(paste(nrow(nodes), "nodes"))
 
     #get edges
     edges <-
@@ -878,8 +885,9 @@ create_gexf <-
 
     edgeatt <- as.data.frame(edges$attribute)
     edges <- edges[, c("source", "target")]
+    message(paste(nrow(edges), "edges"))
 
-
+    message ("Creating gexf file. This might take a while...")
     #write gexf file
     rgexf::write.gexf(
       nodes = nodes,
