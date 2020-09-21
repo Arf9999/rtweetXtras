@@ -45,7 +45,7 @@ hashtagcloud <- function (rtweet_timeline_df, num_words = 200) {
     max.words = num_words,
     random.order = FALSE,
     rot.per = 0.35,
-    colors = brewer.pal(8, "Dark2")
+    colors = brewer.pal(8, "Paired")
   )
 }
 

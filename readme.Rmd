@@ -1,7 +1,7 @@
 ---
 title: "rtweetXtras"
 author: "Andrew fraser"
-date: "31/03/2020"
+date: "21/09/2020"
 output: md_document
 
 ---
@@ -93,6 +93,8 @@ The package includes some additional tools and wrappers for rtweet functions:
 `create_gexf` creates a gexf file for export to Gephi for visualisation. 
 
 `write_csv_compatible` saves a csv file of an rtweet tibble with a modified "text" column to include "RT @retweet_screen_name: " for all Retweets. Original text column is saved as additional column "text2"
+
+
 
 
 
