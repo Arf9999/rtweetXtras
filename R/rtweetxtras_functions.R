@@ -73,6 +73,7 @@ bar_plot_mentions <-
     require("quanteda", quietly = TRUE)
     require("RcppParallel", quietly = TRUE)
     require("rtweet", quietly = TRUE)
+    require("viridisLite", quietly = TRUE)
 
 
     if (is.null(title)) {
@@ -109,21 +110,22 @@ bar_plot_mentions <-
 
     ##plot chart
     ggplot(bars_to_plot, aes(
-      x = reorder(feature, frequency, desc),
-      y = frequency,
+      y = reorder(feature, frequency),
+      x = frequency,
       fill = feature
     )) +
-      geom_bar(stat = "identity") +
+      geom_bar(stat = "identity", color = "grey") +
       ggtitle(title) +
       theme_classic() +
+      scale_fill_viridis_d(option = "plasma", alpha = .8)+
       theme(legend.position = "none") +
-      xlab("mentioned screen_names") +
+      ylab("mentioned screen_names") +
+      xlab ("frequency")+
       theme(
-        axis.text.x = element_text(
+        axis.text.x = element_text(hjust = 1,
           face = "plain",
           colour = "black",
-          size = 10,
-          angle = 90
+          size = 10
         ),
         axis.text.y = element_text(
           face = "plain",
@@ -1121,7 +1123,6 @@ prepare_got <- function() {
 #'@description Uses status_id to request full {rtweet} tibble of tweet data
 #'@keywords twitter, getoldtweets3, rtweet
 #'@export
-#'@examples
 ###############################################################################
 rehydrate_got3_statuses <-
   function(got3_df,
