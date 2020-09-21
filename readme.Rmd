@@ -1,6 +1,6 @@
 ---
 title: "rtweetXtras"
-author: "Andrew fraser"
+author: "Andrew Fraser"
 date: "21/09/2020"
 output: md_document
 
