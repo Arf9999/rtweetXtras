@@ -7,6 +7,9 @@ A collection of helper functions for twitter analysis using the {rtweet}
 package. NB: these functions have MANY dependencies… no warranty is
 offered, but please feel free to log issues.
 
+To install the package, use the {remotes} or {devtools} package:
+`remotes::install_github("arf9999/rtweetXtras")`
+
 ### hashtagcloud
 
 `hashtagcloud(rtweet_timeline_df, num_words = 200)`
@@ -65,7 +68,7 @@ order.
      fm <- rtweetXtras::common_follower_matrix(rstats_list, follower_depth = 200, token = NULL)
      dplyr::glimpse(fm)
 
-    ## Rows: 858
+    ## Rows: 857
     ## Columns: 9
     ## $ screen_name       <chr> "noraamcintyre", "theariffrank", "KhizrahKk", "tric…
     ## $ user_id           <chr> "474042503", "950270090590617602", "732584991192940…

@@ -17,6 +17,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 A collection of helper functions for twitter analysis using the {rtweet} package. NB: these functions have MANY dependencies... no warranty is offered, but please feel free to log issues.
 
+To install the package, use the {remotes} or {devtools} package:
+`remotes::install_github("arf9999/rtweetXtras")`
+
 
 ### hashtagcloud
 `hashtagcloud(rtweet_timeline_df, num_words = 200)`   
