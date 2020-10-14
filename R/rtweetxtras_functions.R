@@ -1099,21 +1099,7 @@ check_shadowban_list <- function(user_list, timezone = "UTC") {
   purrr::map_df(user_list, check_shadowban, timezone)
 }
 
-#############################################################################
-#'@title Run once function to setup call to Python Library for GetOldTweets3
-#'
-#'@description Ensures that {reticulate} library in stalled and GOT3 library is installed
-#'@keywords twitter, getoldtweets3,
-#'@export
-#'@examples
-#'prepare_got()
-###############################################################################
-prepare_got <- function() {
-  require(reticulate)
-  library(reticulate)
 
-  reticulate::conda_install(packages = "GetOldTweets3", pip = TRUE)
-}
 
 #############################################################################
 #'@title Function to rehydrate tweets into rtweet tibbles from GOT3 data format
@@ -1289,67 +1275,7 @@ rehydrate_got3_statuses <-
 
   }
 
-#############################################################################
-#'@title Wrapper to undertake historical searches calling Python GetOldTweets3 library
-#'@param search_string A search string (in quotes)
-#'@param since_date Start date for the search
-#'@param until_date Latest date for the search (NB: search works backward)
-#'@param n Maximum number of results
-#'@param output_file_name temporary name of GOT3 csv file - date will be appended.
-#'@param token An OAuth token loaded in the environment for twitter's Standard API (REQUIRED if a list of tokens is not supplied)
-#'@param token_list A list of OAuth tokens loaded in the environment (REQUIRED if token is not specified)
-#'@description Uses status_id to request full {rtweet} tibble of tweet data
-#'@keywords twitter, getoldtweets3, rtweet
-#'@export
-#'@examples
-#'test <- got_search("Trump", since_date = "2016-09-06", until_date = "2016-11-06", n = 1000, output_file_name = "test_", token = my_token)
-###############################################################################
 
-got_search <-
-  function(search_string,
-           since_date,
-           until_date,
-           n = 100,
-           output_file_name,
-           token = NULL,
-           token_list = NULL) {
-    require(rtweet, quietly = TRUE)
-    require(readr, quietly = TRUE)
-    require(dplyr, quietly = TRUE)
-
-    output_path <- paste0(output_file_name, Sys.Date(), ".csv")
-    system(
-      paste0(
-        "GetOldTweets3 --querysearch \"",
-        search_string,
-        "\" --since ",
-        since_date,
-        " --until ",
-        until_date,
-        " --maxtweets ",
-        n,
-        " --output \"",
-        output_path,
-        "\""
-      )
-    )
-
-    ##convert to tibble
-    got_file <- readr::read_csv(output_path,
-                                col_types = cols(id = col_character())) %>%
-      dplyr::mutate(date = as.Date(date)) %>%
-      dplyr::filter((date <= until_date) & (date >= since_date)) %>%
-      dplyr::distinct(id, .keep_all = TRUE)
-
-    message(paste(nrow(got_file), "tweets after ads and duplications removed"))
-
-    output <-
-      rtweetXtras::rehydrate_got3_statuses(got_file, token = token, token_list = token_list)
-
-    return(output)
-
-
-  }
 
 #############################################################################
 #'@title Wrapper to undertake historical searches calling Python snscrape library.
@@ -1361,7 +1287,7 @@ got_search <-
 #'@param token An OAuth token loaded in the environment for twitter's Standard API (if not specified, default token will be used)
 #'@param token_list A list of OAuth tokens loaded in the environment (REQUIRED if token is not specified)
 #'@param delete_tempfile Clear temp file of statuses default = TRUE
-#'@description Calls Python script to pull staus URLs of a search, rtweet to rehdrate those statuses.
+#'@description Calls Python script to pull status URLs of a search, rtweet to rehdrate those statuses.
 #'            See https://github.com/JustAnotherArchivist/snscrape
 #'@keywords twitter, snscrape, rtweet
 #'@export
@@ -1375,7 +1301,7 @@ snscrape_search <- function(search_string, #search terms in quotes
           n = 100, #max number of statuses to retrieve. Fewer than 90K recommend due to rate-limiting
           file = "temp", #temporary name for snscrape text file
           token = NULL, #specify token if required
-          delete_tempfile = TRUE) #delete text file od statuses
+          delete_tempfile = TRUE) #delete text file of statuses
 {
   require(rtweet, quietly = TRUE)
   require(readr, quietly = TRUE)
