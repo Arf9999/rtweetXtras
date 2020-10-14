@@ -1369,7 +1369,7 @@ got_search <-
 #'test <- snscrape_search("Trump", since_date = "2016-09-06", until_date = "2016-11-06", n = 1000, file = "test_", token = my_token)
 ###############################################################################
 
-function (search_string, #search terms in quotes
+snscrape_search <- function(search_string, #search terms in quotes
           since_date = NULL, #optional iso date in quotes
           until_date = NULL, #optional iso date in quotes
           n = 100, #max number of statuses to retrieve. Fewer than 90K recommend due to rate-limiting
