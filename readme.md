@@ -68,24 +68,24 @@ order.
      fm <- rtweetXtras::common_follower_matrix(rstats_list, follower_depth = 200, token = NULL)
      dplyr::glimpse(fm)
 
-    ## Rows: 833
+    ## Rows: 835
     ## Columns: 9
-    ## $ screen_name       <chr> "MatthiasSiewert", "reynolds_tony1", "andres_martig…
-    ## $ user_id           <chr> "4845525262", "1313829145902710784", "8159758253130…
+    ## $ screen_name       <chr> "NWittstock7", "MatthiasSiewert", "reynolds_tony1",…
+    ## $ user_id           <chr> "875581957547057154", "4845525262", "13138291459027…
     ## $ hadleywickham     <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
-    ## $ dataandme         <dbl> 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, …
-    ## $ juliasilge        <dbl> 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
-    ## $ statgarrett       <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, …
-    ## $ thomasp85         <dbl> 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, …
-    ## $ sum_intersections <dbl> 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, …
-    ## $ ranking           <int> 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, …
+    ## $ dataandme         <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, …
+    ## $ juliasilge        <dbl> 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+    ## $ statgarrett       <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, …
+    ## $ thomasp85         <dbl> 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, …
+    ## $ sum_intersections <dbl> 5, 5, 5, 5, 5, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, …
+    ## $ ranking           <int> 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, …
 
 ### account\_activity
 
 `account_activity(account_name, depth = 3200, time_zone = "Africa/Johannesburg", no_of_weeks = 4,  token = NULL)`  
 This function creates a bubble plot of account activity by hour of a
 single twitter screen\_name  
-(inspired by python script by twitter user “@Conspirator0”)
+(inspired by python script by twitter user “\[@Conspirator0\]”)
 
      rtweetXtras::account_activity("arfness", depth = 1000, time_zone = "Africa/Johannesburg", no_of_weeks = 5, token = NULL)
 
@@ -114,8 +114,8 @@ visualisation software. This is not being maintained - replaced by
 `create_gexf` creates a gexf file for export to Gephi for visualisation.
 
 `write_csv_compatible` saves a csv file of an rtweet tibble with a
-modified “text” column to include “RT @retweet\_screen\_name:” for all
-Retweets. Original text column is saved as additional column “text2”
+modified “text” column to include “RT \[@retweet\_screen\_name\]:” for
+all Retweets. Original text column is saved as additional column “text2”
 
 `snscrape_search` is a function that uses the Python snscrape library to
 search historical twitter. Python 3.8 and snscrape need to be installed.
@@ -123,5 +123,14 @@ See
 <a href="https://github.com/JustAnotherArchivist/snscrape" class="uri">https://github.com/JustAnotherArchivist/snscrape</a>
 for more information.
 
+`snscrape_get_timeline` is a function that uses Python snscrape library
+to pull a twitter user timeline, and rtweet to rehydrate it. Note:
+Currently, unlike `rtweet::get_timeline()`, no retweets are captured,
+and there is no API limitation of 3200 statuses as snscrape uses the web
+search facility of twitter.
+
 `check_shadowban` is a function to check whether an account has been
 temporarily suppressed from search or display results by Twitter.
+
+`check_shadowban_list` allows a list of twitter handles to be passed to
+`check_shadowban`
