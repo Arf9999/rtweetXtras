@@ -1281,11 +1281,10 @@ rehydrate_got3_statuses <-
 #'@title Wrapper to undertake historical searches calling Python snscrape library.
 #'@param search_string A search string (in quotes)
 #'@param since_date Start date for the search (iso format date in quotes)
-#'@param until_date Latest date for the search (iso formatdate in quotes NB: search works backward)
+#'@param until_date Latest date for the search (iso format date in quotes NB: search works backward)
 #'@param n Maximum number of results - twitter API has 90k rate-limit per 15 minutes
 #'@param file temporary file name for snscrape URL list, timestamp will be appended.
 #'@param token An OAuth token loaded in the environment for twitter's Standard API (if not specified, default token will be used)
-#'@param token_list A list of OAuth tokens loaded in the environment (REQUIRED if token is not specified)
 #'@param delete_tempfile Clear temp file of statuses default = TRUE
 #'@description Calls Python script to pull status URLs of a search, rtweet to rehdrate those statuses.
 #'            See https://github.com/JustAnotherArchivist/snscrape
@@ -1342,5 +1341,54 @@ snscrape_search <- function(search_string, #search terms in quotes
 
   return(temp_rehydration)
 
+}
+
+#############################################################################
+#'@title Wrapper to pull the timeline of a user
+#'@param screen_name AA twitter username/handle (no"@" required) or user_id (in quotes)
+#'@param n Maximum number of results - twitter API has 90k rate-limit per 15 minutes
+#'@param file temporary file name for snscrape URL list, timestamp will be appended.
+#'@param token An OAuth token loaded in the environment for twitter's Standard API (if not specified, default token will be used)
+#'@param delete_tempfile Clear temp file of statuses default = TRUE
+#'@description Calls Python script to pull status URLs of a user search, rtweet to rehdrate those statuses.
+#'            See https://github.com/JustAnotherArchivist/snscrape
+#'@keywords twitter, snscrape, rtweet
+#'@export
+#'@examples
+#'test <- snscrape_get_timeline("Jack",  n = 1000, file = "test_")
+###############################################################################
+
+snscrape_get_timeline <- function (screen_name,
+                                   n = 100,
+                                   file = "temp",
+                                   token = NULL,
+                                   delete_tempfile = TRUE)
+{
+  require(rtweet, quietly = TRUE)
+  require(readr, quietly = TRUE)
+  require(dplyr, quietly = TRUE)
+
+
+  output_path <- paste0(file, as.numeric(Sys.time()), ".txt")
+
+  ##call Python scraper
+  system(paste0("snscrape -n ", n," twitter-user ", screen_name,
+                " > ", output_path))
+
+  ##import status_ids from text file
+  scrape_timeline <-  read_delim(output_path, "/", escape_double = FALSE,
+                                 col_names = FALSE,
+                                 col_types = cols(X2 = col_skip(),
+                                                  X1 = col_skip(), X3 = col_skip(),
+                                                  X5 = col_skip(), X6 = col_character()),
+                                 trim_ws = TRUE) %>%
+    dplyr::rename(screen_name = X4,
+                  status_id = X6) %>%
+    dplyr::distinct(status_id, .keep_all = TRUE)
+
+  message(paste(nrow(scrape_timeline), "status URLS captured, rehydrating timeline..."))
+  timeline_rehydration <- rtweet::lookup_statuses(scrape_timeline$status_id, token = token)
+
+  return(timeline_rehydration)
 }
 

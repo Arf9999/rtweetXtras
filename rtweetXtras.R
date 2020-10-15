@@ -39,6 +39,8 @@
 #'       Rehydrates data from GetOldTweets3 python package to conform to rtweet dataframe.
 #' @section snscrape_search function
 #'        Wrapper to undertake historical twitter searches calling Python snscrape library.
+#' @section snscrape_get_timeline function
+#'        Wrapper to pull user timeline (excluding retweets) via snscrape Python script.
 #' @docType package
 #' @name rtweetXtras
 NULL
