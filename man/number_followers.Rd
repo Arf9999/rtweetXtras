@@ -11,6 +11,7 @@ number_followers(follower_df)
 }
 \description{
 This function consolidates the process of numbering followers and indicating earliest following date.
+WARNING: Obviously not accurate for dates prior to the creation of the target account - manual adjustment required.
 requires an rtweet dataframe as returned by a combination of get_followers() and lookup_users().
 }
 \examples{

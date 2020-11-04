@@ -12,14 +12,15 @@ NB:Only tested with a single account: iterating tokens may not work effectively 
 however, using lapply or purrr::map to iterate over user accounts is feasible.}
 
 \item{token_list}{Optional. A list of valid tokens loaded into environment. Not specifying will use the default token.
-If multiple tokens are specified, function will iterate through them to reduce ratelimit pauses for followings larger than 75000
+If multiple tokens are specified, function will iterate through them to reduce rate-limit pauses for followings larger than 75000
 NB: this may be contrary to Twitter's API terms and conditions - so use at own risk.}
 
 \item{file_path}{Optional. If specified, an rds file will be saved to the file path in the form <file_path><account_for_foll>_followers.rds
 #'@keywords twitter, rtweet}
 }
 \description{
-This function consolidates the process of getting followers and looking up the user details.
+This function consolidates the process of getting followers and looking up the user details,
+It also adds a column for follower number, the earliest follow date and the account screen_name being followed.
 }
 \examples{
 jacks_followers <- get_followers_fast("jack",token_list = c(token1,token2), file_path = "~/")

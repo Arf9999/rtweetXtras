@@ -4,7 +4,7 @@
 \alias{get_friends_fast}
 \title{Wrapper for rtweet::get_friends and rtweet::lookup_users}
 \usage{
-get_friends_fast(account_for_friend, token_list = c(NULL), file_path = "~/")
+get_friends_fast(account_for_friend, token_list = c(NULL), file_path = NULL)
 }
 \arguments{
 \item{account_for_friend}{Required. The target twitter account user_id or screen_name - in quotes.
@@ -20,6 +20,7 @@ NB: this may be contrary to Twitter's API terms and conditions - so use at own r
 }
 \description{
 This function consolidates the process of getting friends and looking up the user details.
+Additional columns are created for account friendship reference, friend_no, and  earliest friendship date.
 }
 \examples{
 jacks_friends <- get_friends_fast("jack",token_list = c(token1,token2), file_path = "~/")
