@@ -1584,7 +1584,7 @@ follower_dot_plot <- function(follower_df,
           begin = 0.1,
           end = 0.9,
           option = viridis_option,
-          labels = comma
+          if(!(point_colour %in% c("source", "lang")))labels = comma
         )
     } +
     {
