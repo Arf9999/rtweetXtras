@@ -41,6 +41,8 @@
 #'        Wrapper to undertake historical twitter searches calling Python snscrape library.
 #' @section snscrape_get_timeline function
 #'        Wrapper to pull user timeline (excluding retweets) via snscrape Python script.
+#' @section follower_dot_plot function
+#'        Build ggplot chart of followers mapping account creation date to following order.
 #' @docType package
 #' @name rtweetXtras
 NULL
