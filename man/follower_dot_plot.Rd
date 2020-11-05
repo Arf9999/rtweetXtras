@@ -40,8 +40,7 @@ Useful if there is a concentration of small values that makes it
 difficult to see any graduation. Ignored for categorical and date scales.}
 
 \item{viridis_option}{Sets the viridis colour palette. Default is "magma"
-Options are "viridis", "plasma", "magma", "inferno" and "cividis"
-#'@keywords twitter, rtweet, rtweetXtras, ggplot}
+Options are "viridis", "plasma", "magma", "inferno" and "cividis"}
 }
 \description{
 This builds a ggplot2 scatter plot with the creation date of twitter followers mapped to the order in which they followed.
@@ -52,3 +51,7 @@ Optionally, a loess smoothed curve and/or a linear model can be overlaid to anal
 arfness_followers <- rtweetXtras::get_followers_fast("arfness", file_path = "~/")
 follower_dot_plot (arfness_followers, point_colour = "followers_count", show_legend = TRUE, log_transform =TRUE)
 }
+\keyword{ggplot}
+\keyword{rtweet,}
+\keyword{rtweetXtras,}
+\keyword{twitter,}

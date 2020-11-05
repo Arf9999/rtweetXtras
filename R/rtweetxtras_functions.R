@@ -1473,7 +1473,7 @@ snscrape_get_timeline <- function (screen_name,
 #'difficult to see any graduation. Ignored for categorical and date scales.
 #'@param viridis_option Sets the viridis colour palette. Default is "magma"
 #'Options are "viridis", "plasma", "magma", "inferno" and "cividis"
-#'#'@keywords twitter, rtweet, rtweetXtras, ggplot
+#'@keywords twitter, rtweet, rtweetXtras, ggplot
 #'@export
 #'@examples
 #'arfness_followers <- rtweetXtras::get_followers_fast("arfness", file_path = "~/")
