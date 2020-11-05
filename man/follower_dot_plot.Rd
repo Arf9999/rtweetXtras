@@ -44,7 +44,7 @@ Options are "viridis", "plasma", "magma", "inferno" and "cividis"}
 }
 \description{
 This builds a ggplot2 scatter plot with the creation date of twitter followers mapped to the order in which they followed.
-Various options of dot colouring are available to examone the follower's attributes.
+Various options of dot colouring are available to examine the follower's attributes.
 Optionally, a loess smoothed curve and/or a linear model can be overlaid to analyse the change in follower creation dates over time.
 }
 \examples{
