@@ -68,17 +68,17 @@ order.
      fm <- rtweetXtras::common_follower_matrix(rstats_list, follower_depth = 200, token = NULL)
      dplyr::glimpse(fm)
 
-    ## Rows: 881
+    ## Rows: 869
     ## Columns: 9
-    ## $ screen_name       <chr> "AnalyticsMn", "kjethauk", "htoyos", "abrcunha", "D…
-    ## $ user_id           <chr> "1317986654280388609", "2474310019", "229522986", "…
-    ## $ hadleywickham     <dbl> 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
-    ## $ dataandme         <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
-    ## $ juliasilge        <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, …
-    ## $ statgarrett       <dbl> 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, …
-    ## $ thomasp85         <dbl> 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, …
-    ## $ sum_intersections <dbl> 5, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …
-    ## $ ranking           <int> 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …
+    ## $ screen_name       <chr> "Dunson30612519", "AnalyticsMn", "pisanoontweet", "…
+    ## $ user_id           <chr> "1239237087548891136", "1317986654280388609", "1918…
+    ## $ hadleywickham     <dbl> 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, …
+    ## $ dataandme         <dbl> 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+    ## $ juliasilge        <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, …
+    ## $ statgarrett       <dbl> 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, …
+    ## $ thomasp85         <dbl> 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, …
+    ## $ sum_intersections <dbl> 5, 5, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …
+    ## $ ranking           <int> 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …
 
 ### account\_activity
 
@@ -91,20 +91,38 @@ single twitter screen\_name
 
 ![](readme_files/figure-markdown_strict/account_activity-1.png)
 
+### follower\_dot\_plot
+
+`follower_dot_plot(follower_df, point_colour = "statuses_count", show_legend = TRUE, suppress_warnings = TRUE, include_loess_smooth = FALSE, include_lm = FALSE, print_immediately = TRUE, log_transform = FALSE, viridis_option = "magma")`
+
+This builds a ggplot2 scatter plot with the creation date of twitter
+followers mapped to the order in which they followed. Various options of
+dot colouring are available to examine the follower’s attributes.
+Optionally, a loess smoothed curve and/or a linear model can be overlaid
+to analyse the change in follower creation dates over time.
+
+    arfness_followers <- rtweetXtras::get_followers_fast("arfness")
+
+    ## [1] "arfness follower count = 4881"
+    ## [1] "followers captured: 4880 out of 4881"
+
+    rtweetXtras::follower_dot_plot(arfness_followers, point_colour = "earliest_follow")
+
+![](readme_files/figure-markdown_strict/follower_dot_plot-1.png)
+
 ### Other functions
 
 The package includes some additional tools and wrappers for rtweet
 functions:
 
 `get_followers_fast` and `get_friends_fast` wrap rtweet functions to
-deliver a tibble of followers/friends that includes user details. In
-addition it is possible to pass a list of tokens to the function to
+deliver a tibble of followers/friends that includes user details. The
+order of friendship and following is added as separate column, the
+account name being followed, befriended is added as a column, and the
+earliest following or befriending date is added as a column.  
+In addition it is possible to pass a list of tokens to the function to
 manage ratelimiting when querying accounts with large
 following/friendship.
-
-`number_followers` allocates a number to the following order in a tibble
-of followers, and adds a column that indicates the earliest possible
-following date.
 
 `rtweet_net` and `save_csv_edgelist` are functions to create an igraph
 network and to save that as an edgelist for use in external

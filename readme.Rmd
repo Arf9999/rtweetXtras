@@ -81,13 +81,23 @@ This function creates a bubble plot of account activity by hour of a single twit
  rtweetXtras::account_activity("arfness", depth = 1000, time_zone = "Africa/Johannesburg", no_of_weeks = 5, token = NULL)
 ```
 
+### follower\_dot\_plot
+
+`follower_dot_plot(follower_df, point_colour = "statuses_count", show_legend = TRUE, suppress_warnings = TRUE, include_loess_smooth = FALSE, include_lm = FALSE, print_immediately = TRUE, log_transform = FALSE, viridis_option = "magma")`
+
+This builds a ggplot2 scatter plot with the creation date of twitter followers mapped to the order in which they followed. Various options of dot colouring are available to examine the follower's attributes. Optionally, a loess smoothed curve and/or a linear model can be overlaid to analyse the change in follower creation dates over time.
+
+```{r follower_dot_plot, message=FALSE, warning=FALSE, paged.print=FALSE}
+arfness_followers <- rtweetXtras::get_followers_fast("arfness")
+rtweetXtras::follower_dot_plot(arfness_followers, point_colour = "earliest_follow")
+```
+
 ### Other functions
 
 The package includes some additional tools and wrappers for rtweet functions:
 
-`get_followers_fast` and `get_friends_fast` wrap rtweet functions to deliver a tibble of followers/friends that includes user details. In addition it is possible to pass a list of tokens to the function to manage ratelimiting when querying accounts with large following/friendship.
-
-`number_followers` allocates a number to the following order in a tibble of followers, and adds a column that indicates the earliest possible following date.
+`get_followers_fast` and `get_friends_fast` wrap rtweet functions to deliver a tibble of followers/friends that includes user details. The order of friendship and following is added as separate column, the account name being followed, befriended is added as a column, and the earliest following or befriending date is added as a column.\
+In addition it is possible to pass a list of tokens to the function to manage ratelimiting when querying accounts with large following/friendship.
 
 `rtweet_net` and `save_csv_edgelist` are functions to create an igraph network and to save that as an edgelist for use in external visualisation software. This is not being maintained - replaced by `create_gexf`
 
