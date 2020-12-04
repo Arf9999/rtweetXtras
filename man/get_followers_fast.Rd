@@ -23,5 +23,5 @@ This function consolidates the process of getting followers and looking up the u
 It also adds a column for follower number, the earliest follow date and the account screen_name being followed.
 }
 \examples{
-jacks_followers <- get_followers_fast("jack",token_list = c(token1,token2), file_path = "~/")
+jacks_followers <- get_followers_fast("arfness",token_list = c(NULL), file_path = "~/")
 }

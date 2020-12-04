@@ -23,5 +23,5 @@ This function consolidates the process of getting friends and looking up the use
 Additional columns are created for account friendship reference, friend_no, and  earliest friendship date.
 }
 \examples{
-jacks_friends <- get_friends_fast("jack",token_list = c(token1,token2), file_path = "~/")
+jacks_friends <- get_friends_fast("arfness",token_list = c(NULL), file_path = "~/")
 }

@@ -438,7 +438,7 @@ account_activity <- function(account_name,
 #'@keywords twitter, rtweet, visualization, network, igraph
 #'@export
 #'@examples
-#'tweets <- search_tweets("#rstats", n= 100)
+#'tweets <- rtweet::search_tweets("#rstats", n= 100)
 #'network <- rtweet_net(tweets, all_mentions = TRUE, from_threshold =2)
 #'plot(network)
 
@@ -552,7 +552,7 @@ save_csv_edgelist <- function(igraphobject, path) {
 #'#'@keywords twitter, rtweet
 #'@export
 #'@examples
-#'jacks_followers <- get_followers_fast("jack",token_list = c(token1,token2), file_path = "~/")
+#'jacks_followers <- get_followers_fast("arfness",token_list = c(NULL), file_path = "~/")
 
 get_followers_fast <-
   function(account_for_foll,
@@ -710,7 +710,7 @@ get_followers_fast <-
 #'#'@keywords twitter, rtweet
 #'@export
 #'@examples
-#'jacks_friends <- get_friends_fast("jack",token_list = c(token1,token2), file_path = "~/")
+#'jacks_friends <- get_friends_fast("arfness",token_list = c(NULL), file_path = "~/")
 
 get_friends_fast <-
   function(account_for_friend,
@@ -1351,7 +1351,7 @@ rehydrate_got3_statuses <-
 #'@keywords twitter, snscrape, rtweet
 #'@export
 #'@examples
-#'test <- snscrape_search("Trump", since_date = "2016-09-06", until_date = "2016-11-06", n = 1000, file = "test_", token = my_token)
+#'test <- snscrape_search("Trump", since_date = "2016-09-06", until_date = "2016-11-06", n = 1000, file = "test_", token = NULL)
 ###############################################################################
 
 snscrape_search <- function(search_string, #search terms in quotes
@@ -1570,7 +1570,7 @@ follower_dot_plot <- function(follower_df,
         geom_point(alpha = 0.3, aes(colour = eval(as.name(point_colour))))
     } +
     {
-      if (!discrete_colours)
+      if (!discrete_colours & point_colour != "earliest_follow")
         scale_color_viridis_c(
           begin = 0.1,
           end = 0.9,

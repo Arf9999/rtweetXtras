@@ -34,7 +34,7 @@ Calls Python script to pull status URLs of a search, rtweet to rehdrate those st
            See https://github.com/JustAnotherArchivist/snscrape
 }
 \examples{
-test <- snscrape_search("Trump", since_date = "2016-09-06", until_date = "2016-11-06", n = 1000, file = "test_", token = my_token)
+test <- snscrape_search("Trump", since_date = "2016-09-06", until_date = "2016-11-06", n = 1000, file = "test_", token = NULL)
 }
 \keyword{rtweet}
 \keyword{snscrape,}

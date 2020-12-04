@@ -26,7 +26,7 @@ This function creates an igraph network graph from a tibble of tweets details cr
    (e.g. search_tweets, get_timeline, parse_stream, lookup_statuses, lookup_tweets etc.)
 }
 \examples{
-tweets <- search_tweets("#rstats", n= 100)
+tweets <- rtweet::search_tweets("#rstats", n= 100)
 network <- rtweet_net(tweets, all_mentions = TRUE, from_threshold =2)
 plot(network)
 }
