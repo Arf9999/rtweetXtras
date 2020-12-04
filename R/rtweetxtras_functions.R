@@ -1593,7 +1593,8 @@ follower_dot_plot <- function(follower_df,
           begin = 0.1,
           end = 0.9,
           option = viridis_option,
-          labels = lubridate::as_date
+          #labels = lubridate::as_date
+          trans = "date"
         )
     } +
     labs(
