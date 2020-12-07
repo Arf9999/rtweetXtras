@@ -720,6 +720,7 @@ get_friends_fast <-
     require(dplyr, quietly = TRUE)
     require(purrr, quietly = TRUE)
     require(lubridate, quietly = TRUE)
+    require(stringr, quietly = TRUE)
 
     friend_count <-
       as.numeric(tryCatch(
@@ -1638,7 +1639,7 @@ follower_dot_plot <- function(follower_df,
 #'@param title Chart title (in quotes)
 #'@param print_immediately Force the function to print the plot immediately. Default is TRUE,
 #'set to FALSE to assign the object (an HTML widget)
-#'@keywords twitter, rtweet, rtweetXtras, echarts, echarts4r
+#'@keywords twitter, rtweet, rtweetXtras, echarts, echarts4r, interactive
 #'@export
 #'@examples
 #'df1 <- rtweet::searchtweets("micky mouse", n= 100)
@@ -1683,7 +1684,7 @@ scatter_ts_interactive <-function(df,
         (is_quote == TRUE) ~ "Quote",
         TRUE ~ "Tweet"
       )) %>%
-      dplyr::mutate(text2 =  str_c(screen_name, text, sep = ":")) %>%
+      dplyr::mutate(text2 = stringr::str_c(screen_name, text, sep = ":")) %>%
       dplyr::relocate(tweet_type) %>%
       dplyr::ungroup() %>%
       dplyr::group_by(tweet_type) %>%
