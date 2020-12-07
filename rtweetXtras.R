@@ -1,7 +1,10 @@
 #' rtweetXtras: Additional Analysis Functions for rtweet
 #'
 #' The rtweetXtras package includes the following functions:
-#' hashtagcloud, profilecloud, bar_plot_mentions, common_follower_analysis, account_activity, rtweet_net, save_csv_edgelist, get_followers_fast, create_gexf
+#' hashtagcloud, profilecloud, bar_plot_mentions, common_follower_analysis,
+#' account_activity, rtweet_net, save_csv_edgelist, get_followers_fast, create_gexf,
+#' check_shadowban, check_shadowban_list, rehydrate_got3_statuses, snscrape_search,
+#' snscrape_get_timeline, follower_dot_plot, scatter_ts_interactive.
 #'
 #' @section hashtagcloud function
 #'     This function creates a wordcloud (defaults to 200 terms) from terms in the "hashtags" column of an rtweet tibble of tweets
@@ -43,6 +46,8 @@
 #'        Wrapper to pull user timeline (excluding retweets) via snscrape Python script.
 #' @section follower_dot_plot function
 #'        Build ggplot chart of followers mapping account creation date to following order.
+#' @section scatter_ts_interactive function
+#'        Interactive timeline visualisation for rtweet dataset using Apache echarts
 #' @docType package
 #' @name rtweetXtras
 NULL

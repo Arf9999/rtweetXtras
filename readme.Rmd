@@ -92,6 +92,18 @@ arfness_followers <- rtweetXtras::get_followers_fast("arfness")
 rtweetXtras::follower_dot_plot(arfness_followers, point_colour = "earliest_follow")
 ```
 
+### scatter\_ts\_interactive
+
+`scatter_ts_interactive(df, title = "", print_immediately = TRUE)`
+
+Builds an interactive timeline of tweets indicating time of tweet, author, type (tweet, retweet, quote, reply), and rate of tweets (posts per second) - posts per second is calculated as moving average over 10 tweets. Posts per second are calculated separately for content tweets (tweets, quotes and replies) and copy tweets (retweets). Output is an Apache echarts HTML widget.
+
+```{r scatter_ts_interactive, message = FALSE, warning= FALSE, paged.print=FALSE}
+
+mickey <- rtweet::search_tweets("Mickey Mouse", n = 100)
+rtweetXtras::scatter_ts_interactive(mickey, title = "100 tweets about Mickey Mouse")
+```
+
 ### Other functions
 
 The package includes some additional tools and wrappers for rtweet functions:

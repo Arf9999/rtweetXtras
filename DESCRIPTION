@@ -1,6 +1,6 @@
 Package: rtweetXtras
 Title: Extra Analysis Functions for rtweet package 
-Version: 0.2.5.0000
+Version: 0.3.0.0000
 Authors@R: 
     person(given = "Andrew",
            family = "Fraser",
@@ -23,7 +23,8 @@ Imports: dplyr,
          readr,
          reticulate,
          viridisLite,
-         scales
+         scales,
+         echarts4r
 License: CC0
 Encoding: UTF-8
 LazyData: true
