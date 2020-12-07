@@ -24,7 +24,8 @@ df1 <- rtweet::searchtweets("micky mouse", n= 100)
 scatter_ts_interactive (df1, title = "100 Micky Mouse tweets")
 }
 \keyword{echarts,}
-\keyword{echarts4r}
+\keyword{echarts4r,}
+\keyword{interactive}
 \keyword{rtweet,}
 \keyword{rtweetXtras,}
 \keyword{twitter,}
