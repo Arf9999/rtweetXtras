@@ -21,7 +21,7 @@ hashtagcloud <- function (rtweet_timeline_df, num_words = 200) {
   require(dplyr, quietly = TRUE)
   require(quanteda, quietly = TRUE)
   require(RcppParallel, quietly = TRUE)
-
+  require(quanteda.textstats, quietly = TRUE)
   require(RColorBrewer, quietly = TRUE)
   require(wordcloud, quietly = TRUE)
 
@@ -35,7 +35,7 @@ hashtagcloud <- function (rtweet_timeline_df, num_words = 200) {
     tolower = TRUE,
     remove = c(stopwords(), ",", ".", "-", "\"", "'", "(", ")", ";", ":")
   )
-  textFreq <- quanteda::textstat_frequency(dfmatrix)
+  textFreq <- quanteda.textstats::textstat_frequency(dfmatrix)
 
   set.seed(123456)
   wordcloud(
@@ -71,6 +71,7 @@ bar_plot_mentions <-
     require("dplyr", quietly = TRUE)
     require("ggplot2", quietly = TRUE)
     require("quanteda", quietly = TRUE)
+    require("quanteda.textstats", quietly = TRUE)
     require("RcppParallel", quietly = TRUE)
     require("rtweet", quietly = TRUE)
     require("viridisLite", quietly = TRUE)
@@ -103,7 +104,7 @@ bar_plot_mentions <-
     )## covert to a document-feature matrix
 
     textFreq <-
-      quanteda::textstat_frequency(dfmatrix) ##create df of featured screen_names and frequency
+      quanteda.textstats::textstat_frequency(dfmatrix) ##create df of featured screen_names and frequency
 
     bars_to_plot <-
       textFreq[1:no_of_bars] ## select number of bars in chart
@@ -153,8 +154,8 @@ profilecloud <- function (rtweet_timeline_df, num_words = 200) {
   require(rtweet, quietly = TRUE)
   require(dplyr, quietly = TRUE)
   require(quanteda, quietly = TRUE)
+  require(quanteda.textstats, quietly = TRUE)
   require(RcppParallel, quietly = TRUE)
-
   require(RColorBrewer, quietly = TRUE)
   require(wordcloud, quietly = TRUE)
 
@@ -193,7 +194,7 @@ profilecloud <- function (rtweet_timeline_df, num_words = 200) {
       "@"
     )
   )
-  textFreq <- quanteda::textstat_frequency(dfmatrix)
+  textFreq <- quanteda.textstats::textstat_frequency(dfmatrix)
 
   set.seed(123456)
   wordcloud(
