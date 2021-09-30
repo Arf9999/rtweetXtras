@@ -121,6 +121,10 @@ In addition it is possible to pass a list of tokens to the function to manage ra
 
 `snscrape_get_timeline` is a function that uses Python snscrape library to pull a twitter user timeline, and rtweet to rehydrate it. Note: Currently, unlike `rtweet::get_timeline()`, no retweets are captured, and there is no API limitation of 3200 statuses as snscrape uses the web search facility of twitter.
 
+`get_perspective` is a function to query the Google Perspective API to classify toxicity in text.  More information here: https://www.perspectiveapi.com/ NB: A Google Cloud API key is required to use this function. Instructions on how to set it up are here: https://developers.perspectiveapi.com/s/docs-get-started
+
+`perspective_rtweet` Queries the text from an rtweet dataframe, sequentially by row, using the `get_perspective` function. A Perspective API key is required. In addition, the number of queries per second can be set if this has been negotiated with the Perspective team.  
+
 `check_shadowban` is a function to check whether an account has been temporarily suppressed from search or display results by Twitter.
 
 `check_shadowban_list` allows a list of twitter handles to be passed to `check_shadowban`

@@ -1,7 +1,6 @@
 ![Alt text](rtweetXtrashex.png)
 
-rtweetXtras
-===========
+# rtweetXtras
 
 A collection of helper functions for twitter analysis using the {rtweet}
 package. NB: these functions have MANY dependencies… no warranty is
@@ -48,7 +47,7 @@ Defaults to top twenty mentioned accounts.
 `common_follower_analysis (user_list, follower_depth = 200, no_of_sets = 7, token = NULL)`  
 This function creates an UpSetR graph of common followers Code cribbed
 from Bob Rudis’ 21 Recipes for Mining Twitter with Rtweet
-<a href="https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html" class="uri">https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html</a>
+<https://rud.is/books/21-recipes/visualizing-intersecting-follower-sets-with-upsetr.html>
 
      rstats_list <- c("hadleywickham", "dataandme", "juliasilge", "statgarrett","thomasp85")
      
@@ -68,17 +67,17 @@ order.
      fm <- rtweetXtras::common_follower_matrix(rstats_list, follower_depth = 200, token = NULL)
      dplyr::glimpse(fm)
 
-    ## Rows: 862
+    ## Rows: 881
     ## Columns: 9
-    ## $ screen_name       <chr> "Sujay59188677", "qimo2099", "Burcuerbn", "richyejk…
-    ## $ user_id           <chr> "1080140151362330625", "1329384005561688065", "7655…
-    ## $ hadleywickham     <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, …
-    ## $ dataandme         <dbl> 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, …
-    ## $ juliasilge        <dbl> 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
-    ## $ statgarrett       <dbl> 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, …
-    ## $ thomasp85         <dbl> 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
-    ## $ sum_intersections <dbl> 5, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …
-    ## $ ranking           <int> 1, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …
+    ## $ screen_name       <chr> "futurefoci", "alhaji_iddi9", "Electri14295894", "sa…
+    ## $ user_id           <chr> "2878451497", "1442214912671944709", "14384027980816…
+    ## $ hadleywickham     <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0…
+    ## $ dataandme         <dbl> 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1…
+    ## $ juliasilge        <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1…
+    ## $ statgarrett       <dbl> 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0…
+    ## $ thomasp85         <dbl> 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1…
+    ## $ sum_intersections <dbl> 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3…
+    ## $ ranking           <int> 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2…
 
 ### account\_activity
 
@@ -103,8 +102,8 @@ to analyse the change in follower creation dates over time.
 
     arfness_followers <- rtweetXtras::get_followers_fast("arfness")
 
-    ## [1] "arfness follower count = 4937"
-    ## [1] "followers captured: 4937 out of 4937"
+    ## [1] "arfness follower count = 5876"
+    ## [1] "followers captured: 5876 out of 5876"
 
     rtweetXtras::follower_dot_plot(arfness_followers, point_colour = "earliest_follow")
 
@@ -151,15 +150,25 @@ all Retweets. Original text column is saved as additional column “text2”
 
 `snscrape_search` is a function that uses the Python snscrape library to
 search historical twitter. Python 3.8 and snscrape need to be installed.
-See
-<a href="https://github.com/JustAnotherArchivist/snscrape" class="uri">https://github.com/JustAnotherArchivist/snscrape</a>
-for more information.
+See <https://github.com/JustAnotherArchivist/snscrape> for more
+information.
 
 `snscrape_get_timeline` is a function that uses Python snscrape library
 to pull a twitter user timeline, and rtweet to rehydrate it. Note:
 Currently, unlike `rtweet::get_timeline()`, no retweets are captured,
 and there is no API limitation of 3200 statuses as snscrape uses the web
 search facility of twitter.
+
+`get_perspective` is a function to query the Google Perspective API to
+classify toxicity in text. More information here:
+<https://www.perspectiveapi.com/> NB: A Google Cloud API key is required
+to use this function. Instructions on how to set it up are here:
+<https://developers.perspectiveapi.com/s/docs-get-started>
+
+`perspective_rtweet` Queries the text from an rtweet dataframe,
+sequentially by row, using the `get_perspective` function. A Perspective
+API key is required. In addition, the number of queries per second can
+be set if this has been negotiated with the Perspective team.
 
 `check_shadowban` is a function to check whether an account has been
 temporarily suppressed from search or display results by Twitter.
