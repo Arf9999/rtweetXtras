@@ -1,6 +1,6 @@
 Package: rtweetXtras
 Title: Extra Analysis Functions for rtweet package 
-Version: 0.4.0.1000
+Version: 0.4.1.0000
 Authors@R: 
     person(given = "Andrew",
            family = "Fraser",
