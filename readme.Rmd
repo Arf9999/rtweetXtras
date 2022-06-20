@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # rtweetXtras
 
 A collection of helper functions for twitter analysis using the {rtweet} package. NB: these functions have MANY dependencies... no warranty is offered, but please feel free to log issues.
+NB: This branch is now in development mode for the upcoming {rtweet version 1.0}. For compatibility with rtweet 0.7, please rather use the legacy version branch. Things will break here.
 
 To install the package, use the {remotes} or {devtools} package: `remotes::install_github("arf9999/rtweetXtras")`
 
